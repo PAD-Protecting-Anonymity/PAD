@@ -61,11 +61,11 @@ similarity_label, class_label, data_subsample = sim.label_via_silhouette_analysi
  
 input_shape = data_pair[0][0].shape
 dm = Deep_Metric(input_shape, (data_subsample, class_label))
-
+dm.train()
 deep_pairs = []
 for dat in data_pair:
-    dat1 = dm.deep_transform(dat[0].values)
-    dat2 = dm.deep_transform(dat[1].values)
+    dat1 = dm.transform(dat[0].values)
+    dat2 = dm.transform(dat[1].values)
     deep_pairs.append((dat1, dat2))
 # data_pair = deep_pairs
 
@@ -87,7 +87,7 @@ dist_metric_deep = mel.learn_with_simialrity_label_regularization(data=deep_pair
 deep_day_profile = pd.DataFrame(columns=day_profile.index)
 for index in day_profile.index:
     profile = day_profile.loc[index].values
-    deep_day_profile[index] = dm.deep_transform(profile)
+    deep_day_profile[index] = dm.transform(profile)
 deep_day_profile = deep_day_profile.transpose()
 
 # day_profile = deep_day_profile 
