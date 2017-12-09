@@ -6,6 +6,9 @@ Gets to 98.40% test accuracy after 20 epochs
 
 from __future__ import print_function
 
+
+import numpy as np
+import pandas as pd
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
@@ -13,8 +16,6 @@ from keras.optimizers import RMSprop
 from keras.layers import Conv1D, GlobalMaxPooling1D, Embedding
 from keras.preprocessing import sequence
 from keras import backend as K
-import numpy as np
-import pandas as pd
 np.random.seed(0)
 
 class Deep_Metric:
@@ -25,11 +26,11 @@ class Deep_Metric:
         self.Sequence = False
 
         if self.state:
-            data, self.labels = data
+            self.data, self.labels = data
             train_portion = 0.7
             s_size = len(self.labels)
-            self.x_train = data.iloc[:int(s_size * train_portion),:].values
-            self.x_test = data.iloc[int(s_size * train_portion):,:].values
+            self.x_train = self.data.iloc[:int(s_size * train_portion),:].values
+            self.x_test = self.data.iloc[int(s_size * train_portion):,:].values
             self.y_train = self.labels[:int(s_size * train_portion)]
             self.y_test = self.labels[int(s_size * train_portion): ]
             self.batch_size = 21
@@ -64,22 +65,30 @@ class Deep_Metric:
                     metrics=['accuracy'])
 
 
-        if self.state:
-            history =   self.model.fit(self.x_train, y_train,
-                            batch_size=self.batch_size,
-                            epochs=self.epochs,
-                            validation_data=(self.x_test, y_test))
-
-        score = self.model.evaluate(self.x_test, y_test, verbose=0)
-        print('Test loss:', score[0])
-        print('Test accuracy:', score[1])
-        
         # if self.state:
-        
         #     history =   self.model.fit(self.x_train, y_train,
         #                     batch_size=self.batch_size,
         #                     epochs=self.epochs,
         #                     validation_data=(self.x_test, y_test))
+
+        # score = self.model.evaluate(self.x_test, y_test, verbose=0)
+        # print('Test loss:', score[0])
+        # print('Test accuracy:', score[1])
+        
+        if self.state:
+            self.y_train = labels
+            if mode != "deep":
+                self.x_train = sequence.pad_sequences(self.data, maxlen=self.maxlen)
+            else:
+                self.x_train = self.data.values
+            history =   self.model.fit(self.x_train, self.y_train,
+                            batch_size=self.batch_size,
+                            epochs=self.epochs,
+                            validation_data=(self.x_train, self.y_train))
+        
+        score = self.model.evaluate(self.x_test, y_test, verbose=0)
+        print('Test loss:', score[0])
+        print('Test accuracy:', score[1])
 
         inp = self.model.input  
         if self.state:
