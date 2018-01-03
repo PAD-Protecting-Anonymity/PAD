@@ -1,3 +1,5 @@
+import sys; import os
+sys.path.append(os.path.abspath("./"))
 import pandas as pd
 import numpy as np
 from helper import Utilities, PerformanceEvaluation
@@ -5,7 +7,7 @@ import matplotlib.pyplot as plt
 import pickle
 from data_statistics import OccupancyStatistics
 
-day_profile = pd.read_pickle('../dataset/dataframe_all_binary.pkl')
+day_profile = pd.read_pickle('dataset/dataframe_all_binary.pkl')
 res = 15
 day_profile = day_profile.iloc[:,0::res]
 ncols = len(day_profile.columns)
@@ -14,7 +16,7 @@ partial_occup_length = int(4 * 60/15)
 util = Utilities()
 anonymity_level_vec = np.arange(2,8)
 
-with open('../result/occup_generic_sanitized.pickle', 'rb') as f:  # Python 3: open(..., 'wb')
+with open('result/occup_generic_sanitized.pickle', 'rb') as f:  # Python 3: open(..., 'wb')
    _,sanitized_profile_baseline_list = pickle.load(f)
 
 

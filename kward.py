@@ -28,6 +28,9 @@ class K_ward:
 
         if distance_metric == 'mahalanobis':
             self.VI = kwargs['VI']
+        if distance_metric == 'deep':
+            self.dm = kwargs['deep_model']
+        
         if distance_metric == 'self-defined':
             self.mode = kwargs['mode']
             if self.mode == 'window-usage':
@@ -47,6 +50,8 @@ class K_ward:
                 dist = DistanceMetric.get_metric('euclidean')
             elif self.distance_metric == 'mahalanobis':
                 dist = DistanceMetric.get_metric('mahalanobis', VI=self.VI)
+            elif self.distance_metric == 'deep':
+                dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
             distance = dist.pairwise(data)
 
         else:
@@ -183,6 +188,11 @@ class K_ward:
             new_groups = recurse_kward.groups
             self.replace(recurse_id,new_groups)
             card_status = [card >= self.upperbound for card in self.cards]
+
+    def deep_metric(self, x, y):
+        x, y = self.dm.transform((x,y))
+        dist = np.linalg.norm(x-y)
+        return dist
 
 class Group:
     def __init__(self, id=None, data=None, rep_mode="mean"):

@@ -1,3 +1,5 @@
+import sys; import os
+sys.path.append(os.path.abspath("./"))
 import pandas as pd
 from helper import Utilities, PerformanceEvaluation
 from sklearn.model_selection import KFold
@@ -26,7 +28,7 @@ def SVMPrediciton(data_trn,label_trn,data_tst,label_tst):
     pred_accuracy = sum([1 for i in range(len(label_pred)) if label_pred[i] == label_tst[i]])/len(label_pred)
     return pred_accuracy
 
-day_profile = pd.read_pickle('../dataset/dataframe_all_binary.pkl')
+day_profile = pd.read_pickle('dataset/dataframe_all_binary.pkl')
 res = 15
 day_profile = day_profile.iloc[:,0::res]
 ncols = len(day_profile.columns)
@@ -40,7 +42,7 @@ accuracy_gt_vec = np.empty((len(eval_time_steps),cv_num))
 accuracy_sn_vec = np.empty((len(anonymity_level_vec),len(eval_time_steps),cv_num))
 
 # load the sanitized database
-with open('../result/occup_generic_sanitized(2-20).pickle', 'rb') as f:
+with open('result/occup_generic_sanitized(2-20).pickle', 'rb') as f:
    _,sanitized_profile_baseline_list = pickle.load(f)
 
 for i in range(len(eval_time_steps)):
@@ -84,14 +86,14 @@ for ai in range(len(anonymity_level_vec)):
             cvi += 1
         print("accuracy with sanitized data %s" % accuracy_sn)
 
-    with open('../result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle', 'wb') as f:
+    with open('result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle', 'wb') as f:
         pickle.dump(
             [accuracy_gt_vec,accuracy_sn_vec,eval_time_steps,
              anonymity_level_vec,day_profile,sanitized_profile_baseline_list,cv_num], f)
 
 
 # ######## visualization ###############
-with open('../result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle', 'rb') as f:  # Python 3: open(..., 'wb')
+with open('result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle', 'rb') as f:  # Python 3: open(..., 'wb')
     accuracy_gt_vec, accuracy_sn_vec, eval_time_steps, anonymity_level_vec,\
     day_profile, sanitized_profile_baseline_list, cv_num\
         = pickle.load(f)

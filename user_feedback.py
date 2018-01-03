@@ -62,4 +62,4 @@ class Similarity:
                 similarity_label.append(1)
             else:
                 similarity_label.append(0)
-        return similarity_label, best_cluster_label, self.dataSubsample
+        return similarity_label, self.dataSubsample
