@@ -25,9 +25,10 @@ def evaluation_total_usage(n):
 
     # step 1: get the database to be published
     day_profile1 = pd.read_pickle('dataset/dataframe_all_energy.pkl')
+    print(day_profile1.shape)
     # day_profile = day_profile.iloc[0:90,0::4] # subsample the database to improve the speed for demonstration purpose
-    day_profile = day_profile1.iloc[:90*(n-1),0::4] # subsample the database to improve the speed for demonstration purpose
-    day_profile2 = day_profile1.iloc[90*(n-1):90*(n-1)+90,0::4] # subsample the database to improve the speed for demonstration purpose
+    day_profile = day_profile1.iloc[:90,0::4] # subsample the database to improve the speed for demonstration purpose
+    day_profile2 = day_profile1.iloc[90:90+39,0::4] # subsample the database to improve the speed for demonstration purpose
     day_profile.index = range(len(day_profile.index))
     day_profile2.index = range(len(day_profile2.index))
     rep_mode = 'mean'
@@ -45,14 +46,14 @@ def evaluation_total_usage(n):
 
     # step 3: pre-sanitize the database
     sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
-                                                        anonymity_level=anonymity_level,rep_mode = rep_mode,
+                                                        anonymity_level=anonymity_level, rep_mode = rep_mode,
                                                         window=window)
 
     loss_best_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
-                                                  mode=interest,window=window)
+                                                  mode=interest, window=window)
 
     loss_generic_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_baseline,
-                                                            mode=interest,window=window)
+                                                            mode=interest, window=window)
     # print("information loss with learned metric %s" % loss_generic_metric)
 
     # df_subsampled_from = sanitized_profile_baseline.drop_duplicates().sample(frac=1)
@@ -60,22 +61,25 @@ def evaluation_total_usage(n):
     subsample_size_max = int(comb(len(df_subsampled_from),2))
 
     print('total number of pairs is %s' % subsample_size_max)
-
-    # step 4: sample a subset of pre-sanitized database and form the data points into pairs
-    subsample_size = int(round(subsample_size_max/2))
-    sp = Subsampling(data=df_subsampled_from)
-    data_pair = sp.uniform_sampling(subsample_size=subsample_size)
-
-    # User receives the data pairs and label the similarity
-    sim = Similarity(data=data_pair)
-    sim.extract_interested_attribute(interest='statistics', stat_type=interest, window=window)
-    similarity_label, class_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
-
-    # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+    
     loss_learned_metric = {}
     loss_learned_metric_deep = {}
     random_state_vec = np.arange(5)
     for i in range(len(random_state_vec)):
+        random_state = random_state_vec[i]
+        np.random.seed(random_state)
+
+        # step 4: sample a subset of pre-sanitized database and form the data points into pairs
+        subsample_size = int(round(subsample_size_max/2))
+        sp = Subsampling(data=df_subsampled_from)
+        data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
+
+        # User receives the data pairs and label the similarity
+        sim = Similarity(data=data_pair)
+        sim.extract_interested_attribute(interest='statistics', stat_type=interest, window=window)
+        similarity_label, class_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
+
+        # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
         dm = Deep_Metric()
         dm.train(data_pair, similarity_label)
 
@@ -118,8 +122,8 @@ for n in range(2,8):
     losses[n] = l
     sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_usage_SCS_5_publicdata_deep.pickle', 'wb') as f: 
-        pickle.dump([s,l, sample_sizes], f)
+with open('result_scripts/loss_vs_privacy_usage_SCS_5_publicdata1_deep.pickle', 'wb') as f: 
+        pickle.dump([sanitized,losses, sample_sizes], f)
 
 
 [370, 138, 76, 52, 33]

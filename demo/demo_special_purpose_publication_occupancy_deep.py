@@ -21,6 +21,8 @@ mel = MetricLearning()
 # step 1: get the database to be published
 day_profile = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
 day_profile = day_profile.iloc[0::4,0::60]
+print(day_profile)
+exit()
 rep_mode = 'mean'
 anonymity_level = 2 # desired anonymity level
 
@@ -28,14 +30,16 @@ anonymity_level = 2 # desired anonymity level
 # information of a segment of entire time series. In this case, he/she would also need to specify the starting and
 # ending time of the time series segment of interest.
 interest = 'segment'
-window = [11,15] # window specifies the starting and ending time of the period that the data user is interested in
+window = [17,21] # window specifies the starting and ending time of the period that the data user is interested in
 
 # step 3: pre-sanitize the database
 sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
                                                 anonymity_level=anonymity_level,rep_mode = rep_mode)
+
 loss_generic_metric = pe.get_information_loss(data_gt=day_profile,
                                               data_sanitized=sanitized_profile_baseline.round(),
                                               window=window)
+
 print("information loss with generic metric %s" % loss_generic_metric)
 df_subsampled_from = sanitized_profile_baseline.drop_duplicates().sample(frac=1)
 

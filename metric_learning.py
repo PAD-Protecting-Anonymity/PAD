@@ -1,14 +1,9 @@
 import itertools
-
 import cvxpy as cvx
 import numpy as np
 from cvxpy import *
-
 from helper import Miscellaneous
 import numpy as np
-
-np.random.seed(0)
-
 
 class Subsampling:
     def __init__(self,data):

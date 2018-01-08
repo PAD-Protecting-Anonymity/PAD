@@ -52,7 +52,7 @@ data_pair = sp.uniform_sampling(subsample_size=subsample_size)
 # User receives the data pairs and label the similarity
 sim = Similarity(data=data_pair)
 sim.extract_interested_attribute(interest='statistics', stat_type=interest,window=window)
-similarity_label, class_label = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
+similarity_label, class_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
 
 # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
 # lam_vec is a set of candidate lambda's for weighting the l1-norm penalty in the metric learning optimization problem.

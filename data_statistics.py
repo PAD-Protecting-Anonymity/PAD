@@ -27,6 +27,10 @@ class OccupancyStatistics:
         window_usage = self.data.apply(self.uil.compute_window_usage, axis=1,index=self.data.columns,window=window).to_frame()
         return window_usage
 
+    def get_segment(self, window):
+        window_usage = self.data.apply(self.uil.compute_window, axis=1,index=self.data.columns,window=window)
+        return window_usage
+
 
 
 class UtilityOccupancyStatistics:
@@ -55,6 +59,8 @@ class UtilityOccupancyStatistics:
                     arrival_time_ind = np.nan
                 else:
                     arrival_time_ind = late_morning_dep + arrival_time_ind_offset
+        else:
+            arrival_time_ind = np.nan
 
         if np.isnan(arrival_time_ind): # if no arrival in the day
             if flag == 0:
@@ -111,6 +117,14 @@ class UtilityOccupancyStatistics:
             x = list(x)
         usage = sum(x[window[0]:window[1]])* time_resolution
         return usage
+
+    def compute_window(self,x,index, window):
+        win_start = window[0]
+        win_end = window[1]
+        if isinstance(x,pd.DataFrame):
+            x = list(x)
+        df = x[win_start:win_end]
+        return df
 
 
 
