@@ -8,6 +8,7 @@ from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
 import numpy as np
 import pickle
+from linear_metric_learning import Linear_Metric
 
 """
 In the demo, we will showcase an example of special purpose publication.
@@ -24,6 +25,9 @@ def evaluation_occupancy_window(n):
     day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
     day_profile = day_profile1.iloc[0:90,0::60]
     day_profile2 = day_profile1.iloc[90:90+39,0::60] 
+    day_profile.dropna()
+    day_profile2.dropna()
+
     rep_mode = 'mean'
     anonymity_level = n # desired anonymity level
 
@@ -75,10 +79,13 @@ def evaluation_occupancy_window(n):
 
         # User receives the data pairs and label the similarity
         sim = Similarity(data=data_pair)
-        sim.extract_interested_attribute(interest='statistics', stat_type=interest, window=window)
-        similarity_label, class_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
+        sim.extract_interested_attribute(interest=interest, window=window)
+        similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
 
         # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+        lm = Linear_Metric()
+        lm.train(data_pair, similarity_label)        
+        
         dm = Deep_Metric()
         dm.train(data_pair, similarity_label)
 
@@ -86,13 +93,13 @@ def evaluation_occupancy_window(n):
         # lam_vec is a set of candidate lambda's for weighting the l1-norm penalty in the metric learning optimization problem.
         # The lambda that achieves lowest testing error will be selected for generating the distance metric
 
-        dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
-                                                                    label=similarity_label,
-                                                                    lam_vec=[0, 0.1, 1, 10],
-                                                                    train_portion=0.8)
+        # dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
+        #                                                             label=similarity_label,
+        #                                                             lam_vec=[0, 0.1, 1, 10],
+        #                                                             train_portion=0.8)
         # step 6: the original database is privatized using the learned metric
-        sanitized_profile = util.sanitize_data(day_profile, distance_metric="mahalanobis",
-                                            anonymity_level=anonymity_level, rep_mode=rep_mode, VI=dist_metric)
+        sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                            rep_mode=rep_mode, deep_model=lm)
 
         sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
                                             rep_mode=rep_mode, deep_model=dm)

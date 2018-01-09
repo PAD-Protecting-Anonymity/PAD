@@ -40,7 +40,7 @@ class Deep_Metric:
 
         train_portion = 0.8
         input_shape = data_pairs[0][0].shape
-        # kernels = int(round(input_shape[0]*4.167))
+        # kernels = int(round(input_shape[0]))
         kernels = 100
         s_size = len(similarity_labels)
         x1_train = X1[:int(s_size * train_portion)]
@@ -54,15 +54,19 @@ class Deep_Metric:
         y_train = keras.utils.to_categorical(y_train, number_classes)
         y_test = keras.utils.to_categorical(y_test, number_classes)
 
-        input_shape = data_pairs[0][0].shape
         left_input = Input(input_shape)
         right_input = Input(input_shape)
-        kernels = 100
+        
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
         model.add(Dense(kernels, activation='relu', input_shape = input_shape, kernel_regularizer=l2(2e-4)))
         model.add(Dense(kernels, activation='relu', kernel_regularizer=l2(2e-4)))
         model.add(Dense(kernels, activation='sigmoid', kernel_regularizer=l2(1e-3)))
+
+        # model.add(Dense(kernels, activation='relu', input_shape = input_shape))
+        # model.add(Dense(kernels, activation='relu'))
+        # model.add(Dense(kernels, activation='sigmoid'))
+
 
         #encode each of the two inputs into a vector with the model
         encoded_l = model(left_input)
@@ -73,11 +77,8 @@ class Deep_Metric:
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
         prediction = Dense(number_classes,activation='sigmoid')(both)
         siamese_net = Model(input=[left_input,right_input],output=prediction)
-        # optimizer = SGD(0.0004,momentum=0.6,nesterov=True,decay=0.0003)
 
-        # optimizer = Adam(0.00006)
         optimizer = RMSprop()
-        # siamese_net.compile(loss="binary_crossentropy", optimizer=optimizer)
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
     
         siamese_net.count_params()

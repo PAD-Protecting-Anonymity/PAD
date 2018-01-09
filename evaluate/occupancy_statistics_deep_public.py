@@ -8,6 +8,7 @@ from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
 import numpy as np
 import pickle
+from linear_metric_learning import Linear_Metric
 
 """
 In the demo, we will showcase an example of special purpose publication.
@@ -68,21 +69,25 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
 
         # User receives the data pairs and label the similarity
         sim = Similarity(data=data_pair)
-        sim.extract_interested_attribute(interest='statistics', stat_type=interest, window=window)
-        similarity_label, class_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
+        sim.extract_interested_attribute(interest='statistics', stat_type=mode)
+        similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
 
         # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+        lm = Linear_Metric()
+        lm.train(data_pair, similarity_label)
+
         dm = Deep_Metric()
         dm.train(data_pair, similarity_label)
 
-        dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
-                                                                    label=similarity_label,
-                                                                    lam_vec=[0, 0.1, 1, 10],
-                                                                    train_portion=0.8)
+
+        # dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
+        #                                                             label=similarity_label,
+        #                                                             lam_vec=[0, 0.1, 1, 10],
+        #                                                             train_portion=0.8)
 
         # step 6: the original database is privatized using the learned metric
-        sanitized_profile = util.sanitize_data(day_profile, distance_metric="mahalanobis",
-                                            anonymity_level=anonymity_level, rep_mode=rep_mode, VI=dist_metric)
+        sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                            rep_mode=rep_mode, deep_model=lm)
 
         sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
                                             rep_mode=rep_mode, deep_model=dm)
@@ -116,6 +121,6 @@ for n in range(2,8):
     losses[n] = l
     sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep.pickle', 'wb') as f: 
+with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_%s.pickle'%(mode), 'wb') as f: 
         pickle.dump([sanitized, losses, sample_sizes], f)
 

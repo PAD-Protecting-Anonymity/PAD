@@ -10,6 +10,7 @@ from scipy.misc import comb
 import time
 from deep_metric_learning import Deep_Metric
 import pickle
+from linear_metric_learning import Linear_Metric
 
 
 def evaluation_total_usage(n):
@@ -69,28 +70,30 @@ def evaluation_total_usage(n):
         sp = Subsampling(data=df_subsampled_from)
         data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
 
-
         # User receives the data pairs and label the similarity
         sim = Similarity(data=data_pair)
         sim.extract_interested_attribute(interest='statistics', stat_type=interest, window=window)
-        similarity_label, class_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
+        similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
 
         # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+        lm = Linear_Metric()
+        lm.train(data_pair, similarity_label)
+        
         dm = Deep_Metric()
         dm.train(data_pair, similarity_label)
 
 
-        dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
-                                                                    label=similarity_label,
-                                                                    lam_vec=[0, 0.1, 1, 10],
-                                                                    train_portion=0.8)
+        # dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
+        #                                                             label=similarity_label,
+        #                                                             lam_vec=[0, 0.1, 1, 10],
+        #                                                             train_portion=0.8)
 
         # step 6: the original database is privatized using the learned metric
         sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
                                             rep_mode=rep_mode, deep_model=dm, window=window)
 
-        sanitized_profile = util.sanitize_data(day_profile, distance_metric="mahalanobis",
-                                            anonymity_level=anonymity_level, rep_mode=rep_mode, VI=dist_metric)
+        sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                            rep_mode=rep_mode, deep_model=lm, window=window)
 
         # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
         loss_learned_metric_deep[i] = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_deep.round(),
