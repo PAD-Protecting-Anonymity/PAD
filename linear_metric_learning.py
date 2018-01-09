@@ -27,7 +27,7 @@ np.random.seed(0)
 
 
 
-class Deep_Metric:
+class Linear_Metric:
 
     def train(self, data_pairs, similarity_labels):
         self.batch_size = 10
@@ -59,17 +59,16 @@ class Deep_Metric:
 
         left_input = Input(input_shape)
         right_input = Input(input_shape)
-        
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
-        model.add(Dense(kernels, activation='relu', input_shape = input_shape, kernel_regularizer=l2(2e-4)))
-        model.add(Dense(kernels, activation='relu', kernel_regularizer=l2(2e-4)))
-        model.add(Dense(kernels, activation='sigmoid', kernel_regularizer=l2(1e-3)))
 
-        # model.add(Dense(kernels, activation='relu', input_shape = input_shape))
-        # model.add(Dense(kernels, activation='relu'))
-        # model.add(Dense(kernels, activation='sigmoid'))
+        # model.add(Dense(kernels, input_shape = input_shape))
+        # model.add(Dense(kernels))
+        # model.add(Dense(kernels))
 
+        model.add(Dense(kernels,  input_shape = input_shape, kernel_regularizer=l2(2e-4)))
+        model.add(Dense(kernels,  kernel_regularizer=l2(2e-4)))
+        model.add(Dense(kernels,  kernel_regularizer=l2(1e-3)))
 
         #encode each of the two inputs into a vector with the model
         encoded_l = model(left_input)
@@ -78,10 +77,12 @@ class Deep_Metric:
         #merge two encoded inputs with the l1 distance between them
         L1_distance = lambda x: K.abs(x[0]-x[1])
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
-        prediction = Dense(number_classes,activation='sigmoid')(both)
+        prediction = Dense(number_classes)(both)
         siamese_net = Model(input=[left_input,right_input],output=prediction)
 
+        # optimizer = Adam(0.00006)
         optimizer = RMSprop()
+        # siamese_net.compile(loss="binary_crossentropy", optimizer=optimizer)
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
     
         siamese_net.count_params()
