@@ -22,7 +22,7 @@ mel = MetricLearning()
 
 def evaluation_occupancy_statistics(n, mode = "arrival"):
     day_profile = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
-    day_profile = day_profile[(day_profile.T != 0).any()]
+    # day_profile = day_profile[(day_profile.T != 0).any()]
     day_profile[day_profile>0] = 1
     
     res = 15

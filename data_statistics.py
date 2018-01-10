@@ -50,7 +50,7 @@ class UtilityOccupancyStatistics:
         # pdb.set_trace()
         if x[0] == 0:
             arrival_time_ind = next((ind for ind, value in enumerate(x) if value == 1), np.nan)
-        elif x[0] > 0:
+        elif x[0] == 1:
             late_morning_dep = next((ind for ind, value in enumerate(x) if value == 0), None)
             if late_morning_dep is None:
                 arrival_time_ind = np.inf
