@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import pdb
 
 
 
@@ -46,9 +47,10 @@ class UtilityOccupancyStatistics:
         '''
         if isinstance(x,pd.Series):
             x = list(x)
+        # pdb.set_trace()
         if x[0] == 0:
             arrival_time_ind = next((ind for ind, value in enumerate(x) if value == 1), np.nan)
-        elif x[0] == 1:
+        elif x[0] > 0:
             late_morning_dep = next((ind for ind, value in enumerate(x) if value == 0), None)
             if late_morning_dep is None:
                 arrival_time_ind = np.inf
@@ -59,9 +61,10 @@ class UtilityOccupancyStatistics:
                     arrival_time_ind = np.nan
                 else:
                     arrival_time_ind = late_morning_dep + arrival_time_ind_offset
-        else:
-            arrival_time_ind = np.nan
-
+        # else:
+        #     arrival_time_ind = np.nan
+        # print(x)
+        # print(arrival_time_ind)
         if np.isnan(arrival_time_ind): # if no arrival in the day
             if flag == 0:
                 arrival_time = np.nan

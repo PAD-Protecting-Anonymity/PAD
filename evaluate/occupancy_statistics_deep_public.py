@@ -22,11 +22,15 @@ mel = MetricLearning()
 
 def evaluation_occupancy_statistics(n, mode = "arrival"):
     day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
+    # print(len(day_profile1))
+    day_profile1 = day_profile1[(day_profile1.T != 0).any()]
+    day_profile1[day_profile1>0] = 1
+    # print(len(day_profile1))
     res = 15
     # day_profile = day_profile.iloc[:90,0::res]
 
-    day_profile = day_profile1.iloc[:90,0::res] # subsample the database to improve the speed for demonstration purpose
-    day_profile2 = day_profile1.iloc[90:90+39,0::res] # subsample the database to improve the speed for demonstration purpose
+    day_profile = day_profile1.iloc[:120,0::res] # subsample the database to improve the speed for demonstration purpose
+    day_profile2 = day_profile1.iloc[120:120+52,0::res] # subsample the database to improve the speed for demonstration purpose
     # day_profile.index = range(len(day_profile.index))
     # day_profile2.index = range(len(day_profile2.index))
 
@@ -115,7 +119,7 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
 sanitized = {}
 losses = {}
 sample_sizes = []
-mode = "departure"
+mode = "arrival"
 for n in range(2,8):    
     s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s
