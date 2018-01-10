@@ -121,7 +121,7 @@ for n in range(2,8):
     losses[n] = l
     sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_usage_SCS_5_normal_deep.pickle', 'wb') as f: 
+with open('result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle', 'wb') as f: 
         pickle.dump([sanitized,losses, sample_sizes], f)
 
 

@@ -10,7 +10,6 @@ Gets to 98.40% test accuracy after 20 epochs
 # theano.config.floatX = 'float32'
 
 import copy
-
 import numpy as np
 import numpy.random as rng
 import pandas as pd

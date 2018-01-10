@@ -62,13 +62,13 @@ class Linear_Metric:
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
 
-        # model.add(Dense(kernels, input_shape = input_shape))
-        # model.add(Dense(kernels))
-        # model.add(Dense(kernels))
+        model.add(Dense(kernels, input_shape = input_shape))
+        model.add(Dense(kernels))
+        model.add(Dense(kernels))
 
-        model.add(Dense(kernels,  input_shape = input_shape, kernel_regularizer=l2(2e-4)))
-        model.add(Dense(kernels,  kernel_regularizer=l2(2e-4)))
-        model.add(Dense(kernels,  kernel_regularizer=l2(1e-3)))
+        # model.add(Dense(kernels,  input_shape = input_shape, kernel_regularizer=l2(2e-4)))
+        # model.add(Dense(kernels,  kernel_regularizer=l2(2e-4)))
+        # model.add(Dense(kernels,  kernel_regularizer=l2(1e-3)))
 
         #encode each of the two inputs into a vector with the model
         encoded_l = model(left_input)

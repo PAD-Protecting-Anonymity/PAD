@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
-with open('result_scripts/loss_vs_privacy_usage_SCS_5_publicdata_deep.pickle','rb') as f: # Python 3: open(..., 'wb')
+with open('result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle','rb') as f: # Python 3: open(..., 'wb')
     data = pickle.load(f)
 # sanitized_profile_best, sanitized_profile_baseline, sanitized_profile, sanitized_profile_deep = s                                    
 # loss_best_metric, loss_generic_metric, loss_learned_metric, loss_learned_metric_deep = l    
@@ -27,7 +27,7 @@ loss_learned_deep_metric_lists = [list(loss_learned_metric_deep_list[i].values()
 # print(loss_learned_deep_metric_lists)
 # exit()
 
-# plt.plot(anonymity_vec,loss_best_metric_list, label='Ground truth metric',color='red')
+plt.plot(anonymity_vec,loss_best_metric_list, label='Ground truth metric',color='red')
 plt.plot(anonymity_vec,loss_generic_metric_list,label='Generic metric',color='blue',linestyle='-.')
 bp = plt.boxplot(loss_learned_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)
 bp1 = plt.boxplot(loss_learned_deep_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)

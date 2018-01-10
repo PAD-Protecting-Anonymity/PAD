@@ -23,7 +23,7 @@ mel = MetricLearning()
 def evaluation_occupancy_statistics(n, mode = "arrival"):
     day_profile = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
     res = 15
-    day_profile = day_profile.iloc[:120,0::res]
+    day_profile = day_profile.iloc[:90,0::res]
 
     rep_mode = 'mean'
     anonymity_level = n
@@ -109,7 +109,7 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
 sanitized = {}
 losses = {}
 sample_sizes = []
-mode = "departure"
+mode = "arrival"
 for n in range(2,8):    
     s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s
