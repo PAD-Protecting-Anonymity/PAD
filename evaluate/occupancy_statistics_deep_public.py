@@ -119,8 +119,8 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
 sanitized = {}
 losses = {}
 sample_sizes = []
-mode = "departure"
-for n in range(2,8):    
+mode = "arrival"
+for n in range(4,8):    
     s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s
     losses[n] = l

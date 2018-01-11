@@ -80,21 +80,22 @@ class UtilityOccupancyStatistics:
 
         if isinstance(x,pd.Series):
             x = list(x)
-        if x[-1] == 1:
-            if x[0] == 1:
+        if x[-1] > 0:
+            if x[0] > 0:
                 dep_time_ind = next((ind for ind,value in enumerate(x) if value == 0),None)
             else:
                 dep_time_ind = np.inf
         elif x[-1] == 0:
             x_inv = x[::-1]
-            dep_time_ind_inv = next((ind for ind, value in enumerate(x_inv) if value == 1), None)
+            dep_time_ind_inv = next((ind for ind, value in enumerate(x_inv) if value > 0 ), None)
             if dep_time_ind_inv is None:
                 dep_time_ind = np.nan
             else:
                 dep_time_ind = len(x) - dep_time_ind_inv
         else:
             dep_time_ind = np.nan
-
+	
+	pdb.set_trace()
         if np.isinf(dep_time_ind):
             if flag == 0:
                 dep_time = np.nan
