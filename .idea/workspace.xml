@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1690bdf5-22c6-4426-a34f-9e7457790890" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/evaluate/evaluation_window_active.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/evaluate/evaluation_window_active_vs_uniform.py" afterPath="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/demo_efficient_labeling.py" afterPath="$PROJECT_DIR$/demo/demo_efficient_labeling.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/metric_learning.py" afterPath="$PROJECT_DIR$/metric_learning.py" />
     </list>
     <ignored path="PAD.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -15,7 +19,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PAD$evaluation_window_active_vs_uniform.coverage" NAME="evaluation_window_active_vs_uniform Coverage Results" MODIFIED="1515698687515" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
+    <SUITE FILE_PATH="coverage/PAD$evaluation_window_active_vs_uniform.coverage" NAME="evaluation_window_active_vs_uniform Coverage Results" MODIFIED="1515700439592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -26,13 +30,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="evaluation_window_active_vs_uniform.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_vs_uniform.py">
+      <file leaf-file-name="evaluation_window_active.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-725">
-              <caret line="72" column="11" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
+            <state relative-caret-position="195">
+              <caret line="86" column="22" selection-start-line="86" selection-start-column="22" selection-end-line="86" selection-end-column="22" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="evaluation_window_uniform.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1799">
+              <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="metric_learning.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/metric_learning.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="960">
+              <caret line="64" column="47" selection-start-line="64" selection-start-column="41" selection-end-line="64" selection-end-column="47" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -41,8 +69,8 @@
       <file leaf-file-name="demo_efficient_labeling.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="64" selection-end-column="18" />
+            <state relative-caret-position="286">
+              <caret line="137" column="34" selection-start-line="137" selection-start-column="34" selection-end-line="137" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -75,8 +103,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/demo/demo_efficient_labeling.py" />
+        <option value="$PROJECT_DIR$/metric_learning.py" />
         <option value="$PROJECT_DIR$/evaluate/evaluation_window_active_vs_uniform.py" />
+        <option value="$PROJECT_DIR$/demo/demo_efficient_labeling.py" />
+        <option value="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" />
+        <option value="$PROJECT_DIR$/evaluate/evaluation_window_active.py" />
       </list>
     </option>
   </component>
@@ -185,7 +216,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="PAD" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/evaluation_window_active_vs_uniform.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -423,8 +454,8 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26569343" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329927" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4540146" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -464,28 +495,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/deep_metric_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="760">
+          <caret line="95" column="16" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="64" selection-end-column="18" />
+        <state relative-caret-position="286">
+          <caret line="137" column="34" selection-start-line="137" selection-start-column="34" selection-end-line="137" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/metric_learning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="960">
+          <caret line="64" column="47" selection-start-line="64" selection-start-column="41" selection-end-line="64" selection-end-column="47" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_vs_uniform.py">
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-725">
-          <caret line="72" column="11" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
+        <state relative-caret-position="-1799">
+          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="86" column="22" selection-start-line="86" selection-start-column="22" selection-end-line="86" selection-end-column="22" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

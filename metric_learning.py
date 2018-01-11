@@ -40,7 +40,7 @@ class Subsampling:
         pair_subsample_index.sort(key=lambda x: x[1])
         pair_subsample_index.sort(key=lambda x: x[0])
         pair_subsample = self.get_pairdata(pair_subsample_index=pair_subsample_index)
-        return pair_subsample#, pair_subsample_index
+        return pair_subsample, pair_subsample_index
 
     def batch_uniform_sampled(self,batch_size):
         unsample_idx = [i for i in range(len(self.subsample_status)) if self.subsample_status[i] == 0]
@@ -68,6 +68,8 @@ class Subsampling:
             np.random.seed(seed)
             next_sample_idx = np.random.choice(a=self.pairsize_total, size=k_init, replace=False).tolist()
             pairdata_idx = [self.pair_index_all[i] for i in next_sample_idx]
+            pairdata_idx.sort(key=lambda x: x[1])
+            pairdata_idx.sort(key=lambda x: x[0])
             self.k_already = k_init
         else:
             unsample_idx = [i for i in range(len(self.subsample_status)) if self.subsample_status[i] == 0]

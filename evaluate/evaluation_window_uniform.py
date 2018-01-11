@@ -51,12 +51,10 @@ loss_best_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sa
 loss_generic_metric = pe.get_information_loss(data_gt=day_profile,
                                               data_sanitized=sanitized_profile_baseline.round(),
                                               window=window)
-print("information loss with generic metric %s" % loss_best_metric)
-print("information loss with generic metric %s" % loss_generic_metric)
 
 df_subsampled_from = day_profile_metric_learn
 subsample_size_max = int(comb(len(df_subsampled_from), 2))
-print('total number of pairs is %s' % len(df_subsampled_from))
+print('total number of pairs is %s' % subsample_size_max)
 
 ## obtain ground truth similarity labels
 sp = Subsampling(data=df_subsampled_from)
@@ -71,7 +69,8 @@ print('similarity balance is %s'% [sum(similarity_label_all),len(similarity_labe
 
 
 k_init = 50
-mc_num = 1
+batch_size = 50
+mc_num = 5
 seed_vec = np.arange(mc_num)
 
 ## uniform sampling
@@ -85,7 +84,7 @@ for mc_i in range(len(seed_vec)):
     pairdata_each_mc = []
     pairlabel_each_mc = []
     k = k_init
-    while k <= k_init:#subsample_size_max:
+    while k <= subsample_size_max:
         if k == k_init:
             pairdata, pairdata_idx = sp.uniform_sampling(subsample_size=k, seed=seed_vec[mc_i])
             pairdata_label = similarity_label_all_series.loc[pairdata_idx]
@@ -129,6 +128,7 @@ for mc_i in range(len(seed_vec)):
         print("information loss with generic metric %s" % loss_generic_metric)
         print("information loss with learned metric %s" % loss_learned_metric)
         print("information loss with learned metric deep  %s" % loss_learned_metric_deep)
+        k += batch_size
 
     loss_unif_all_linear.append(loss_unif_mc_linear)
     loss_unif_all_deep.append(loss_unif_mc_deep)
