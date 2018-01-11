@@ -2,13 +2,13 @@ import sys; import os
 sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
-from metric_learning import Subsampling, MetricLearning
 from user_feedback import Similarity
 from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
 import numpy as np
 import pickle
 from linear_metric_learning import Linear_Metric
+from subsampling import Subsampling
 
 """
 In the demo, we will showcase an example of special purpose publication.
@@ -18,13 +18,12 @@ The data user wants the published database to maximally retain the information a
 # Initialization of some useful classes
 util = Utilities()
 pe = PerformanceEvaluation()
-mel = MetricLearning()
 
 def evaluation_occupancy_statistics(n, mode = "arrival"):
     day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
     day_profile1 = day_profile1.fillna(0)
     day_profile1[day_profile1>0] = 1
-    
+
     res = 15
 
     day_profile = day_profile1.iloc[:120,0::res] # subsample the database to improve the speed for demonstration purpose

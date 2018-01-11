@@ -3,7 +3,6 @@ sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
 import numpy as np
-from metric_learning import MetricLearning, Subsampling
 from user_feedback import Similarity
 import pickle
 from scipy.misc import comb
@@ -11,6 +10,7 @@ import time
 from deep_metric_learning import Deep_Metric
 import pickle
 from linear_metric_learning import Linear_Metric
+from subsampling import Subsampling
 
 
 def evaluation_total_usage(n):
@@ -22,7 +22,6 @@ def evaluation_total_usage(n):
     # Initialization of some useful classes
     util = Utilities()
     pe = PerformanceEvaluation()
-    mel = MetricLearning()
 
     # step 1: get the database to be published
     day_profile = pd.read_pickle('dataset/dataframe_all_energy.pkl')

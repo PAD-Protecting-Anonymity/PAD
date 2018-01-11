@@ -2,13 +2,13 @@ import sys; import os
 sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
-from metric_learning import Subsampling, MetricLearning
 from user_feedback import Similarity
 from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
 import numpy as np
 import pickle
 from linear_metric_learning import Linear_Metric
+from subsampling import Subsampling
 
 """
 In the demo, we will showcase an example of special purpose publication.
