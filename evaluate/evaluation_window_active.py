@@ -22,7 +22,7 @@ util = Utilities()
 pe = PerformanceEvaluation()
 mel = MetricLearning()
 
-day_profile_all = pd.read_pickle('../dataset/dataframe_all_binary.pkl')
+day_profile_all = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
 day_profile = day_profile_all.iloc[0:90, 0::60] # the database to be published
 day_profile_metric_learn = day_profile_all.iloc[90:-1, 0::60] # the database for learning distance metric
 day_profile.dropna()
