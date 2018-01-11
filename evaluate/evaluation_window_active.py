@@ -12,10 +12,10 @@ import numpy as np
 import pickle
 from linear_metric_learning import Linear_Metric
 
-"""
-In the demo, we will showcase an example of special purpose publication.
-The data user wants the published database to maximally retain the information about lunch time.
-"""
+# """
+# In the demo, we will showcase an example of special purpose publication.
+# The data user wants the published database to maximally retain the information about lunch time.
+# """
 
 # Initialization of some useful classes
 util = Utilities()
@@ -72,58 +72,47 @@ k_init = 50
 mc_num = 5
 seed_vec = np.arange(mc_num)
 
-## uniform sampling
+## active sampling
 loss_active_all_linear = []
+pairdata_all_linear = []
+pairlabel_all_linear = []
 loss_active_all_deep = []
-pairdata_all = []
-pairlabel_all = []
+pairdata_all_deep = []
+pairlabel_all_deep = []
 for mc_i in range(len(seed_vec)):
     loss_active_mc_linear= []
-    loss_active_mc_deep = []
-    pairdata_each_mc = []
-    pairlabel_each_mc = []
-    pairdata_active = []
-    pairdata_label_active = []
-    dist_metric = None
+    pairdata_each_mc_linear = []
+    pairlabel_each_mc_linear = []
+    pairdata_active_linear = []
+    pairdata_label_active_linear = []
+    lm = None
     sp.reset()
     k = k_init
     while k <= subsample_size_max:
-        pairdata, pairdata_idx = sp.active_sampling(dist_metric=dist_metric,
+        pairdata, pairdata_idx = sp.active_sampling(dist_metric=lm,
                                                     k_init=k_init,
                                                     batch_size=1,
                                                     seed=seed_vec[mc_i])
-        pairdata_acitve = pairdata_active + pairdata
+        pairdata_acitve_linear = pairdata_active_linear + pairdata
         similarity_label = similarity_label_all_series.loc[pairdata_idx].tolist()
-        pairdata_label_active = pairdata_label_active + similarity_label
+        pairdata_label_active_linear = pairdata_label_active_linear + similarity_label
 
         lm = Linear_Metric()
-        lm.train(pairdata_acitve, pairdata_label_active)
-
-        dm = Deep_Metric()
-        dm.train(pairdata_acitve, pairdata_label_active)
-
+        lm.train(pairdata_acitve_linear, pairdata_label_active_linear)
 
         sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",
                                                anonymity_level=anonymity_level,
                                                rep_mode=rep_mode, deep_model=lm)
-
-        sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",
-                                                    anonymity_level=anonymity_level,
-                                                    rep_mode=rep_mode, deep_model=dm)
 
         # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
         loss_learned_metric = pe.get_information_loss(data_gt=day_profile,
                                                          data_sanitized=sanitized_profile.round(),
                                                          window=window)
 
-        loss_learned_metric_deep = pe.get_information_loss(data_gt=day_profile,
-                                                              data_sanitized=sanitized_profile_deep.round(),
-                                                              window=window)
         loss_active_mc_linear.append(loss_learned_metric)
-        loss_active_mc_deep.append(loss_learned_metric_deep)
 
-        pairdata_each_mc.append(pairdata_active)
-        pairlabel_each_mc.append(pairdata_label_active)
+        pairdata_each_mc_linear.append(pairdata_active_linear)
+        pairlabel_each_mc_linear.append(pairdata_label_active_linear)
 
         print('====================')
         print('random state %s ' % mc_i)
@@ -131,20 +120,64 @@ for mc_i in range(len(seed_vec)):
         print("information loss with best metric %s" % loss_best_metric)
         print("information loss with generic metric %s" % loss_generic_metric)
         print("information loss with learned metric %s" % loss_learned_metric)
-        print("information loss with learned metric deep  %s" % loss_learned_metric_deep)
 
         k += 1
 
     loss_active_all_linear.append(loss_active_mc_linear)
+    pairdata_all_linear.append(pairdata_each_mc_linear)
+    pairlabel_all_linear.append(pairlabel_each_mc_linear)
+
+    # deep model
+    dm = None
+    loss_active_mc_deep = []
+    pairdata_each_mc_deep = []
+    pairlabel_each_mc_deep = []
+    pairdata_active_deep = []
+    pairdata_label_active_deep = []
+    sp.reset()
+    k = k_init
+    while k <= subsample_size_max:
+        pairdata, pairdata_idx = sp.active_sampling(dist_metric=dm,
+                                                    k_init=k_init,
+                                                    batch_size=1,
+                                                    seed=seed_vec[mc_i])
+        pairdata_acitve_deep = pairdata_active_deep + pairdata
+        similarity_label = similarity_label_all_series.loc[pairdata_idx].tolist()
+        pairdata_label_active_deep = pairdata_label_active_deep + similarity_label
+
+
+        dm = Deep_Metric()
+        dm.train(pairdata_acitve_deep, pairdata_label_active_deep)
+
+
+        sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",
+                                                    anonymity_level=anonymity_level,
+                                                    rep_mode=rep_mode, deep_model=dm)
+
+
+        loss_learned_metric_deep = pe.get_information_loss(data_gt=day_profile,
+                                                              data_sanitized=sanitized_profile_deep.round(),
+                                                              window=window)
+        loss_active_mc_deep.append(loss_learned_metric_deep)
+        pairdata_each_mc_deep.append(pairdata_active_deep)
+        pairlabel_each_mc_deep.append(pairdata_label_active_deep)
+
+        print('====================')
+        print('random state %s ' % mc_i)
+        print('sample size %s '% k)
+        print("information loss with best metric %s" % loss_best_metric)
+        print("information loss with generic metric %s" % loss_generic_metric)
+        print("information loss with learned metric deep  %s" % loss_learned_metric_deep)
+        k += 1
+
     loss_active_all_deep.append(loss_active_mc_deep)
-    pairdata_all.append(pairdata_each_mc)
-    pairlabel_all.append(pairlabel_each_mc)
+    pairdata_all_deep.append(pairdata_each_mc_deep)
+    pairlabel_all_deep.append(pairlabel_each_mc_deep)
 
-
-with open('./result_scripts/sample_acitve_occupancy.pickle', 'wb') as f:
+with open('../result_scripts/sample_acitve_occupancy.pickle', 'wb') as f:
     pickle.dump([loss_best_metric,loss_generic_metric,loss_active_all_linear,loss_active_all_deep,
-                 k_init,subsample_size_max], f)
-
+                 k_init,subsample_size_max, pairdata_all_deep,pairlabel_all_deep,
+                 pairdata_all_linear,pairlabel_all_linear], f)
 
 
 
