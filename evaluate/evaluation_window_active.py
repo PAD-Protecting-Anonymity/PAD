@@ -69,7 +69,7 @@ print('similarity balance is %s'% [sum(similarity_label_all),len(similarity_labe
 
 
 k_init = 50
-mc_num = 1
+mc_num = 5
 seed_vec = np.arange(mc_num)
 
 ## uniform sampling
@@ -87,7 +87,7 @@ for mc_i in range(len(seed_vec)):
     dist_metric = None
     sp.reset()
     k = k_init
-    while k <= k_init:#subsample_size_max:
+    while k <= subsample_size_max:
         pairdata, pairdata_idx = sp.active_sampling(dist_metric=dist_metric,
                                                     k_init=k_init,
                                                     batch_size=1,
