@@ -83,11 +83,11 @@ def evaluation_occupancy_window(n):
                                         rep_mode=rep_mode, deep_model=dm)
 
     # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-    loss_learned_metric[i] = pe.get_information_loss(data_gt=day_profile,
+    loss_learned_metric = pe.get_information_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile.round(),
                                                 window=window)
 
-    loss_learned_metric_deep[i] = pe.get_information_loss(data_gt=day_profile,
+    loss_learned_metric_deep = pe.get_information_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile_deep.round(),
                                                 window=window)
 

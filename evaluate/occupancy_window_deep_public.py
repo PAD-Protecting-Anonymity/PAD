@@ -18,7 +18,7 @@ The data user wants the published database to maximally retain the information a
 # Initialization of some useful classes
 util = Utilities()
 pe = PerformanceEvaluation()
-mel = MetricLearning()
+# mel = MetricLearning()
 
 def evaluation_occupancy_window(n):
     # step 1: get the database to be published
@@ -87,11 +87,11 @@ def evaluation_occupancy_window(n):
                                         rep_mode=rep_mode, deep_model=dm)
 
     # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-    loss_learned_metric[i] = pe.get_information_loss(data_gt=day_profile,
+    loss_learned_metric = pe.get_information_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile.round(),
                                                 window=window)
 
-    loss_learned_metric_deep[i] = pe.get_information_loss(data_gt=day_profile,
+    loss_learned_metric_deep = pe.get_information_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile_deep.round(),
                                                 window=window)
 

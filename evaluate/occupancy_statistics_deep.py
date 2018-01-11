@@ -77,11 +77,11 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
                                         rep_mode=rep_mode, deep_model=dm)
 
     # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-    loss_learned_metric[i] = pe.get_statistics_loss(data_gt=day_profile,
+    loss_learned_metric = pe.get_statistics_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile.round(),
                                                 mode = mode)
 
-    loss_learned_metric_deep[i] = pe.get_statistics_loss(data_gt=day_profile,
+    loss_learned_metric_deep = pe.get_statistics_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile_deep.round(),
                                                 mode = mode)
 

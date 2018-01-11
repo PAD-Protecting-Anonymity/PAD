@@ -82,11 +82,11 @@ def evaluation_total_usage(n):
                                         rep_mode=rep_mode, deep_model=lm, window=window)
 
     # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-    loss_learned_metric_deep[i] = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_deep.round(),
+    loss_learned_metric_deep = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_deep.round(),
                                                             mode=interest,window=window)
 
 
-    loss_learned_metric[i] = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile,
+    loss_learned_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile,
                                                             mode=interest,window=window)
     
     print('anonymity level %s' % anonymity_level)
