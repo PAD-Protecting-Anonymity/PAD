@@ -94,8 +94,8 @@ class UtilityOccupancyStatistics:
                 dep_time_ind = len(x) - dep_time_ind_inv
         else:
             dep_time_ind = np.nan
-	
-	pdb.set_trace()
+            
+        pdb.set_trace()
         if np.isinf(dep_time_ind):
             if flag == 0:
                 dep_time = np.nan

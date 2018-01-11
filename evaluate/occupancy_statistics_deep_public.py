@@ -24,6 +24,7 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
     day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
     # print(len(day_profile1))
     # day_profile1 = day_profile1[(day_profile1.T != 0).any()]
+    day_profile1 = day_profile1.fillna(0)
     day_profile1[day_profile1>0] = 1
     # print(len(day_profile1))
     res = 15
@@ -120,7 +121,7 @@ sanitized = {}
 losses = {}
 sample_sizes = []
 mode = "arrival"
-for n in range(4,8):    
+for n in range(2,8):    
     s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s
     losses[n] = l
