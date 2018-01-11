@@ -66,7 +66,7 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
     random_state_vec = np.arange(5)
     for i in range(len(random_state_vec)):
         random_state = random_state_vec[i]
-        np.random.seed(random_state)
+        np.random.seed(4)
 
         # step 4: sample a subset of pre-sanitized database and form the data points into pairs
         subsample_size = int(round(subsample_size_max/2))
@@ -120,8 +120,9 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
 sanitized = {}
 losses = {}
 sample_sizes = []
-mode = "arrival"
+mode = "departure"
 for n in range(2,8):    
+    # evaluation_occupancy_statistics(n, mode)
     s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s
     losses[n] = l
