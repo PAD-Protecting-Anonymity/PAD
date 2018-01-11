@@ -49,14 +49,14 @@ class UtilityOccupancyStatistics:
             x = list(x)
         # pdb.set_trace()
         if x[0] == 0:
-            arrival_time_ind = next((ind for ind, value in enumerate(x) if value == 1), np.nan)
+            arrival_time_ind = next((ind for ind, value in enumerate(x) if value > 0), np.nan)
         elif x[0] > 0:
             late_morning_dep = next((ind for ind, value in enumerate(x) if value == 0), None)
             if late_morning_dep is None:
                 arrival_time_ind = np.inf
             else:
                 x_sub = x[late_morning_dep:]
-                arrival_time_ind_offset = next((ind for ind, value in enumerate(x_sub) if value == 1), None)
+                arrival_time_ind_offset = next((ind for ind, value in enumerate(x_sub) if value > 0), None)
                 if arrival_time_ind_offset is None:
                     arrival_time_ind = np.nan
                 else:
