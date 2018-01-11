@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import pdb
 
 
 
@@ -27,6 +28,10 @@ class OccupancyStatistics:
         window_usage = self.data.apply(self.uil.compute_window_usage, axis=1,index=self.data.columns,window=window).to_frame()
         return window_usage
 
+    def get_segment(self, window):
+        window_usage = self.data.apply(self.uil.compute_window, axis=1,index=self.data.columns,window=window)
+        return window_usage
+
 
 
 class UtilityOccupancyStatistics:
@@ -42,20 +47,24 @@ class UtilityOccupancyStatistics:
         '''
         if isinstance(x,pd.Series):
             x = list(x)
+        # pdb.set_trace()
         if x[0] == 0:
-            arrival_time_ind = next((ind for ind, value in enumerate(x) if value == 1), np.nan)
-        elif x[0] == 1:
+            arrival_time_ind = next((ind for ind, value in enumerate(x) if value > 0), np.nan)
+        elif x[0] > 0:
             late_morning_dep = next((ind for ind, value in enumerate(x) if value == 0), None)
             if late_morning_dep is None:
                 arrival_time_ind = np.inf
             else:
                 x_sub = x[late_morning_dep:]
-                arrival_time_ind_offset = next((ind for ind, value in enumerate(x_sub) if value == 1), None)
+                arrival_time_ind_offset = next((ind for ind, value in enumerate(x_sub) if value > 0), None)
                 if arrival_time_ind_offset is None:
                     arrival_time_ind = np.nan
                 else:
                     arrival_time_ind = late_morning_dep + arrival_time_ind_offset
-
+        # else:
+        #     arrival_time_ind = np.nan
+        # print(x)
+        # print(arrival_time_ind)
         if np.isnan(arrival_time_ind): # if no arrival in the day
             if flag == 0:
                 arrival_time = np.nan
@@ -71,19 +80,24 @@ class UtilityOccupancyStatistics:
 
         if isinstance(x,pd.Series):
             x = list(x)
-        if x[-1] == 1:
-            if x[0] == 1:
-                dep_time_ind = next((ind for ind,value in enumerate(x) if value == 0),None)
+        arr_x = np.array(x)
+        if x[-1] > 0:
+            if x[0] > 0 and len(arr_x[arr_x==0]) > 0:
+                dep_time_ind = next((ind for ind,value in enumerate(x) if value == 0), None)
             else:
                 dep_time_ind = np.inf
         elif x[-1] == 0:
             x_inv = x[::-1]
-            dep_time_ind_inv = next((ind for ind, value in enumerate(x_inv) if value == 1), None)
+            dep_time_ind_inv = next((ind for ind, value in enumerate(x_inv) if value > 0 ), None)
+            
             if dep_time_ind_inv is None:
                 dep_time_ind = np.nan
             else:
                 dep_time_ind = len(x) - dep_time_ind_inv
-
+            
+        # print(dep_time_ind)
+        # if dep_time_ind is None:
+        #     pdb.set_trace()
         if np.isinf(dep_time_ind):
             if flag == 0:
                 dep_time = np.nan
@@ -111,6 +125,14 @@ class UtilityOccupancyStatistics:
             x = list(x)
         usage = sum(x[window[0]:window[1]])* time_resolution
         return usage
+
+    def compute_window(self,x,index, window):
+        win_start = window[0]
+        win_end = window[1]
+        if isinstance(x,pd.DataFrame):
+            x = list(x)
+        df = x[win_start:win_end]
+        return df
 
 
 

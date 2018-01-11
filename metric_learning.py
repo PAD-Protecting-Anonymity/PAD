@@ -1,15 +1,10 @@
 import itertools
-
 import cvxpy as cvx
 import numpy as np
 import pdb
 from cvxpy import *
-
 from helper import Miscellaneous
 import numpy as np
-
-np.random.seed(0)
-
 
 class Subsampling:
     def __init__(self,data):
@@ -45,7 +40,7 @@ class Subsampling:
         pair_subsample_index.sort(key=lambda x: x[1])
         pair_subsample_index.sort(key=lambda x: x[0])
         pair_subsample = self.get_pairdata(pair_subsample_index=pair_subsample_index)
-        return pair_subsample, pair_subsample_index
+        return pair_subsample#, pair_subsample_index
 
     def batch_uniform_sampled(self,batch_size):
         unsample_idx = [i for i in range(len(self.subsample_status)) if self.subsample_status[i] == 0]
