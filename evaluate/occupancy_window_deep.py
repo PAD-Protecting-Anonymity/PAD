@@ -2,13 +2,13 @@ import sys; import os
 sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
-from metric_learning import Subsampling, MetricLearning
 from user_feedback import Similarity
 from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
 import numpy as np
 import pickle
 from linear_metric_learning import Linear_Metric
+from subsampling import Subsampling
 
 """
 In the demo, we will showcase an example of special purpose publication.
@@ -18,12 +18,12 @@ The data user wants the published database to maximally retain the information a
 # Initialization of some useful classes
 util = Utilities()
 pe = PerformanceEvaluation()
-mel = MetricLearning()
 
 def evaluation_occupancy_window(n):
     # step 1: get the database to be published
     day_profile = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
-    day_profile = day_profile.iloc[0:90,0::60]
+    day_profile = day_profile.fillna(0)
+    day_profile = day_profile.iloc[0:120,0::60]
     rep_mode = 'mean'
     anonymity_level = n # desired anonymity level
 
@@ -48,72 +48,55 @@ def evaluation_occupancy_window(n):
                                                 data_sanitized=sanitized_profile_baseline.round(),
                                                 window=window)
 
-    
-    # print("information loss with generic metric %s" % loss_best_metric)
-    # print("information loss with generic metric %s" % loss_generic_metric)
+
     df_subsampled_from = sanitized_profile_baseline.drop_duplicates().sample(frac=1)
 
     subsample_size_max = int(comb(len(df_subsampled_from),2))
     print('total number of pairs is %s' % len(df_subsampled_from))
-    # print(len(day_profile))
-    # exit()
+    
+    # step 4: sample a subset of pre-sanitized database and form the data points into pairs
+    subsample_size = int(round(subsample_size_max))
+    sp = Subsampling(data=df_subsampled_from)
+    data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
 
-    loss_learned_metric = {}
-    loss_learned_metric_deep = {}
+    # User receives the data pairs and label the similarity
+    sim = Similarity(data=data_pair)
+    sim.extract_interested_attribute(interest=interest, window=window)
+    similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
 
-    random_state_vec = np.arange(5)
-    for i in range(len(random_state_vec)):
-        random_state = random_state_vec[i]
-        np.random.seed(random_state)
+    # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+    lm = Linear_Metric()
+    lm.train(data_pair, similarity_label)
+    
+    dm = Deep_Metric()
+    dm.train(data_pair, similarity_label)
 
-        # step 4: sample a subset of pre-sanitized database and form the data points into pairs
-        subsample_size = int(round(subsample_size_max/2))
-        sp = Subsampling(data=df_subsampled_from)
-        data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
+    # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+    # lam_vec is a set of candidate lambda's for weighting the l1-norm penalty in the metric learning optimization problem.
+    # The lambda that achieves lowest testing error will be selected for generating the distance metric
 
-        # User receives the data pairs and label the similarity
-        sim = Similarity(data=data_pair)
-        sim.extract_interested_attribute(interest=interest, window=window)
-        similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
+    # step 6: the original database is privatized using the learned metric
+    sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                        rep_mode=rep_mode, deep_model=lm)
 
-        # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
-        lm = Linear_Metric()
-        lm.train(data_pair, similarity_label)
-        
-        dm = Deep_Metric()
-        dm.train(data_pair, similarity_label)
+    sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                        rep_mode=rep_mode, deep_model=dm)
 
-        # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
-        # lam_vec is a set of candidate lambda's for weighting the l1-norm penalty in the metric learning optimization problem.
-        # The lambda that achieves lowest testing error will be selected for generating the distance metric
+    # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
+    loss_learned_metric[i] = pe.get_information_loss(data_gt=day_profile,
+                                                data_sanitized=sanitized_profile.round(),
+                                                window=window)
 
-        # dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
-        #                                                             label=similarity_label,
-        #                                                             lam_vec=[0, 0.1, 1, 10],
-        #                                                             train_portion=0.8)
-        # step 6: the original database is privatized using the learned metric
-        sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
-                                            rep_mode=rep_mode, deep_model=lm)
+    loss_learned_metric_deep[i] = pe.get_information_loss(data_gt=day_profile,
+                                                data_sanitized=sanitized_profile_deep.round(),
+                                                window=window)
 
-        sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
-                                            rep_mode=rep_mode, deep_model=dm)
-
-        # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-        loss_learned_metric[i] = pe.get_information_loss(data_gt=day_profile,
-                                                    data_sanitized=sanitized_profile.round(),
-                                                    window=window)
-
-        loss_learned_metric_deep[i] = pe.get_information_loss(data_gt=day_profile,
-                                                    data_sanitized=sanitized_profile_deep.round(),
-                                                    window=window)
-
-        print('anonymity level %s' % anonymity_level)
-        print('random state %s' % i)
-        print("sampled size %s" % subsample_size)
-        print("information loss with best metric %s" % loss_best_metric)
-        print("information loss with generic metric %s" % loss_generic_metric)
-        print("information loss with learned metric %s" %  loss_learned_metric[i])
-        print("information loss with learned metric deep  %s" % (loss_learned_metric_deep[i]))
+    print('anonymity level %s' % anonymity_level)
+    print("sampled size %s" % subsample_size)
+    print("information loss with best metric %s" % loss_best_metric)
+    print("information loss with generic metric %s" % loss_generic_metric)
+    print("information loss with learned metric %s" %  loss_learned_metric)
+    print("information loss with learned metric deep  %s" % (loss_learned_metric_deep))
     return (sanitized_profile_best, sanitized_profile_baseline, sanitized_profile, sanitized_profile_deep), (loss_best_metric, loss_generic_metric, loss_learned_metric, loss_learned_metric_deep), subsample_size
 
 sanitized = {}
