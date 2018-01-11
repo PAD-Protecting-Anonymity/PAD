@@ -26,7 +26,8 @@ def evaluation_total_usage(n):
 
     # step 1: get the database to be published
     day_profile = pd.read_pickle('dataset/dataframe_all_energy.pkl')
-    day_profile = day_profile.iloc[0:90,0::4] # subsample the database to improve the speed for demonstration purpose
+    day_profile = day_profile.fillna(0)
+    day_profile = day_profile.iloc[0:120,0::4] # subsample the database to improve the speed for demonstration purpose
     day_profile.index = range(len(day_profile.index))
     rep_mode = 'mean'
     anonymity_level = n # desired anonymity level
@@ -57,58 +58,44 @@ def evaluation_total_usage(n):
 
     print('total number of pairs is %s' % subsample_size_max)
 
+    # step 4: sample a subset of pre-sanitized database and form the data points into pairs
+    subsample_size = int(round(subsample_size_max))
+    sp = Subsampling(data=df_subsampled_from)
+    data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
 
-    loss_learned_metric = {}
-    loss_learned_metric_deep = {}
-    random_state_vec = np.arange(5)
-    for i in range(len(random_state_vec)):
-        random_state = random_state_vec[i]
-        np.random.seed(random_state)
+    # User receives the data pairs and label the similarity
+    sim = Similarity(data=data_pair)
+    sim.extract_interested_attribute(interest='statistics', stat_type=interest, window=window)
+    similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
 
-        # step 4: sample a subset of pre-sanitized database and form the data points into pairs
-        subsample_size = int(round(subsample_size_max/2))
-        sp = Subsampling(data=df_subsampled_from)
-        data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
+    # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+    lm = Linear_Metric()
+    lm.train(data_pair, similarity_label)
+    
+    dm = Deep_Metric()
+    dm.train(data_pair, similarity_label)
 
-        # User receives the data pairs and label the similarity
-        sim = Similarity(data=data_pair)
-        sim.extract_interested_attribute(interest='statistics', stat_type=interest, window=window)
-        similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
+    # step 6: the original database is privatized using the learned metric
+    sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                        rep_mode=rep_mode, deep_model=dm, window=window)
 
-        # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
-        lm = Linear_Metric()
-        lm.train(data_pair, similarity_label)
-        
-        dm = Deep_Metric()
-        dm.train(data_pair, similarity_label)
+    sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                        rep_mode=rep_mode, deep_model=lm, window=window)
 
-
-        # dist_metric = mel.learn_with_simialrity_label_regularization(data=data_pair,
-        #                                                             label=similarity_label,
-        #                                                             lam_vec=[0, 0.1, 1, 10],
-        #                                                             train_portion=0.8)
-
-        # step 6: the original database is privatized using the learned metric
-        sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
-                                            rep_mode=rep_mode, deep_model=dm, window=window)
-
-        sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
-                                            rep_mode=rep_mode, deep_model=lm, window=window)
-
-        # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-        loss_learned_metric_deep[i] = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_deep.round(),
-                                                                mode=interest,window=window)
+    # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
+    loss_learned_metric_deep[i] = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_deep.round(),
+                                                            mode=interest,window=window)
 
 
-        loss_learned_metric[i] = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile,
-                                                                mode=interest,window=window)
-        print('anonymity level %s' % anonymity_level)
-        print('random state %s' % i)
-        print("sampled size %s" % subsample_size)
-        print("information loss with best metric %s" % loss_best_metric)
-        print("information loss with generic metric %s" % loss_generic_metric)
-        print("information loss with learned metric %s" %  loss_learned_metric[i])
-        print("information loss with learned metric deep  %s" % (loss_learned_metric_deep[i]))
+    loss_learned_metric[i] = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile,
+                                                            mode=interest,window=window)
+    
+    print('anonymity level %s' % anonymity_level)
+    print("sampled size %s" % subsample_size)
+    print("information loss with best metric %s" % loss_best_metric)
+    print("information loss with generic metric %s" % loss_generic_metric)
+    print("information loss with learned metric %s" %  loss_learned_metric)
+    print("information loss with learned metric deep  %s" % (loss_learned_metric_deep))
     return (sanitized_profile_best, sanitized_profile_baseline, sanitized_profile, sanitized_profile_deep), (loss_best_metric, loss_generic_metric, loss_learned_metric, loss_learned_metric_deep), subsample_size
 
 
