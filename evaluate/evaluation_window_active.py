@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
-from metric_learning import Subsampling, MetricLearning
+from subsampling import Subsampling
 from user_feedback import Similarity
 from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
@@ -20,7 +20,6 @@ from linear_metric_learning import Linear_Metric
 # Initialization of some useful classes
 util = Utilities()
 pe = PerformanceEvaluation()
-mel = MetricLearning()
 
 day_profile_all = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
 day_profile = day_profile_all.iloc[0:90, 0::60] # the database to be published
@@ -174,7 +173,7 @@ for mc_i in range(len(seed_vec)):
     pairdata_all_deep.append(pairdata_each_mc_deep)
     pairlabel_all_deep.append(pairlabel_each_mc_deep)
 
-with open('../result_scripts/sample_acitve_occupancy.pickle', 'wb') as f:
+with open('./result_scripts/sample_acitve_occupancy.pickle', 'wb') as f:
     pickle.dump([loss_best_metric,loss_generic_metric,loss_active_all_linear,loss_active_all_deep,
                  k_init,subsample_size_max, pairdata_all_deep,pairlabel_all_deep,
                  pairdata_all_linear,pairlabel_all_linear], f)
