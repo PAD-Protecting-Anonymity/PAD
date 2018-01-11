@@ -99,9 +99,9 @@ class Linear_Metric:
         x2_test = np.array(x2_test)
         y_test = np.array(y_test)
 
-        x1_train = np.array(X1)
-        x2_train = np.array(X2)
-        y_train = keras.utils.to_categorical(similarity_labels, number_classes)
+        # x1_train = np.array(X1)
+        # x2_train = np.array(X2)
+        # y_train = keras.utils.to_categorical(similarity_labels, number_classes)
 
         history = siamese_net.fit([x1_train, x2_train], y_train,
                             batch_size=self.batch_size,
