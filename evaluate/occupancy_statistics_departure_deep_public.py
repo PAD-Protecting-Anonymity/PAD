@@ -26,8 +26,8 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
 
     res = 15
 
-    day_profile = day_profile1.iloc[:120,0::res] # subsample the database to improve the speed for demonstration purpose
-    day_profile2 = day_profile1.iloc[120:,0::res] # subsample the database to improve the speed for demonstration purpose
+    day_profile = day_profile1.iloc[:90,0::res] # subsample the database to improve the speed for demonstration purpose
+    day_profile2 = day_profile1.iloc[90:135,0::res] # subsample the database to improve the speed for demonstration purpose
 
     rep_mode = 'mean'
     anonymity_level = n
@@ -96,7 +96,7 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
 sanitized = {}
 losses = {}
 sample_sizes = []
-mode = "arrival"
+mode = "departure"
 for n in range(2,8):    
     s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s

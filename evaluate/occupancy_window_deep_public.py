@@ -24,8 +24,8 @@ def evaluation_occupancy_window(n):
     # step 1: get the database to be published
     day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
     day_profile1 = day_profile1.fillna(0)
-    day_profile = day_profile1.iloc[0:120,0::60]
-    day_profile2 = day_profile1.iloc[120:,0::60] 
+    day_profile = day_profile1.iloc[0:90,0::60]
+    day_profile2 = day_profile1.iloc[90:135,0::60] 
     day_profile.dropna()
     day_profile2.dropna()
 
