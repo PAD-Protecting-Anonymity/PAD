@@ -3,9 +3,10 @@ import pickle
 import numpy as np
 
 class Visualize:
-    def infoloss_vs_level(self, title, file_path):
+    def infoloss_vs_level(self, scale, title, file_path):
         with open(file_path,'rb') as f: # Python 3: open(..., 'wb')
             data = pickle.load(f)
+
 
         s, l, ss = data
         # print(s, l, ss)
@@ -63,7 +64,10 @@ class Visualize:
         # plt.plot(anonymity_vec,np.mean(loss_learned_deep_metric_lists,axis=1),label='Deep Learned metric',color='lightgreen',linestyle='--')
         plt.xlabel('Anonymity level',fontsize=fontsize)
         plt.ylabel('Information loss (W)',fontsize=fontsize)
+        plt.ylim(scale[0], scale[1])
         # plt.title(title,fontsize=fontsize-2)
         plt.legend(fontsize=legendsize, loc='upper left')
         plt.savefig("visualize/figures/%s.png"%title[28:], bbox_inches='tight',dpi=100)
         plt.close()
+
+    
