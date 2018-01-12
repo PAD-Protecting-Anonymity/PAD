@@ -25,7 +25,7 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
     day_profile[day_profile>0] = 1
     
     res = 15
-    day_profile = day_profile.iloc[:120,0::res]
+    day_profile = day_profile.iloc[:90,0::res]
 
     rep_mode = 'mean'
     anonymity_level = n

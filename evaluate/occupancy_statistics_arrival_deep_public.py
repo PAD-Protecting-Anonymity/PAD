@@ -19,41 +19,38 @@ The data user wants the published database to maximally retain the information a
 util = Utilities()
 pe = PerformanceEvaluation()
 
-def evaluation_occupancy_window(n):
-    # step 1: get the database to be published
-    day_profile = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
-    day_profile = day_profile.fillna(0)
-    day_profile = day_profile.iloc[0:90,0::60]
+def evaluation_occupancy_statistics(n, mode = "arrival"):
+    day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
+    day_profile1 = day_profile1.fillna(0)
+    day_profile1[day_profile1>0] = 1
+
+    res = 15
+
+    day_profile = day_profile1.iloc[:90,0::res] # subsample the database to improve the speed for demonstration purpose
+    day_profile2 = day_profile1.iloc[90:135,0::res] # subsample the database to improve the speed for demonstration purpose
+
     rep_mode = 'mean'
-    anonymity_level = n # desired anonymity level
+    anonymity_level = n
 
-    # step 2: data user specifies his/her interest. In the example, the data user is interested in preserving the
-    # information of a segment of entire time series. In this case, he/she would also need to specify the starting and
-    # ending time of the time series segment of interest.
-    interest = 'segment'
-    window = [11,15] # window specifies the starting and ending time of the period that the data user is interested in
-
-    # step 3: pre-sanitize the database
-    sanitized_profile_best = util.sanitize_data(day_profile, distance_metric = 'self-defined',
-                                                anonymity_level = anonymity_level, rep_mode = rep_mode,
-                                                mode = interest, window = window)
+    sanitized_profile_best = util.sanitize_data(day_profile, distance_metric='self-defined',
+                                                anonymity_level=anonymity_level, rep_mode = rep_mode,
+                                                mode=mode)
 
     sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
                                                     anonymity_level=anonymity_level, rep_mode = rep_mode)
-    
+
     loss_best_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
-                                                  mode=interest,window=window)
+                                                  mode=mode)
 
-    loss_generic_metric = pe.get_information_loss(data_gt=day_profile,
-                                                data_sanitized=sanitized_profile_baseline.round(),
-                                                window=window)
+    loss_generic_metric = pe.get_statistics_loss(data_gt=day_profile,
+                                                data_sanitized=sanitized_profile_baseline,
+                                                mode = mode)
 
-
-    df_subsampled_from = sanitized_profile_baseline.drop_duplicates().sample(frac=1)
+    df_subsampled_from = day_profile2.sample(frac=1)
 
     subsample_size_max = int(comb(len(df_subsampled_from),2))
     print('total number of pairs is %s' % len(df_subsampled_from))
-    
+
     # step 4: sample a subset of pre-sanitized database and form the data points into pairs
     subsample_size = int(round(subsample_size_max))
     sp = Subsampling(data=df_subsampled_from)
@@ -61,19 +58,15 @@ def evaluation_occupancy_window(n):
 
     # User receives the data pairs and label the similarity
     sim = Similarity(data=data_pair)
-    sim.extract_interested_attribute(interest=interest, window=window)
+    sim.extract_interested_attribute(interest='statistics', stat_type=mode)
     similarity_label, data_subsample = sim.label_via_silhouette_analysis(range_n_clusters=range(2,8))
 
     # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
     lm = Linear_Metric()
     lm.train(data_pair, similarity_label)
-    
+
     dm = Deep_Metric()
     dm.train(data_pair, similarity_label)
-
-    # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
-    # lam_vec is a set of candidate lambda's for weighting the l1-norm penalty in the metric learning optimization problem.
-    # The lambda that achieves lowest testing error will be selected for generating the distance metric
 
     # step 6: the original database is privatized using the learned metric
     sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
@@ -83,13 +76,13 @@ def evaluation_occupancy_window(n):
                                         rep_mode=rep_mode, deep_model=dm)
 
     # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-    loss_learned_metric = pe.get_information_loss(data_gt=day_profile,
+    loss_learned_metric = pe.get_statistics_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile.round(),
-                                                window=window)
+                                                mode = mode)
 
-    loss_learned_metric_deep = pe.get_information_loss(data_gt=day_profile,
+    loss_learned_metric_deep = pe.get_statistics_loss(data_gt=day_profile,
                                                 data_sanitized=sanitized_profile_deep.round(),
-                                                window=window)
+                                                mode = mode)
 
     print('anonymity level %s' % anonymity_level)
     print("sampled size %s" % subsample_size)
@@ -99,19 +92,17 @@ def evaluation_occupancy_window(n):
     print("information loss with learned metric deep  %s" % (loss_learned_metric_deep))
     return (sanitized_profile_best, sanitized_profile_baseline, sanitized_profile, sanitized_profile_deep), (loss_best_metric, loss_generic_metric, loss_learned_metric, loss_learned_metric_deep), subsample_size
 
+
 sanitized = {}
 losses = {}
 sample_sizes = []
+mode = "arrival"
 for n in range(2,8):    
-    s, l, ss = evaluation_occupancy_window(n)
+    s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s
     losses[n] = l
     sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_occupancy_window_normal_deep.pickle', 'wb') as f: 
+with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_%s.pickle'%(mode), 'wb') as f: 
         pickle.dump([sanitized, losses, sample_sizes], f)
-
-
-
-
 

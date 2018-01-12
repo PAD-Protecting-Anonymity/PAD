@@ -28,7 +28,7 @@ def evaluation_total_usage(n):
     day_profile1 = day_profile1.fillna(0)
     # day_profile = day_profile.iloc[0:90,0::4] # subsample the database to improve the speed for demonstration purpose
     day_profile = day_profile1.iloc[:90,0::4] # subsample the database to improve the speed for demonstration purpose
-    day_profile2 = day_profile1.iloc[90:180,0::4] # subsample the database to improve the speed for demonstration purpose
+    day_profile2 = day_profile1.iloc[90:135,0::4] # subsample the database to improve the speed for demonstration purpose
     day_profile.index = range(len(day_profile.index))
     day_profile2.index = range(len(day_profile2.index))
     rep_mode = 'mean'
