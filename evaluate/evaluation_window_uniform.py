@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
-from metric_learning import Subsampling, MetricLearning
+from subsampling import Subsampling
 from user_feedback import Similarity
 from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
@@ -20,9 +20,8 @@ The data user wants the published database to maximally retain the information a
 # Initialization of some useful classes
 util = Utilities()
 pe = PerformanceEvaluation()
-mel = MetricLearning()
 
-day_profile_all = pd.read_pickle('../dataset/dataframe_all_binary.pkl')
+day_profile_all = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
 day_profile = day_profile_all.iloc[0:90, 0::60] # the database to be published
 day_profile_metric_learn = day_profile_all.iloc[90:-1, 0::60] # the database for learning distance metric
 day_profile.dropna()

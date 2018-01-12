@@ -26,7 +26,7 @@ def evaluation_total_usage(n):
     # step 1: get the database to be published
     day_profile = pd.read_pickle('dataset/dataframe_all_energy.pkl')
     day_profile = day_profile.fillna(0)
-    day_profile = day_profile.iloc[0:120,0::4] # subsample the database to improve the speed for demonstration purpose
+    day_profile = day_profile.iloc[0:90,0::4] # subsample the database to improve the speed for demonstration purpose
     day_profile.index = range(len(day_profile.index))
     rep_mode = 'mean'
     anonymity_level = n # desired anonymity level
@@ -60,7 +60,7 @@ def evaluation_total_usage(n):
     # step 4: sample a subset of pre-sanitized database and form the data points into pairs
     subsample_size = int(round(subsample_size_max))
     sp = Subsampling(data=df_subsampled_from)
-    data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
+    data_pair, data_pair_all_index = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
 
     # User receives the data pairs and label the similarity
     sim = Similarity(data=data_pair)

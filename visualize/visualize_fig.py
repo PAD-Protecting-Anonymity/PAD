@@ -25,38 +25,42 @@ class Visualize:
         # exit()
         loss_best_metric_list = list(loss_best_metric_list.values())
         loss_generic_metric_list = list(loss_generic_metric_list.values())
+        loss_learned_metric_deep_list = list(loss_learned_metric_deep_list.values())
+        loss_learned_metric_list = list(loss_learned_metric_list.values())
+
         anonymity_vec = list(l.keys())
         # print(loss_generic_metric_list)
         # exit()
         fontsize = 18
         legendsize = 12
-        loss_learned_metric_lists = [list(loss_learned_metric_list[i].values()) for i in loss_learned_metric_list.keys()]
-        loss_learned_deep_metric_lists = [list(loss_learned_metric_deep_list[i].values())for i in loss_learned_metric_deep_list.keys()]
+        # loss_learned_metric_lists = [list(loss_learned_metric_list[i].values()) for i in loss_learned_metric_list.keys()]
+        # loss_learned_deep_metric_lists = [list(loss_learned_metric_deep_list[i].values())for i in loss_learned_metric_deep_list.keys()]
         # print(loss_learned_deep_metric_lists)
-        # exit()
 
         plt.plot(anonymity_vec,loss_best_metric_list, label='Ground truth metric',color='red')
         plt.plot(anonymity_vec,loss_generic_metric_list,label='Generic metric',color='blue',linestyle='-.')
-        bp = plt.boxplot(loss_learned_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)
-        bp1 = plt.boxplot(loss_learned_deep_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)
-        fill_color = 'orange'
-        edge_color = 'orange'
-        for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
-            plt.setp(bp[element], color=edge_color)
+        plt.plot(anonymity_vec,loss_learned_metric_list,label='Linear metric',color='orange',linestyle='-')
+        plt.plot(anonymity_vec,loss_learned_metric_deep_list,label='Deep metric',color='lightgreen',linestyle='-.')
+        # bp = plt.boxplot(loss_learned_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)
+        # bp1 = plt.boxplot(loss_learned_deep_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)
+        # fill_color = 'orange'
+        # edge_color = 'orange'
+        # for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
+        #     plt.setp(bp[element], color=edge_color)
 
-        for patch in bp['boxes']:
-            patch.set(facecolor=fill_color, alpha=0.5)
+        # for patch in bp['boxes']:
+        #     patch.set(facecolor=fill_color, alpha=0.5)
 
-        fill_color = 'lightgreen'
-        edge_color = 'lightgreen'
-        for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
-            plt.setp(bp1[element], color=edge_color)
+        # fill_color = 'lightgreen'
+        # edge_color = 'lightgreen'
+        # for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
+        #     plt.setp(bp1[element], color=edge_color)
 
-        for patch in bp1['boxes']:
-            patch.set(facecolor=fill_color, alpha=0.5)
+        # for patch in bp1['boxes']:
+        #     patch.set(facecolor=fill_color, alpha=0.5)
 
-        plt.plot(anonymity_vec,np.mean(loss_learned_metric_lists,axis=1),label='Learned metric',color='orange',linestyle='--')
-        plt.plot(anonymity_vec,np.mean(loss_learned_deep_metric_lists,axis=1),label='Deep Learned metric',color='lightgreen',linestyle='--')
+        # plt.plot(anonymity_vec,np.mean(loss_learned_metric_lists,axis=1),label='Learned metric',color='orange',linestyle='--')
+        # plt.plot(anonymity_vec,np.mean(loss_learned_deep_metric_lists,axis=1),label='Deep Learned metric',color='lightgreen',linestyle='--')
         plt.xlabel('Anonymity level',fontsize=fontsize)
         plt.ylabel('Information loss (W)',fontsize=fontsize)
         # plt.title(title,fontsize=fontsize-2)
