@@ -89,7 +89,6 @@ class Subsampling:
         for i in next_sample_idx:
             self.subsample_status[i] = 1
         pairdata = self.get_pairdata(pair_subsample_index=pairdata_idx)
-        self.last_returned_pairdata = pairdata
         return pairdata, pairdata_idx
 
     def get_uncertainty_entropy_deep(self, pair, dist_metric, mu):
