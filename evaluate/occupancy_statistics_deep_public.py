@@ -8,7 +8,7 @@ from deep_metric_learning import Deep_Metric
 import numpy as np
 import pickle
 from linear_metric_learning import Linear_Metric
-from metric_learning import Subsampling
+from subsampling import Subsampling
 
 """
 In the demo, we will showcase an example of special purpose publication.

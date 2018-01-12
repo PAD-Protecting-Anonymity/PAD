@@ -10,7 +10,7 @@ import time
 from deep_metric_learning import Deep_Metric
 import pickle
 from linear_metric_learning import Linear_Metric
-from metric_learning import Subsampling
+from subsampling import Subsampling
 
 
 def evaluation_total_usage(n):

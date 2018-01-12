@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
-from metric_learning import Subsampling
+from subsampling import Subsampling
 from user_feedback import Similarity
 from scipy.misc import comb
 from deep_metric_learning import Deep_Metric
