@@ -26,7 +26,7 @@ def evaluation_total_usage(n):
     # step 1: get the database to be published
     day_profile = pd.read_pickle('dataset/dataframe_all_energy.pkl')
     day_profile = day_profile.fillna(0)
-    day_profile = day_profile.iloc[0:120,0::4] # subsample the database to improve the speed for demonstration purpose
+    day_profile = day_profile.iloc[0:90,0::4] # subsample the database to improve the speed for demonstration purpose
     day_profile.index = range(len(day_profile.index))
     rep_mode = 'mean'
     anonymity_level = n # desired anonymity level
