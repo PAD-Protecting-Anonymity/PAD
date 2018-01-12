@@ -2,26 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1690bdf5-22c6-4426-a34f-9e7457790890" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/dataframe_all_binary.pkl" afterPath="$PROJECT_DIR$/dataset/dataframe_all_binary.pkl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/dataframe_all_energy.pkl" afterPath="$PROJECT_DIR$/dataset/dataframe_all_energy.pkl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/occup_generic_sanitized(2-20).pickle" afterPath="$PROJECT_DIR$/result/occup_generic_sanitized(2-20).pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/occup_generic_sanitized.pickle" afterPath="$PROJECT_DIR$/result/occup_generic_sanitized.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/usecase_occup_knn_anonymitylevels(2-20)_cv.pickle" afterPath="$PROJECT_DIR$/result/usecase_occup_knn_anonymitylevels(2-20)_cv.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle" afterPath="$PROJECT_DIR$/result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_arrival.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_arrival.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_departure.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_departure.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_departure.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_departure.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_normal_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_normal_deep.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_public_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_public_deep.pickle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/PAD.iml" afterPath="$PROJECT_DIR$/.idea/PAD.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_statistics.py" afterPath="$PROJECT_DIR$/data_statistics.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_statistics.py.orig" afterPath="$PROJECT_DIR$/data_statistics.py.orig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/dataframe_all_binary.pkl" afterPath="$PROJECT_DIR$/dataset/dataframe_all_binary.pkl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/dataframe_all_energy.pkl" afterPath="$PROJECT_DIR$/dataset/dataframe_all_energy.pkl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/deep.py" afterPath="$PROJECT_DIR$/deep.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/deep_metric_learning.py" afterPath="$PROJECT_DIR$/deep_metric_learning.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/demo_efficient_labeling.py" afterPath="$PROJECT_DIR$/demo/demo_efficient_labeling.py" />
@@ -46,6 +34,18 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kward.py" afterPath="$PROJECT_DIR$/kward.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/linear_metric_learning.py" afterPath="$PROJECT_DIR$/linear_metric_learning.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/metric_learning.py" afterPath="$PROJECT_DIR$/metric_learning.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/occup_generic_sanitized(2-20).pickle" afterPath="$PROJECT_DIR$/result/occup_generic_sanitized(2-20).pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/occup_generic_sanitized.pickle" afterPath="$PROJECT_DIR$/result/occup_generic_sanitized.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/usecase_occup_knn_anonymitylevels(2-20)_cv.pickle" afterPath="$PROJECT_DIR$/result/usecase_occup_knn_anonymitylevels(2-20)_cv.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle" afterPath="$PROJECT_DIR$/result/usecase_occup_svm_anonymitylevels(2-20)_cv.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_arrival.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_arrival.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_departure.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_departure.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_departure.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_departure.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_normal_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_normal_deep.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_public_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_public_deep.pickle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sanitized_data.csv" afterPath="$PROJECT_DIR$/sanitized_data.csv" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/user_feedback.py" afterPath="$PROJECT_DIR$/user_feedback.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/generate_figs.py" afterPath="$PROJECT_DIR$/visualize/generate_figs.py" />
@@ -69,6 +69,7 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="PAD" />
   </component>
@@ -77,8 +78,8 @@
       <file leaf-file-name="metric_learning.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/metric_learning.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1615">
-              <caret line="101" column="29" lean-forward="false" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
+            <state relative-caret-position="1515">
+              <caret line="101" column="29" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -89,8 +90,8 @@
       <file leaf-file-name="subsampling.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/subsampling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1496">
-              <caret line="91" column="37" lean-forward="false" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
+            <state relative-caret-position="1320">
+              <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -99,8 +100,8 @@
       <file leaf-file-name="evaluation_window_active.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="95" column="66" lean-forward="true" selection-start-line="95" selection-start-column="66" selection-end-line="95" selection-end-column="66" />
+            <state relative-caret-position="600">
+              <caret line="123" column="78" selection-start-line="118" selection-start-column="7" selection-end-line="123" selection-end-column="78" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -111,8 +112,8 @@
       <file leaf-file-name="evaluation_window_uniform.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="43" column="56" lean-forward="false" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
+            <state relative-caret-position="630">
+              <caret line="43" column="56" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -154,11 +155,20 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2952" />
-    <option name="y" value="158" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
     <option name="width" value="1228" />
-    <option name="height" value="735" />
+    <option name="height" value="777" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -175,24 +185,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <expand>
-            <path>
-              <item name="PAD" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PAD" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PAD" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PAD" type="462c0819:PsiDirectoryNode" />
-              <item name="evaluate" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PAD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -213,13 +217,41 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.evaluation_window_active">
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <envs />
+    <configuration default="false" name="evaluation_window_active_vs_uniform" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluate" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="PAD" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="evaluation_window_active" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluate" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="PAD" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/evaluation_window_active.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
     </configuration>
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -301,6 +333,15 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <module name="PAD" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -420,42 +461,6 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <configuration name="evaluation_window_active" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluate" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="PAD" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/evaluation_window_active.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="evaluation_window_active_vs_uniform" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluate" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="PAD" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Python.evaluation_window_active_vs_uniform" />
       <item index="1" class="java.lang.String" itemvalue="Python.evaluation_window_active" />
@@ -481,27 +486,28 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2552" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="23" width="1228" height="777" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1881663" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19139966" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329927" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3459854" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3459854" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329927" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -529,8 +535,44 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/metric_learning.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1515">
+          <caret line="101" column="29" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/subsampling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1320">
+          <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="43" column="56" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metric_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1615">
-          <caret line="101" column="29" lean-forward="false" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
+          <caret line="101" column="29" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
@@ -540,7 +582,7 @@
     <entry file="file://$PROJECT_DIR$/subsampling.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1496">
-          <caret line="91" column="37" lean-forward="false" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
+          <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -548,7 +590,7 @@
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
-          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
@@ -558,35 +600,35 @@
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_total_usage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="12" column="39" lean-forward="false" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/occupancy_window_deep_public.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="14" column="41" lean-forward="false" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
+          <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/occupancy_window_deep.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="143">
-          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/occupancy_statistics_deep.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="143">
-          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/deep_metric_learning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1875">
-          <caret line="125" column="18" lean-forward="false" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
+          <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
           <folding>
             <element signature="e#308#319#0" expanded="false" />
           </folding>
@@ -596,21 +638,21 @@
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_total_usage_public.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/occupancy_statistics_deep_public.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-337">
-          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/metric_learning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1615">
-          <caret line="101" column="29" lean-forward="false" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
+        <state relative-caret-position="1515">
+          <caret line="101" column="29" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
@@ -621,30 +663,30 @@
     <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-59">
-          <caret line="137" column="34" lean-forward="false" selection-start-line="137" selection-start-column="34" selection-end-line="137" selection-end-column="34" />
+          <caret line="137" column="34" selection-start-line="137" selection-start-column="34" selection-end-line="137" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/subsampling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1496">
-          <caret line="91" column="37" lean-forward="false" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
+        <state relative-caret-position="1320">
+          <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="43" column="56" lean-forward="false" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
+        <state relative-caret-position="630">
+          <caret line="43" column="56" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="95" column="66" lean-forward="true" selection-start-line="95" selection-start-column="66" selection-end-line="95" selection-end-column="66" />
+        <state relative-caret-position="600">
+          <caret line="123" column="78" selection-start-line="118" selection-start-column="7" selection-end-line="123" selection-end-column="78" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
