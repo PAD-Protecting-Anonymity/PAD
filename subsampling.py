@@ -36,7 +36,7 @@ class Subsampling:
         pair_subsample_i = np.random.choice(a=self.pairsize_total,size=subsample_size,replace=False)
         pair_subsample_index = [self.pair_index_all[i] for i in pair_subsample_i]
         pair_subsample = self.get_pairdata(pair_subsample_index=pair_subsample_index)
-        return pair_subsample#, pair_subsample_index
+        return pair_subsample, pair_subsample_index
 
     def batch_uniform_sampled(self,batch_size):
         unsample_idx = [i for i in range(len(self.subsample_status)) if self.subsample_status[i] == 0]

@@ -64,7 +64,7 @@ def evaluation_total_usage(n):
     # step 4: sample a subset of pre-sanitized database and form the data points into pairs
     subsample_size = int(round(subsample_size_max))
     sp = Subsampling(data=df_subsampled_from)
-    data_pair = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
+    data_pair, data_pair_all_index = sp.uniform_sampling(subsample_size=subsample_size, seed = None)
 
     # User receives the data pairs and label the similarity
     sim = Similarity(data=data_pair)
