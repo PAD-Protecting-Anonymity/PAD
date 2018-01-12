@@ -2,35 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1690bdf5-22c6-4426-a34f-9e7457790890" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/evaluate/occupancy_statistics_departure_deep.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/evaluate/occupancy_statistics_departure_deep_public.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/evaluate/evaluation_window_active.py" afterPath="$PROJECT_DIR$/evaluate/evaluation_window_active_linear.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/evaluate/occupancy_statistics_deep.py" afterPath="$PROJECT_DIR$/evaluate/occupancy_statistics_arrival_deep.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/evaluate/occupancy_statistics_deep_public.py" afterPath="$PROJECT_DIR$/evaluate/occupancy_statistics_arrival_deep_public.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/arrival times with public dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/arrival times with public dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/arrival times with subsampled dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/arrival times with subsampled dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/departure times with public dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/departure times with public dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/departure times with subsampled dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/departure times with subsampled dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/occupancy pattern at Lunch with public dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/occupancy pattern at Lunch with public dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/occupancy pattern at Lunch with subsample dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/occupancy pattern at Lunch with subsample dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/peak energy usage with public dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/peak energy usage with public dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/figures/peak energy usage with subsampled dataset.png" afterPath="$PROJECT_DIR$/visualize/figures/peak energy usage with subsampled dataset.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/PAD.iml" afterPath="$PROJECT_DIR$/.idea/PAD.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/evaluate/evaluation_total_usage_public.py" afterPath="$PROJECT_DIR$/evaluate/evaluation_total_usage_public.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" afterPath="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/evaluate/occupancy_window_deep.py" afterPath="$PROJECT_DIR$/evaluate/occupancy_window_deep.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/evaluate/occupancy_window_deep_public.py" afterPath="$PROJECT_DIR$/evaluate/occupancy_window_deep_public.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_arrival.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_arrival.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_departure.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_departure.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_departure.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_departure.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_normal_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_normal_deep.pickle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_public_deep.pickle" afterPath="$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_window_public_deep.pickle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" afterPath="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" />
     </list>
     <ignored path="PAD.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,11 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="evaluation_window_active_linear.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="evaluation_window_active_linear.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_linear.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="107" column="35" selection-start-line="107" selection-start-column="35" selection-end-line="107" selection-end-column="35" />
+            <state relative-caret-position="495">
+              <caret line="107" column="74" selection-start-line="107" selection-start-column="74" selection-end-line="107" selection-end-column="74" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -89,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="evaluation_window_active_deep.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="evaluation_window_active_deep.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1950">
-              <caret line="130" column="76" selection-start-line="130" selection-start-column="76" selection-end-line="130" selection-end-column="76" />
+            <state relative-caret-position="330">
+              <caret line="100" column="26" selection-start-line="100" selection-start-column="26" selection-end-line="100" selection-end-column="26" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -127,9 +99,9 @@
         <option value="$PROJECT_DIR$/evaluate/occupancy_window_deep_public.py" />
         <option value="$PROJECT_DIR$/subsampling.py" />
         <option value="$PROJECT_DIR$/evaluate/evaluation_window_active.py" />
-        <option value="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" />
         <option value="$PROJECT_DIR$/evaluate/evaluation_window_active_linear.py" />
         <option value="$PROJECT_DIR$/evaluate/evaluation_window_uniform.py" />
+        <option value="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" />
       </list>
     </option>
   </component>
@@ -621,13 +593,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluate/occupancy_window_deep.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/occupancy_statistics_deep.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="143">
@@ -685,16 +650,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1950">
-          <caret line="130" column="76" selection-start-line="130" selection-start-column="76" selection-end-line="130" selection-end-column="76" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2055">
@@ -703,10 +658,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/occupancy_window_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="92" column="0" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_linear.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="107" column="35" selection-start-line="107" selection-start-column="35" selection-end-line="107" selection-end-column="35" />
+        <state relative-caret-position="495">
+          <caret line="107" column="74" selection-start-line="107" selection-start-column="74" selection-end-line="107" selection-end-column="74" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="100" column="26" selection-start-line="100" selection-start-column="26" selection-end-line="100" selection-end-column="26" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
