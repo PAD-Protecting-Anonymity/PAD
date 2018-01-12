@@ -41,7 +41,7 @@ def evaluation_occupancy_window(n):
     sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
                                                     anonymity_level=anonymity_level, rep_mode = rep_mode)
     
-    loss_best_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
+    loss_best_metric = pe.get_information_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
                                                   mode=interest,window=window)
 
     loss_generic_metric = pe.get_information_loss(data_gt=day_profile,
