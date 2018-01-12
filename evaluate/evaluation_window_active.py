@@ -11,6 +11,7 @@ from deep_metric_learning import Deep_Metric
 import numpy as np
 import pickle
 from linear_metric_learning import Linear_Metric
+import pdb
 
 # """
 # In the demo, we will showcase an example of special purpose publication.
@@ -21,7 +22,7 @@ from linear_metric_learning import Linear_Metric
 util = Utilities()
 pe = PerformanceEvaluation()
 
-day_profile_all = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
+day_profile_all = pd.read_pickle('../dataset/dataframe_all_binary.pkl')
 day_profile = day_profile_all.iloc[0:90, 0::60] # the database to be published
 day_profile_metric_learn = day_profile_all.iloc[90:-1, 0::60] # the database for learning distance metric
 day_profile.dropna()
@@ -92,12 +93,14 @@ for mc_i in range(len(seed_vec)):
                                                     k_init=k_init,
                                                     batch_size=1,
                                                     seed=seed_vec[mc_i])
-        pairdata_acitve_linear = pairdata_active_linear + pairdata
+        pairdata_active_linear = pairdata_active_linear + pairdata
+
         similarity_label = similarity_label_all_series.loc[pairdata_idx].tolist()
+
         pairdata_label_active_linear = pairdata_label_active_linear + similarity_label
 
         lm = Linear_Metric()
-        lm.train(pairdata_acitve_linear, pairdata_label_active_linear)
+        lm.train(pairdata_active_linear, pairdata_label_active_linear)
 
         sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",
                                                anonymity_level=anonymity_level,
@@ -140,13 +143,17 @@ for mc_i in range(len(seed_vec)):
                                                     k_init=k_init,
                                                     batch_size=1,
                                                     seed=seed_vec[mc_i])
-        pairdata_acitve_deep = pairdata_active_deep + pairdata
+        pairdata_active_deep = pairdata_active_deep + pairdata
+
+        if len(pairdata_idx) == 1:
+            pairdata_idx = pairdata_idx[0]
+
         similarity_label = similarity_label_all_series.loc[pairdata_idx].tolist()
         pairdata_label_active_deep = pairdata_label_active_deep + similarity_label
 
 
         dm = Deep_Metric()
-        dm.train(pairdata_acitve_deep, pairdata_label_active_deep)
+        dm.train(pairdata_active_deep, pairdata_label_active_deep)
 
 
         sanitized_profile_deep = util.sanitize_data(day_profile, distance_metric="deep",
@@ -173,7 +180,7 @@ for mc_i in range(len(seed_vec)):
     pairdata_all_deep.append(pairdata_each_mc_deep)
     pairlabel_all_deep.append(pairlabel_each_mc_deep)
 
-with open('./result_scripts/sample_acitve_occupancy.pickle', 'wb') as f:
+with open('../result_scripts/sample_acitve_occupancy.pickle', 'wb') as f:
     pickle.dump([loss_best_metric,loss_generic_metric,loss_active_all_linear,loss_active_all_deep,
                  k_init,subsample_size_max, pairdata_all_deep,pairlabel_all_deep,
                  pairdata_all_linear,pairlabel_all_linear], f)
