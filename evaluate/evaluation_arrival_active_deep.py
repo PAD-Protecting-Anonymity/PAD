@@ -124,7 +124,7 @@ for mc_i in range(len(seed_vec)):
     # pairdata_all_deep.append(pairdata_each_mc_deep)
     pairlabel_all_deep.append(pairlabel_each_mc_deep)
 
-    with open('./result_scripts/sample_acitve_occupancy_deep.pickle', 'wb') as f:
+    with open('./result_scripts/sample_acitve_arrival_deep.pickle', 'wb') as f:
         pickle.dump([loss_best_metric, loss_generic_metric, loss_active_all_deep,
                      k_init, subsample_size_max, run_sample_size,
                      pairdata_all_deep, pairlabel_all_deep], f)
