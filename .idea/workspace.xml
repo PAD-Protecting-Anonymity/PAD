@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1690bdf5-22c6-4426-a34f-9e7457790890" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/visualize/vis_uniform_vs_active.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/evaluate/evaluation_arrival_active_deep.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/evaluate/evaluation_arrival_uniform_deep.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" afterPath="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/vis_uniform_vs_active.py" afterPath="$PROJECT_DIR$/visualize/vis_uniform_vs_active.py" />
     </list>
     <ignored path="PAD.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,8 +45,8 @@
       <file leaf-file-name="vis_uniform_vs_active.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/visualize/vis_uniform_vs_active.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="46" column="47" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="47" />
+            <state relative-caret-position="885">
+              <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -53,34 +54,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="evaluation_window_active_deep.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py">
+      <file leaf-file-name="evaluation_arrival_uniform_deep.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_arrival_uniform_deep.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="129" selection-end-column="63" />
+            <state relative-caret-position="108">
+              <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="evaluation_arrival_active_deep.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_arrival_active_deep.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="106" column="35" selection-start-line="106" selection-start-column="35" selection-end-line="108" selection-end-column="63" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="evaluation_window_active_linear.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_linear.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="88" column="30" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="evaluation_window_uniform.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1245">
-              <caret line="138" column="0" selection-start-line="138" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -116,6 +107,8 @@
         <option value="$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py" />
         <option value="$PROJECT_DIR$/evaluate/occupancy_window_only_best.py" />
         <option value="$PROJECT_DIR$/visualize/vis_uniform_vs_active.py" />
+        <option value="$PROJECT_DIR$/evaluate/evaluation_arrival_active_deep.py" />
+        <option value="$PROJECT_DIR$/evaluate/evaluation_arrival_uniform_deep.py" />
       </list>
     </option>
   </component>
@@ -524,14 +517,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1228" height="777" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24114671" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3094435" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4510949" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4510949" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -685,14 +678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/subsampling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/metric_learning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="627">
@@ -718,39 +703,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
+    <entry file="file://$PROJECT_DIR$/subsampling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1245">
-          <caret line="138" column="0" selection-start-line="138" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
+        <state relative-caret-position="-222">
+          <caret line="91" column="37" selection-start-line="91" selection-start-column="37" selection-end-line="91" selection-end-column="37" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/visualize/vis_uniform_vs_active.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="46" column="47" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_linear.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="88" column="30" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="30" />
+        <state relative-caret-position="108">
+          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_active_deep.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="129" selection-end-column="63" />
+        <state relative-caret-position="195">
+          <caret line="52" column="37" selection-start-line="52" selection-start-column="37" selection-end-line="52" selection-end-column="37" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualize/vis_uniform_vs_active.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="62" column="12" selection-start-line="62" selection-start-column="12" selection-end-line="62" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_window_uniform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="95" column="39" selection-start-line="0" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/occupancy_statistics_arrival_deep_public.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="80" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_arrival_active_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="106" column="35" selection-start-line="106" selection-start-column="35" selection-end-line="108" selection-end-column="63" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/evaluation_arrival_uniform_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
