@@ -95,9 +95,6 @@ for mc_i in range(len(seed_vec)):
                                                     seed=seed_vec[mc_i])
         pairdata_active_deep = pairdata_active_deep + pairdata
 
-        if len(pairdata_idx) == 1:
-            pairdata_idx = pairdata_idx[0]
-
         similarity_label = similarity_label_all_series.loc[pairdata_idx].tolist()
         pairdata_label_active_deep = pairdata_label_active_deep + similarity_label
 
