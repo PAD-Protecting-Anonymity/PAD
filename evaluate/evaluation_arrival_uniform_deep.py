@@ -136,7 +136,7 @@ for mc_i in range(len(seed_vec)):
     pairlabel_all.append(pairlabel_each_mc)
 
 
-    with open('./result_scripts/sample_uniform_occupancy.pickle', 'wb') as f:
+    with open('./result_scripts/sample_uniform_arrival.pickle', 'wb') as f:
         pickle.dump([loss_best_metric,loss_generic_metric,loss_unif_all_linear,loss_unif_all_deep,
                      k_init,subsample_size_max,pairdata_all,pairlabel_all], f)
 
