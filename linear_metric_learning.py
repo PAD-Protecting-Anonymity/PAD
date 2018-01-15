@@ -67,9 +67,9 @@ class Linear_Metric:
         # model.add(Dense(kernels))
 
         model.add(Dense(kernels, activation='linear', input_shape = input_shape))
-        # model.add(Dropout(0.2))
+        model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='linear'))
-        # model.add(Dropout(0.2))
+        model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='linear'))
 
         # model.add(Dense(kernels,  input_shape = input_shape, kernel_regularizer=l2(2e-4)))
