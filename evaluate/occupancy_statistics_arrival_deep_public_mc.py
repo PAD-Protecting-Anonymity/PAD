@@ -19,35 +19,9 @@ The data user wants the published database to maximally retain the information a
 util = Utilities()
 pe = PerformanceEvaluation()
 
-def evaluation_occupancy_statistics(n, mode = "arrival"):
-    day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
-    day_profile1 = day_profile1.fillna(0)
-    day_profile1[day_profile1>0] = 1
-
-    res = 15
-
-    day_profile = day_profile1.iloc[:90,0::res] # subsample the database to improve the speed for demonstration purpose
-    day_profile2 = day_profile1.iloc[90:135,0::res] # subsample the database to improve the speed for demonstration purpose
-
-    rep_mode = 'mean'
+def evaluation_occupancy_statistics(n, df_subsampled_from, day_profile):
+    mode = "arrival"
     anonymity_level = n
-
-    sanitized_profile_best = util.sanitize_data(day_profile, distance_metric='self-defined',
-                                                anonymity_level=anonymity_level, rep_mode = rep_mode,
-                                                mode=mode)
-
-    sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
-                                                    anonymity_level=anonymity_level, rep_mode = rep_mode)
-
-    loss_best_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
-                                                  mode=mode)
-
-    loss_generic_metric = pe.get_statistics_loss(data_gt=day_profile,
-                                                data_sanitized=sanitized_profile_baseline,
-                                                mode = mode)
-
-    df_subsampled_from = day_profile2.sample(frac=1)
-
     subsample_size_max = int(comb(len(df_subsampled_from),2))
     print('total number of pairs is %s' % len(df_subsampled_from))
 
@@ -97,12 +71,54 @@ sanitized = {}
 losses = {}
 sample_sizes = []
 mode = "arrival"
-for n in range(2,8):
-    s, l, ss = evaluation_occupancy_statistics(n, mode)
-    sanitized[n] = s
-    losses[n] = l
-    sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_%s.pickle'%(mode), 'wb') as f: 
-        pickle.dump([sanitized, losses, sample_sizes], f)
+day_profile1 = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
+day_profile1 = day_profile1.fillna(0)
+day_profile1[day_profile1>0] = 1
+res = 15
+day_profile = day_profile1.iloc[:90,0::res] # subsample the database to improve the speed for demonstration purpose
+day_profile2 = day_profile1.iloc[90:-1,0::res] # subsample the database to improve the speed for demonstration purpose
+
+rep_mode = 'mean'
+mc_num = 5
+frac = 0.8
+
+losses_best = []
+losses_generic = []
+
+for n in range(2,8):
+    anonymity_level = n
+
+    sanitized_profile_best = util.sanitize_data(day_profile, distance_metric='self-defined',
+                                                anonymity_level=anonymity_level, rep_mode=rep_mode,
+                                                mode=mode)
+
+    sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
+                                                    anonymity_level=anonymity_level, rep_mode=rep_mode)
+
+    loss_best_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
+                                              mode=mode)
+
+    loss_generic_metric = pe.get_statistics_loss(data_gt=day_profile,
+                                                 data_sanitized=sanitized_profile_baseline,
+                                                 mode=mode)
+
+    losses_best.append(loss_best_metric)
+    losses_generic.append(loss_generic_metric)
+
+
+    for mc_i in range(mc_num):
+        df_subsampled_from = day_profile2.sample(frac=frac,replace=False,random_state=mc_i)
+
+        s, l, ss = evaluation_occupancy_statistics(n, df_subsampled_from,day_profile)
+        sanitized[n] = s
+        losses[n] = l
+        sample_sizes.append(ss)
+        print('-----------------')
+        print('anonymity level %s' % n)
+        print('mc iteration %s' % mc_i)
+
+
+    with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_%s_mc.pickle'%(mode), 'wb') as f:
+            pickle.dump([sanitized, losses, sample_sizes,losses_best, losses_generic], f)
 

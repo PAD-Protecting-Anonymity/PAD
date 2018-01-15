@@ -118,7 +118,7 @@ for n in range(2, 8):
 
     for mc_i in range(mc_num):
         df_subsampled_from = day_profile2.sample(frac=frac, replace=False, random_state=mc_i)
-        s, l, ss = evaluation_occupancy_window(n,df_subsampled_from)
+        s, l, ss = evaluation_occupancy_window(n,df_subsampled_from,day_profile)
         sanitized[(n,mc_i)] = s
         losses[(n,mc_i)] = l
         sample_sizes.append(ss)
