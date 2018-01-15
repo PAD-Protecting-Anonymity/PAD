@@ -118,12 +118,14 @@ for n in range(2, 8):
 
     for mc_i in range(mc_num):
         df_subsampled_from = day_profile2.sample(frac=frac, replace=False, random_state=mc_i)
-
-        print('total number of pairs is %s' % len(df_subsampled_from))
         s, l, ss = evaluation_occupancy_window(n,df_subsampled_from)
         sanitized[(n,mc_i)] = s
         losses[(n,mc_i)] = l
         sample_sizes.append(ss)
+
+        print('==========================')
+        print('anonymity level %s' % n)
+        print('mc iteration %s' % mc_i)
 
     with open('result_scripts/loss_vs_privacy_occupancy_window_public_deep_mc.pickle', 'wb') as f:
         pickle.dump([sanitized, losses, sample_sizes, losses_best, losses_generic], f)
