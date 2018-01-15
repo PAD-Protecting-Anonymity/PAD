@@ -37,136 +37,144 @@ for i in s.keys():
 
 anonymity_vec = list(s.keys())
 
-i = 5
-sanitized_profile_generic = sanitized_profile_baseline_list[i]
-sanitized_profile_generic = sanitized_profile_generic.round()
-
-sanitized_profile = sanitized_profile_list[i]
+i = 2
+sanitized_profile = sanitized_profile_baseline_list[i]
 sanitized_profile = sanitized_profile.round()
 
 sanitized_profile_deep = sanitized_profile_deep_list[i]
 sanitized_profile_deep = sanitized_profile_deep.round()
 
-
-stat_gn = OccupancyStatistics(day_profile)
-depart_gn = stat_gn.get_departure_time(flag=0)/60
-depart_gn = depart_gn.dropna()
-
-
 stat_gt = OccupancyStatistics(day_profile)
+arrival_gt = stat_gt.get_arrival_time(flag=0)/60
+arrival_gt = arrival_gt.dropna()
 depart_gt = stat_gt.get_departure_time(flag=0)/60
 depart_gt = depart_gt.dropna()
+usage_gt = stat_gt.get_total_usage()/60
+usage_gt = usage_gt.dropna()
+
 
 stat_sn = OccupancyStatistics(sanitized_profile)
+arrival_sn = stat_sn.get_arrival_time(flag=0)/60
+arrival_sn = arrival_sn.dropna()
 depart_sn = stat_sn.get_departure_time(flag=0)/60
 depart_sn = depart_sn.dropna()
+usage_sn = stat_sn.get_total_usage()/60
+usage_sn = usage_sn.dropna()
 
 stat_sd = OccupancyStatistics(sanitized_profile_deep)
+arrival_sd = stat_sd.get_arrival_time(flag=0)/60
+arrival_sd = arrival_sd.dropna()
 depart_sd = stat_sd.get_departure_time(flag=0)/60
 depart_sd = depart_sd.dropna()
+usage_sd = stat_sd.get_total_usage()/60
+usage_sd = usage_sd.dropna()
+
+
 
 fontsize = 18
 legendsize = 12
-
 plt.figure()
-plt.hist(depart_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(depart_gn,alpha=0.4,label='Santized database w/ generic metric',normed=True,bins=48)
+plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
+plt.hist(arrival_sn,alpha=0.4,label='2-anonymized database',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram for departure times',fontsize=fontsize)
-plt.savefig("visualize/figures/histogram level %s departure time with %s generic.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
-# plt.xticks(np.arange(0,25,4))
-# plt.show()
+plt.title('Normalized histogram of arrival times',fontsize=fontsize)
+plt.savefig("visualize/figures/histogram level %s departure time with %s linear.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
+# plt.xticks(np.arange(0,25,2))
+plt.show()
 
 
 plt.figure()
 plt.hist(depart_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(depart_sn,alpha=0.4,label='Santized database w/ linear metric',normed=True,bins=48)
+plt.hist(depart_sn,alpha=0.4,label='2-anonymized database',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram for departure times',fontsize=fontsize)
+plt.title('Normalized histogram of departure times',fontsize=fontsize)
 plt.savefig("visualize/figures/histogram level %s departure time with %s linear.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
 # plt.xticks(np.arange(0,25,4))
-# plt.show()
+plt.show()
 
 plt.figure()
-plt.hist(depart_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(depart_sd,alpha=0.4,label='Santized database w/ nonlinear metric',normed=True,bins=48)
+plt.hist(usage_gt,alpha=0.4,label='Original database',normed=True,bins=48)
+plt.hist(usage_sn,alpha=0.4,label='2-anonymized database',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
-plt.xlabel('Hour index',fontsize=fontsize)
+plt.xlabel('Hours',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram for departure times',fontsize=fontsize)
-plt.savefig("visualize/figures/histogram level %s departure time with %s deep.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
+plt.title('Normalized histogram of total usage',fontsize=fontsize)
 # plt.xticks(np.arange(0,25,4))
-# plt.show()
+plt.show()
+
+
 
 
 
 
 ##### k = 7
 i = 7
-
-sanitized_profile_generic = sanitized_profile_baseline_list[i]
-sanitized_profile_generic = sanitized_profile_generic.round()
-
 sanitized_profile = sanitized_profile_baseline_list[i]
+print(anonymity_level_vec[i])
 sanitized_profile = sanitized_profile.round()
-sanitized_profile_deep = sanitized_profile_deep_list[i]
-sanitized_profile_deep = sanitized_profile_deep.round()
-
-stat_gn = OccupancyStatistics(day_profile)
-depart_gn = stat_gn.get_departure_time(flag=0)/60
-depart_gn = depart_gn.dropna()
 
 stat_gt = OccupancyStatistics(day_profile)
+arrival_gt = stat_gt.get_arrival_time(flag=0)/60
+arrival_gt = arrival_gt.dropna()
 depart_gt = stat_gt.get_departure_time(flag=0)/60
 depart_gt = depart_gt.dropna()
+usage_gt = stat_gt.get_total_usage()/60
+usage_gt = usage_gt.dropna()
 
 stat_sn = OccupancyStatistics(sanitized_profile)
+arrival_sn = stat_sn.get_arrival_time(flag=0)/60
+arrival_sn = arrival_sn.dropna()
 depart_sn = stat_sn.get_departure_time(flag=0)/60
 depart_sn = depart_sn.dropna()
+usage_sn = stat_sn.get_total_usage()/60
+usage_sn = usage_sn.dropna()
 
 
 stat_sd = OccupancyStatistics(sanitized_profile)
+arrival_sd = stat_sd.get_arrival_time(flag=0)/60
+arrival_sd = arrival_sd.dropna()
 depart_sd = stat_sd.get_departure_time(flag=0)/60
 depart_sd = depart_sd.dropna()
+usage_sd = stat_sd.get_total_usage()/60
+usage_sd = usage_sd.dropna()
 
 fontsize = 18
 legendsize = 12
+plt.figure()
+plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
+plt.hist(arrival_sn,alpha=0.4,label='7-anonymized database',normed=True,bins=48)
+plt.legend(fontsize=legendsize)
+plt.xlabel('Hour index',fontsize=fontsize)
+plt.ylabel('Frequency',fontsize=fontsize)
+plt.title('Normalized histogram of arrival times',fontsize=fontsize)
+# plt.xticks(np.arange(0,25,2))
+plt.show()
 
 
 plt.figure()
 plt.hist(depart_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(depart_gn,alpha=0.4,label='Santized database w/ generic metric',normed=True,bins=48)
+plt.hist(depart_sn,alpha=0.4,label='7-anonymized database',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram for departure times',fontsize=fontsize)
-plt.savefig("visualize/figures/histogram level %s departure time with %s generic.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
+plt.title('Normalized histogram of departure times',fontsize=fontsize)
 # plt.xticks(np.arange(0,25,4))
-# plt.show()
+plt.show()
 
 plt.figure()
-plt.hist(depart_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(depart_sn,alpha=0.4,label='Santized database w/ linear metric',normed=True,bins=48)
+plt.hist(usage_gt,alpha=0.4,label='Original database',normed=True,bins=48)
+plt.hist(usage_sn,alpha=0.4,label='7-anonymized database',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
-plt.xlabel('Hour index',fontsize=fontsize)
+plt.xlabel('Hours',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram for departure times',fontsize=fontsize)
-plt.savefig("visualize/figures/histogram level %s departure time with %s linear.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
+plt.title('Normalized histogram of total usage',fontsize=fontsize)
 # plt.xticks(np.arange(0,25,4))
-# plt.show()
+plt.show()
 
-plt.figure()
-plt.hist(depart_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(depart_sd,alpha=0.4,label='Santized database w/ nonlinear metric',normed=True,bins=48)
-plt.hist(depart_sd,alpha=0.4,label='',normed=True,bins=48)
-plt.legend(fontsize=legendsize)
-plt.xlabel('Hour index',fontsize=fontsize)
-plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram for departure times',fontsize=fontsize)
-plt.savefig("visualize/figures/histogram level %s departure time with %s deep.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
-# plt.xticks(np.arange(0,25,4))
-# plt.show()
+
+
+# exit()

@@ -41,7 +41,7 @@ class Visualize:
         plt.plot(anonymity_vec,loss_best_metric_list, label='Ground truth metric',color='red')
         plt.plot(anonymity_vec,loss_generic_metric_list,label='Generic metric',color='blue',linestyle='-.')
         plt.plot(anonymity_vec,loss_learned_metric_list,label='Linear metric',color='orange',linestyle='-')
-        plt.plot(anonymity_vec,loss_learned_metric_deep_list,label='Deep metric',color='lightgreen',linestyle='-.')
+        plt.plot(anonymity_vec,loss_learned_metric_deep_list,label='Nonlinear metric',color='lightgreen',linestyle='-.')
         # bp = plt.boxplot(loss_learned_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)
         # bp1 = plt.boxplot(loss_learned_deep_metric_lists,positions=anonymity_vec,patch_artist=True,widths=0.1)
         # fill_color = 'orange'
@@ -65,9 +65,9 @@ class Visualize:
         plt.xlabel('Anonymity level',fontsize=fontsize)
         plt.ylabel('Information loss (W)',fontsize=fontsize)
         plt.ylim(scale[0], scale[1])
-        # plt.title(title,fontsize=fontsize-2)
+        plt.title(title,fontsize=fontsize-2)
         plt.legend(fontsize=legendsize, loc='upper left')
-        plt.savefig("visualize/figures/%s.png"%title[28:], bbox_inches='tight',dpi=100)
+        plt.savefig("visualize/figures/%s.png"%title[:], bbox_inches='tight',dpi=100)
         plt.close()
 
     
