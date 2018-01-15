@@ -24,10 +24,12 @@ pe = PerformanceEvaluation()
 
 # mel = MetricLearning()
 
-def evaluation_occupancy_window(n,df_subsampled_from):
+def evaluation_occupancy_window(n,df_subsampled_from,day_profile):
     rep_mode = 'mean'
     anonymity_level = n  # desired anonymity level
     interest = 'segment'
+    window = [11, 15]
+    subsample_size_max = int(comb(len(df_subsampled_from), 2))
 
     # step 4: sample a subset of pre-sanitized database and form the data points into pairs
     subsample_size = int(round(subsample_size_max))
@@ -116,14 +118,13 @@ for n in range(2, 8):
 
     for mc_i in range(mc_num):
         df_subsampled_from = day_profile2.sample(frac=frac, replace=False, random_state=mc_i)
-        subsample_size_max = int(comb(len(df_subsampled_from), 2))
 
         print('total number of pairs is %s' % len(df_subsampled_from))
         s, l, ss = evaluation_occupancy_window(n,df_subsampled_from)
         sanitized[(n,mc_i)] = s
         losses[(n,mc_i)] = l
         sample_sizes.append(ss)
-        
+
     with open('result_scripts/loss_vs_privacy_occupancy_window_public_deep_mc.pickle', 'wb') as f:
         pickle.dump([sanitized, losses, sample_sizes, losses_best, losses_generic], f)
 
