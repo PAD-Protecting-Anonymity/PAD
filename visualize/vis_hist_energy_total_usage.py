@@ -36,7 +36,7 @@ for i in s.keys():
 
 
 anonymity_vec = list(s.keys())
-ai = 2
+ai = 7
 anonymity_level = ai
 # dist_metric = dist_metric_mat[ai][0][0]
 stat_gt = OccupancyStatistics(day_profile)
@@ -82,7 +82,7 @@ plt.savefig("visualize/figures/histogram level %s peak energy usage with %s line
 
 plt.figure()
 plt.hist(usage_gt,label='Original database',alpha = 0.4,normed=True,bins=bins)
-plt.hist(usage_dn,label='Sanitized database w/ deep metric',alpha = 0.4,normed=True,bins=bins)
+plt.hist(usage_dn,label='Sanitized database w/ nonlinear metric',alpha = 0.4,normed=True,bins=bins)
 plt.xlabel('Peak hour energy usage (W)',fontsize=fontsize)
 plt.title('Normalized histogram of peak-hour usage',fontsize=fontsize)
 plt.legend(fontsize=legendsize)

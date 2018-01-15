@@ -37,8 +37,11 @@ for i in s.keys():
 
 anonymity_vec = list(s.keys())
 
-i = 2
-sanitized_profile = sanitized_profile_baseline_list[i]
+i = 3
+sanitized_profile_generic = sanitized_profile_baseline_list[i]
+sanitized_profile_generic = sanitized_profile_generic.round()
+
+sanitized_profile = sanitized_profile_list[i]
 sanitized_profile = sanitized_profile.round()
 
 sanitized_profile_deep = sanitized_profile_deep_list[i]
@@ -47,6 +50,10 @@ sanitized_profile_deep = sanitized_profile_deep.round()
 stat_gt = OccupancyStatistics(day_profile)
 arrival_gt = stat_gt.get_arrival_time(flag=0)/60
 arrival_gt = arrival_gt.dropna()
+
+stat_gn = OccupancyStatistics(sanitized_profile_generic)
+arrival_gn = stat_gn.get_arrival_time(flag=0)/60
+arrival_gn = arrival_gn.dropna()
 
 
 stat_sn = OccupancyStatistics(sanitized_profile)
@@ -62,11 +69,25 @@ fontsize = 18
 legendsize = 12
 plt.figure()
 plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(arrival_sn,alpha=0.4,label='2-anonymized database',normed=True,bins=48)
+plt.hist(arrival_gn,alpha=0.4,label='Santized database w/ generic metric',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram of arrival times with linear metric',fontsize=fontsize)
+plt.ylim(0,1)
+plt.title('Normalized histogram for arrival times',fontsize=fontsize)
+plt.savefig("visualize/figures/histogram level %s arrival time with %s generic.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
+
+
+fontsize = 18
+legendsize = 12
+plt.figure()
+plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
+plt.hist(arrival_sn,alpha=0.4,label='Santized database w/ linear metric',normed=True,bins=48)
+plt.legend(fontsize=legendsize)
+plt.xlabel('Hour index',fontsize=fontsize)
+plt.ylabel('Frequency',fontsize=fontsize)
+plt.ylim(0,1)
+plt.title('Normalized histogram for arrival times',fontsize=fontsize)
 plt.savefig("visualize/figures/histogram level %s arrival time with %s linear.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
 # plt.xticks(np.arange(0,25,2))
 # plt.show()
@@ -76,11 +97,12 @@ fontsize = 18
 legendsize = 12
 plt.figure()
 plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(arrival_sd,alpha=0.4,label='2-anonymized database',normed=True,bins=48)
-plt.legend(fontsize=legendsize)
+plt.hist(arrival_sd,alpha=0.4,label='Santized database w/ nonlinear metric',normed=True,bins=48)
+plt.legend(fontsize=legendsize, loc='upper left')
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram of arrival times with deep metric',fontsize=fontsize)
+plt.ylim(0,1)
+plt.title('Normalized histogram for arrival times',fontsize=fontsize)
 plt.savefig("visualize/figures/histogram level %s arrival time with %s deep.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
 # plt.xticks(np.arange(0,25,2))
 # plt.show()
@@ -89,6 +111,9 @@ plt.savefig("visualize/figures/histogram level %s arrival time with %s deep.png"
 
 ##### k = 7
 i = 7
+sanitized_profile_generic = sanitized_profile_baseline_list[i]
+sanitized_profile_generic = sanitized_profile_generic.round()
+
 sanitized_profile = sanitized_profile_baseline_list[i]
 sanitized_profile = sanitized_profile.round()
 
@@ -98,6 +123,11 @@ sanitized_profile_deep = sanitized_profile_deep.round()
 stat_gt = OccupancyStatistics(day_profile)
 arrival_gt = stat_gt.get_arrival_time(flag=0)/60
 arrival_gt = arrival_gt.dropna()
+
+
+stat_gn = OccupancyStatistics(sanitized_profile_generic)
+arrival_gn = stat_gn.get_arrival_time(flag=0)/60
+arrival_gn = arrival_gn.dropna()
 
 stat_sn = OccupancyStatistics(sanitized_profile)
 arrival_sn = stat_sn.get_arrival_time(flag=0)/60
@@ -112,11 +142,12 @@ fontsize = 18
 legendsize = 12
 plt.figure()
 plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(arrival_sn,alpha=0.4,label='7-anonymized database',normed=True,bins=48)
+plt.hist(arrival_sn,alpha=0.4,label='Santized database w/ linear metric',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram of arrival times with linear metric',fontsize=fontsize)
+plt.ylim(0,1)
+plt.title('Normalized histogram for arrival times',fontsize=fontsize)
 plt.savefig("visualize/figures/histogram level %s arrival time with %s linear.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
 # plt.xticks(np.arange(0,25,2))
 # plt.show()
@@ -126,13 +157,25 @@ fontsize = 18
 legendsize = 12
 plt.figure()
 plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(arrival_sd,alpha=0.4,label='7-anonymized database',normed=True,bins=48)
+plt.hist(arrival_sd,alpha=0.4,label='Santized database w/ nonlinear metric',normed=True,bins=48)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
-plt.title('Normalized histogram of arrival times with deep metric',fontsize=fontsize)
+plt.ylim(0,1)
+plt.title('Normalized histogram for arrival times)',fontsize=fontsize)
 plt.savefig("visualize/figures/histogram level %s arrival time with %s deep.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
 # plt.xticks(np.arange(0,25,2))
 # plt.show()
 
+fontsize = 18
+legendsize = 12
+plt.figure()
+plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
+plt.hist(arrival_gn,alpha=0.4,label='Santized database w/ generic metric',normed=True,bins=48)
+plt.legend(fontsize=legendsize)
+plt.xlabel('Hour index',fontsize=fontsize)
+plt.ylabel('Frequency',fontsize=fontsize)
+plt.ylim(0,1)
+plt.title('Normalized histogram for arrival times',fontsize=fontsize)
+plt.savefig("visualize/figures/histogram level %s arrival time with %s generic.png"%(str(i), dataset_type), bbox_inches='tight',dpi=100)
 
