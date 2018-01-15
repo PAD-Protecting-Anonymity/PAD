@@ -21,9 +21,9 @@ pe = PerformanceEvaluation()
 
 def evaluation_occupancy_statistics(n, df_subsampled_from, day_profile):
     mode = "arrival"
+    rep_mode = 'mean'
     anonymity_level = n
     subsample_size_max = int(comb(len(df_subsampled_from),2))
-    print('total number of pairs is %s' % len(df_subsampled_from))
 
     # step 4: sample a subset of pre-sanitized database and form the data points into pairs
     subsample_size = int(round(subsample_size_max))
@@ -109,10 +109,9 @@ for n in range(2,8):
 
     for mc_i in range(mc_num):
         df_subsampled_from = day_profile2.sample(frac=frac,replace=False,random_state=mc_i)
-
         s, l, ss = evaluation_occupancy_statistics(n, df_subsampled_from,day_profile)
-        sanitized[n] = s
-        losses[n] = l
+        sanitized[(n,mc_i)] = s
+        losses[(n,mc_i)] = l
         sample_sizes.append(ss)
         print('-----------------')
         print('anonymity level %s' % n)
