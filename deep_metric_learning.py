@@ -66,9 +66,9 @@ class Deep_Metric:
         # model.add(Dense(kernels, activation='sigmoid', kernel_regularizer=l2(1e-3)))
 
         model.add(Dense(kernels, activation='relu', input_shape = input_shape))
-        model.add(Dropout(0.2))
+        # model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='relu'))
-        model.add(Dropout(0.2))
+        # model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='sigmoid'))
 
 
