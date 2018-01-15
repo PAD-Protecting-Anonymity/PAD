@@ -91,35 +91,44 @@ day_profile2.dropna()
 rep_mode = 'mean'
 interest = 'segment'
 window = [11, 15]  # window specifies the starting and ending time of the period that the data user is interested in
+losses_best = []
+losses_generic = []
 
-for mc_i in range(mc_num):
-    df_subsampled_from = day_profile2.sample(frac=frac, replace=False,random_state=mc_i)
-    subsample_size_max = int(comb(len(df_subsampled_from), 2))
-    print('total number of pairs is %s' % len(df_subsampled_from))
 
-    for n in range(2, 8):
-        anonymity_level = n
-        # step 3: pre-sanitize the database
-        sanitized_profile_best = util.sanitize_data(day_profile, distance_metric='self-defined',
-                                                    anonymity_level=anonymity_level, rep_mode=rep_mode,
-                                                    mode=interest, window=window)
+for n in range(2, 8):
+    anonymity_level = n
+    # step 3: pre-sanitize the database
+    sanitized_profile_best = util.sanitize_data(day_profile, distance_metric='self-defined',
+                                                anonymity_level=anonymity_level, rep_mode=rep_mode,
+                                                mode=interest, window=window)
 
-        sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
-                                                        anonymity_level=anonymity_level, rep_mode=rep_mode)
+    sanitized_profile_baseline = util.sanitize_data(day_profile, distance_metric='euclidean',
+                                                    anonymity_level=anonymity_level, rep_mode=rep_mode)
 
-        loss_best_metric = pe.get_information_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
-                                                   window=window)
+    loss_best_metric = pe.get_information_loss(data_gt=day_profile, data_sanitized=sanitized_profile_best,
+                                               window=window)
 
-        loss_generic_metric = pe.get_information_loss(data_gt=day_profile,
-                                                      data_sanitized=sanitized_profile_baseline.round(),
-                                                      window=window)
+    loss_generic_metric = pe.get_information_loss(data_gt=day_profile,
+                                                  data_sanitized=sanitized_profile_baseline.round(),
+                                                  window=window)
+    losses_best.append(loss_best_metric)
+    losses_generic.append(loss_generic_metric)
+
+    for mc_i in range(mc_num):
+        df_subsampled_from = day_profile2.sample(frac=frac, replace=False, random_state=mc_i)
+        subsample_size_max = int(comb(len(df_subsampled_from), 2))
+
+        print('total number of pairs is %s' % len(df_subsampled_from))
         s, l, ss = evaluation_occupancy_window(n,df_subsampled_from)
         sanitized[(n,mc_i)] = s
         losses[(n,mc_i)] = l
         sample_sizes.append(ss)
+        
+    with open('result_scripts/loss_vs_privacy_occupancy_window_public_deep_mc.pickle', 'wb') as f:
+        pickle.dump([sanitized, losses, sample_sizes, losses_best, losses_generic], f)
 
-with open('result_scripts/loss_vs_privacy_occupancy_window_public_deep_mc.pickle', 'wb') as f:
-    pickle.dump([sanitized, losses, sample_sizes], f)
+
+
 
 
 
