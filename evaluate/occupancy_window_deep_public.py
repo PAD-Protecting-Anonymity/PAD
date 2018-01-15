@@ -53,7 +53,8 @@ def evaluation_occupancy_window(n):
                                                 data_sanitized=sanitized_profile_baseline.round(),
                                                 window=window)
 
-    
+
+
     df_subsampled_from = day_profile2.sample(frac=1)
     subsample_size_max = int(comb(len(df_subsampled_from),2))
     print('total number of pairs is %s' % len(df_subsampled_from))

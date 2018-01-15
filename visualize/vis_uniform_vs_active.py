@@ -9,7 +9,7 @@ mc_num = 5
 batch_size = 10
 
 with open('./result_scripts/sample_uniform_occupancy.pickle', 'rb') as f:
-    _, loss_generic_metric, loss_unif_all_linear, loss_unif_all_deep,\
+    _, loss_generic_metric, loss_unif_all_linear_list, loss_unif_all_deep,\
                  k_init, subsample_size_max, pairdata_all, pairlabel_all = pickle.load(f)
 
 with open('./result_scripts/sample_acitve_occupancy_linear.pickle', 'rb') as f:
@@ -25,8 +25,9 @@ with open('./result_scripts/window_loss.pickle','rb') as f: # Python 3: open(...
     data = pickle.load(f)
 
 loss_best_metric = data[2]
+iter_finished = 5
 
-loss_unif_all_linear = np.asarray(loss_unif_all_linear)
+loss_unif_all_linear = np.asarray(loss_unif_all_linear_list)[0:iter_finished,:]
 loss_unif_all_linear_mean = np.mean(loss_unif_all_linear,axis=0)
 loss_unif_all_linear_std = np.std(loss_unif_all_linear,axis=0)
 loss_unif_all_deep = np.asarray(loss_unif_all_deep)
@@ -42,48 +43,28 @@ loss_active_all_deep_std = np.std(loss_active_all_deep,axis=0)
 eval_k = np.arange(k_init,251,batch_size)
 
 # linear metric
-plt.figure()
-bp = plt.boxplot(loss_unif_all_linear[:,0:len(eval_k)],positions=eval_k,patch_artist=True,widths=1)
-fill_color = 'lightgreen'
-edge_color = 'green'
-for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
-    plt.setp(bp[element], color=edge_color)
+# plt.figure()
+# bp = plt.boxplot(loss_unif_all_linear[:,0:len(eval_k)],positions=eval_k,patch_artist=True,widths=1)
+# fill_color = 'lightgreen'
+# edge_color = 'green'
+# for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
+#     plt.setp(bp[element], color=edge_color)
+#
+# for patch in bp['boxes']:
+#     patch.set(facecolor=fill_color, alpha=0.5)
+# plt.plot(eval_k,loss_unif_all_linear_mean[0:len(eval_k)],label='Learned metric - uniform',
+#          color='lightgreen',linestyle='--')
+plt.errorbar(eval_k,loss_unif_all_linear_mean[0:len(eval_k)],loss_unif_all_linear_std[0:len(eval_k)],label='Uniform sampling',fmt='o',color='orange')
 
-for patch in bp['boxes']:
-    patch.set(facecolor=fill_color, alpha=0.5)
-plt.plot(eval_k,loss_unif_all_linear_mean[0:len(eval_k)],label='Learned metric - uniform',
-         color='lightgreen',linestyle='--')
-# plt.errorbar(eval_k,loss_unif_all_linear_mean[0:len(eval_k)],loss_unif_all_linear_std[0:len(eval_k)],label='uniform sampling')
-# plt.errorbar(eval_k,loss_active_all_linear_mean[eval_k],loss_active_all_linear_std[eval_k],
-#              label='active sampling')
-# plt.plot(eval_k,loss_unif_all_linear[0,0:len(eval_k)],label='uniform sampling')
-plt.plot(eval_k,loss_active_all_linear[0,eval_k],label='active sampling')
-plt.plot((k_init,251),(loss_generic_metric,loss_generic_metric),'b--',label="generic metric")
-plt.plot((k_init,251),(loss_best_metric,loss_best_metric),'r--',label="ground truth metric")
+plt.errorbar(eval_k,loss_active_all_linear_mean[eval_k],loss_active_all_linear_std[eval_k],
+             label='Active sampling',fmt='d',color='green')
+plt.plot(eval_k,loss_unif_all_linear[0,0:len(eval_k)],'--',color='orange')
+plt.plot(eval_k,loss_active_all_linear_mean[eval_k],'--',color='green')
+plt.plot((k_init,251),(loss_generic_metric,loss_generic_metric),'b',label="Generic metric")
+plt.plot((k_init,251),(loss_best_metric,loss_best_metric),'r',label="Ground truth metric")
+plt.xlabel('Number of labeled data pairs')
+plt.ylabel('Information loss')
+plt.title('Comparison of sample efficiency')
 plt.legend()
 plt.show()
 
-# deep metric
-plt.figure()
-
-bp = plt.boxplot(loss_,positions=eval_subsample_size,patch_artist=True,widths=0.01)
-fill_color = 'lightgreen'
-edge_color = 'green'
-for element in ['boxes', 'whiskers', 'fliers', 'means', 'medians', 'caps']:
-    plt.setp(bp[element], color=edge_color)
-
-for patch in bp['boxes']:
-    patch.set(facecolor=fill_color, alpha=0.5)
-
-plt.plot(eval_subsample_size,np.mean(loss_learned_unif,axis=0),label='Learned metric - uniform',
-         color='lightgreen',linestyle='--')
-
-plt.errorbar(eval_k,loss_unif_all_deep_mean[0:len(eval_k)],loss_unif_all_deep_std[0:len(eval_k)],label='uniform sampling')
-# plt.errorbar(eval_k,loss_active_all_linear_mean[eval_k],loss_active_all_linear_std[eval_k],
-#              label='active sampling')
-# plt.plot(eval_k,loss_unif_all_linear[0,0:len(eval_k)],label='uniform sampling')
-plt.plot(eval_k,loss_active_all_deep[0,eval_k],label='active sampling')
-plt.plot((k_init,251),(loss_generic_metric,loss_generic_metric),'b--',label="generic metric")
-plt.plot((k_init,251),(loss_best_metric,loss_best_metric),'r--',label="ground truth metric")
-plt.legend()
-plt.show()

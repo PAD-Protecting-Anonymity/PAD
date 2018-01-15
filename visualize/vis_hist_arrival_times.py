@@ -37,7 +37,8 @@ for i in s.keys():
 
 anonymity_vec = list(s.keys())
 
-i = 3
+i = 7
+nbin = 20
 sanitized_profile_generic = sanitized_profile_baseline_list[i]
 sanitized_profile_generic = sanitized_profile_generic.round()
 
@@ -68,8 +69,8 @@ arrival_sd = arrival_sd.dropna()
 fontsize = 18
 legendsize = 12
 plt.figure()
-plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(arrival_gn,alpha=0.4,label='Santized database w/ generic metric',normed=True,bins=48)
+plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=nbin)
+plt.hist(arrival_gn,alpha=0.4,label='Santized database w/ generic metric',normed=True,bins=nbin)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
@@ -81,8 +82,8 @@ plt.savefig("visualize/figures/histogram level %s arrival time with %s generic.p
 fontsize = 18
 legendsize = 12
 plt.figure()
-plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(arrival_sn,alpha=0.4,label='Santized database w/ linear metric',normed=True,bins=48)
+plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=nbin)
+plt.hist(arrival_sn,alpha=0.4,label='Santized database w/ linear metric',normed=True,bins=nbin)
 plt.legend(fontsize=legendsize)
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
@@ -96,8 +97,8 @@ plt.savefig("visualize/figures/histogram level %s arrival time with %s linear.pn
 fontsize = 18
 legendsize = 12
 plt.figure()
-plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=48)
-plt.hist(arrival_sd,alpha=0.4,label='Santized database w/ nonlinear metric',normed=True,bins=48)
+plt.hist(arrival_gt,alpha=0.4,label='Original database',normed=True,bins=nbin)
+plt.hist(arrival_sd,alpha=0.4,label='Santized database w/ nonlinear metric',normed=True,bins=nbin)
 plt.legend(fontsize=legendsize, loc='upper left')
 plt.xlabel('Hour index',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
