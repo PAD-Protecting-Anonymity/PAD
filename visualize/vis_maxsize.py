@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # window
-with open('result_scripts/loss_vs_privacy_occupancy_window_public_deep.pickle', 'rb') as f:
+with open('result_scripts/loss_vs_privacy_occupancy_window_public_deep_all.pickle', 'rb') as f:
    _, losses, _ = pickle.load(f)
 
 anonymity_vec = range(2, 8)
@@ -33,7 +33,7 @@ plt.savefig("visualize/figures/tradeoff_lunch_notall", bbox_inches='tight',dpi=1
 
 
 # energy usage
-with open('result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle', 'rb') as f:
+with open('result_scripts/loss_vs_privacy_energy_usage_public_deep_all.pickle', 'rb') as f:
    _, losses, _ = pickle.load(f)
 
 anonymity_vec = range(2, 8)

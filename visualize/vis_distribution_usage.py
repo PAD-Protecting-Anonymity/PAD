@@ -14,7 +14,7 @@ window = [17,21]
 rep_mode = 'mean'
 statistics_mode = 'window-usage'
 
-with open('./result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle','rb') as f: # Python 3: open(..., 'wb')
+with open('./result_scripts/loss_vs_privacy_energy_usage_public_deep_all.pickle','rb') as f: # Python 3: open(..., 'wb')
     data = pickle.load(f)
 
 
@@ -58,7 +58,7 @@ for i in range(len(anonymity_vec)):
     stat_best = OccupancyStatistics(sanitized_profile_best)
     usage_best = stat_best.get_window_usage(window=window)
 
-    bins = 50
+    bins = 10
     max_val = np.max([usage_gt.values,usage_best.values,usage_bl.values,usage_linear.values,usage_deep.values])
 
     dep_hist_gt, bin_edges_gt = np.histogram(usage_gt.values, bins=bins, range=(0, max_val),normed=True)

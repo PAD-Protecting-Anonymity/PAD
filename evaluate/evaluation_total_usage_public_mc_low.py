@@ -70,7 +70,7 @@ def evaluation_total_usage(n,df_subsampled_from,day_profile):
 day_profile1 = pd.read_pickle('dataset/dataframe_all_energy.pkl')
 day_profile1 = day_profile1.fillna(0)
 day_profile = day_profile1.iloc[:90, 0::4]  # subsample the database to improve the speed for demonstration purpose
-day_profile2 = day_profile1.iloc[90:192,0::4]  # subsample the database to improve the speed for demonstration purpose
+day_profile2 = day_profile1.iloc[90:170,0::4]  # subsample the database to improve the speed for demonstration purpose
 day_profile.index = range(len(day_profile.index))
 day_profile2.index = range(len(day_profile2.index))
 rep_mode = 'mean'
@@ -118,5 +118,5 @@ for n in range(2, 8):
         print('anonymity level %s' % n)
         print('mc iteration %s' % mc_i)
 
-    with open('result_scripts/loss_vs_privacy_energy_usage_public_deep.pickle', 'wb') as f:
+    with open('result_scripts/loss_vs_privacy_energy_usage_public_deep_mc_low.pickle', 'wb') as f:
         pickle.dump([sanitized, losses, sample_sizes, losses_best, losses_generic], f)
