@@ -2,10 +2,10 @@ import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 
-with open('result_scripts/loss_vs_privacy_occupancy_window_public_deep_mc.pickle', 'rb') as f:
+with open('result_scripts/loss_vs_privacy_energy_usage_public_deep_mc.pickle', 'rb') as f:
    _, losses, _, losses_best, losses_generic = pickle.load(f)
 
-anonymity_vec = range(2, 4)
+anonymity_vec = range(2, 7)
 anonymity_n = len(anonymity_vec)
 mc_num = 5
 
