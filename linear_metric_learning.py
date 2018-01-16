@@ -33,7 +33,7 @@ class Linear_Metric:
     def train(self, data_pairs, similarity_labels):
         self.scaler = StandardScaler()
         self.batch_size = 10
-        self.epochs = 200
+        self.epochs = 4
         X1 = []
         X2 = []
         for x, y in data_pairs:
