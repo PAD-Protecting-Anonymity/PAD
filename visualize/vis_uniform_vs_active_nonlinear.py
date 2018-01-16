@@ -19,7 +19,7 @@ with open('./result_scripts/sample_acitve_arrival_deep.pickle', 'rb') as f:
 
 
 iter_finished = 2
-loss_unif_all_deep = np.asarray(loss_unif_all_deep[0:iter_finished,:])
+loss_unif_all_deep = np.asarray(loss_unif_all_deep)
 loss_unif_all_deep_mean = np.mean(loss_unif_all_deep,axis=0)
 loss_unif_all_deep_std = np.std(loss_unif_all_deep,axis=0)
 

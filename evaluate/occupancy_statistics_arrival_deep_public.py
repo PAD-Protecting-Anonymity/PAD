@@ -103,6 +103,6 @@ for n in range(2,8):
     losses[n] = l
     sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_%s.pickle'%(mode), 'wb') as f: 
+with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_%s.pickle'%(mode), 'wb') as f:
         pickle.dump([sanitized, losses, sample_sizes], f)
 

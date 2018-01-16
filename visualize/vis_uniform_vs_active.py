@@ -68,3 +68,18 @@ plt.title('Comparison of sample efficiency')
 plt.legend()
 plt.show()
 
+
+plt.errorbar(eval_k,loss_unif_all_deep_mean[0:len(eval_k)],loss_unif_all_deep_std[0:len(eval_k)],label='Uniform sampling',fmt='o',color='orange')
+
+plt.errorbar(eval_k,loss_active_all_deep_mean[eval_k],loss_active_all_deep_std[eval_k],
+             label='Active sampling',fmt='d',color='green')
+plt.plot(eval_k,loss_unif_all_deep[0,0:len(eval_k)],'--',color='orange')
+plt.plot(eval_k,loss_active_all_deep_mean[eval_k],'--',color='green')
+plt.plot((k_init,251),(loss_generic_metric,loss_generic_metric),'b',label="Generic metric")
+plt.plot((k_init,251),(loss_best_metric,loss_best_metric),'r',label="Ground truth metric")
+plt.xlabel('Number of labeled data pairs')
+plt.ylabel('Information loss')
+plt.title('Comparison of sample efficiency')
+plt.legend()
+plt.show()
+
