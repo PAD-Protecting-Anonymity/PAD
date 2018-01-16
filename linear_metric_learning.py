@@ -23,6 +23,7 @@ from keras import backend as K
 from keras.layers.normalization import BatchNormalization
 from keras.callbacks import ModelCheckpoint
 from keras.regularizers import l2
+from sklearn.preprocessing import StandardScaler
 np.random.seed(0)
 
 
@@ -30,6 +31,7 @@ np.random.seed(0)
 class Linear_Metric:
 
     def train(self, data_pairs, similarity_labels):
+        self.scaler = StandardScaler()
         self.batch_size = 10
         self.epochs = 200
         X1 = []
@@ -101,9 +103,15 @@ class Linear_Metric:
         x2_test = np.array(x2_test)
         y_test = np.array(y_test)
 
-        # x1_train = np.array(X1)
-        # x2_train = np.array(X2)
-        # y_train = keras.utils.to_categorical(similarity_labels, number_classes)
+        x1_train = np.array(X1)
+        x2_train = np.array(X2)
+        y_train = keras.utils.to_categorical(similarity_labels, number_classes)
+
+        data = np.append(x1_train, x2_train, axis=0)
+        
+        self.scaler.fit(data)
+        x1_train = self.scaler.transform(x1_train)
+        x2_train = self.scaler.transform(x2_train)
 
         history = siamese_net.fit([x1_train, x2_train], y_train,
                             batch_size=self.batch_size,
@@ -125,8 +133,12 @@ class Linear_Metric:
           
     def transform(self, data_pairs):
         x, y = data_pairs
-        x = x.reshape(1, x.shape[0])
-        y = y.reshape(1, y.shape[0])
+
+        x = self.scaler.transform(np.array([x]))
+        y = self.scaler.transform(np.array([y]))
+        
+        # x = x.reshape(1, x.shape[0])
+        # y = y.reshape(1, y.shape[0])
         distance = self.functor3([*[x, y], 1.])
         return distance[0].mean()
 
