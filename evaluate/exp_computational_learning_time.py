@@ -4,6 +4,9 @@ import numpy as np
 # import pdb
 import sys; import os
 sys.path.append(os.path.abspath("./"))
+sys.path.append(os.path.abspath("./framework"))
+sys.path.append(os.path.abspath("./kward"))
+sys.path.append(os.path.abspath("./metric_learning"))
 from helper import Utilities, PerformanceEvaluation
 from _datetime import datetime, time, timedelta
 from pandas.tseries.offsets import Hour

@@ -1,5 +1,8 @@
 import sys; import os
 sys.path.append(os.path.abspath("./"))
+sys.path.append(os.path.abspath("./framework"))
+sys.path.append(os.path.abspath("./kward"))
+sys.path.append(os.path.abspath("./metric_learning"))
 import pandas as pd
 import numpy as np
 from helper import Utilities, PerformanceEvaluation
