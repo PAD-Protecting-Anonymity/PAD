@@ -63,6 +63,12 @@ class K_ward:
                 df1 = data[i, :]
                 for j in range(data_size):
                     df2 = data[j,:]
+                    if i > j:
+                        distance[i,j] = distance[j,i]
+                        continue
+                    elif i == j:
+                        distance[i,j] = 0
+                        continue
                     if self.mode == 'window-usage':
                         distance[i, j] = self.stat_util.get_statistic_distance(df1, df2, index=cols,
                                                                             mode=self.mode,window=self.window)
