@@ -89,17 +89,29 @@ class PerformanceEvaluation:
         if mode == "arrival":
             stat_gt = os1.get_arrival_time(flag=1)
             stat_sanitized = os2.get_arrival_time(flag=1)
+            df = stat_gt - stat_sanitized
         elif mode == "departure":
             stat_gt = os1.get_departure_time(flag=1)
             stat_sanitized = os2.get_departure_time(flag=1)
+            df = stat_gt - stat_sanitized
         elif mode == "usage":
             stat_gt = os1.get_total_usage()
             stat_sanitized = os2.get_total_usage()
+            df = stat_gt - stat_sanitized
         elif mode == "window-usage":
             window = kwargs['window']
             stat_gt = os1.get_window_usage(window=window)
             stat_sanitized = os2.get_window_usage(window=window)
-        df = stat_gt - stat_sanitized
+            df = stat_gt - stat_sanitized
+        elif mode == "segment":
+            window = kwargs['window']
+            stat_gt = os1.get_segment(window=window)
+            stat_sanitized = os2.get_segment(window=window)
+            # print(stat_gt, stat_sanitized)
+            df = pd.Series()
+            for i in range(len(stat_gt)):
+                df = df.set_value(i, np.linalg.norm(stat_gt.iloc[i,:] - stat_sanitized.iloc[i,:]))
+            # print(df)
         df = df.as_matrix()
         err_sum_sqrt = np.mean(np.absolute(df))
         return err_sum_sqrt

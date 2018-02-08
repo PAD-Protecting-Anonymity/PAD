@@ -6,6 +6,7 @@ from helper import Utilities, PerformanceEvaluation
 import matplotlib.pyplot as plt
 import pickle
 from data_statistics import OccupancyStatistics
+import scipy.stats
 
 day_profile = pd.read_pickle('dataset/dataframe_all_binary.pkl')
 res = 15
@@ -41,6 +42,61 @@ depart_sn = stat_sn.get_departure_time(flag=0)/60
 depart_sn = depart_sn.dropna()
 usage_sn = stat_sn.get_total_usage()/60
 usage_sn = usage_sn.dropna()
+
+##################### Compare the estimated moments ######################
+
+# arrival
+arr_mean_gt = np.mean(arrival_gt.values)
+print('arrival-ground truth-mean %s'% arr_mean_gt)
+arr_mean_2 = np.mean(arrival_sn.values)
+print('arrival-2 anonymized-mean %s'% arr_mean_2)
+arr_std_gt = np.std(arrival_gt.values)
+print('arrival-ground truth-std %s'% arr_std_gt)
+arr_std_2 = np.std(arrival_sn.values)
+print('arrival-2 anonymized-std %s'% arr_std_2)
+arr_mode_gt = scipy.stats.mode(arrival_gt.values)
+print('arrival-ground truth-mode %s'% arr_mode_gt[0])
+arr_mode_2 = scipy.stats.mode(arrival_sn.values)
+print('arrival-2 anonymized-mode %s'% arr_mode_2[0])
+
+
+# departure
+dep_mean_gt = np.mean(depart_gt.values)
+print('departure-ground truth-mean %s'% dep_mean_gt)
+dep_mean_2 = np.mean(depart_sn.values)
+print('departure-2 anonymized-mean %s'% dep_mean_2)
+dep_std_gt = np.std(depart_gt.values)
+print('departure-ground truth-std %s'% dep_std_gt)
+dep_std_2 = np.std(depart_sn.values)
+print('departure-2 anonymized-std %s'% dep_std_2)
+dep_mode_gt = scipy.stats.mode(depart_gt.values)
+print('departure-ground truth-mode %s'% dep_mode_gt[0])
+dep_mode_2 = scipy.stats.mode(depart_sn.values)
+print('departure-2 anonymized-mode %s'% dep_mode_2[0])
+
+# usage
+use_mean_gt = np.mean(usage_gt.values)
+print('usage-ground truth-mean %s'% use_mean_gt)
+use_mean_2 = np.mean(usage_sn.values)
+print('usage-2 anonymized-mean %s'% use_mean_2)
+use_std_gt = np.std(usage_gt.values)
+print('usage-ground truth-std %s'% use_std_gt)
+use_std_2 = np.std(usage_sn.values)
+print('usage-2 anonymized-std %s'% use_std_2)
+use_mode_gt = scipy.stats.mode(usage_gt.values)
+print('usage-ground truth-mode %s'% use_mode_gt[0])
+use_mode_2 = scipy.stats.mode(usage_sn.values)
+print('usage-2 anonymized-mode %s'% use_mode_2[0])
+
+
+
+
+
+
+
+
+
+
 
 fontsize = 18
 legendsize = 12
@@ -128,4 +184,56 @@ plt.xlabel('Hours',fontsize=fontsize)
 plt.ylabel('Frequency',fontsize=fontsize)
 plt.title('Normalized histogram of total usage',fontsize=fontsize)
 plt.show()
+
+
+
+
+
+##################### Compare the estimated moments ######################
+
+# arrival
+arr_mean_gt = np.mean(arrival_gt.values)
+print('arrival-ground truth-mean %s'% arr_mean_gt)
+arr_mean_2 = np.mean(arrival_sn.values)
+print('arrival-2 anonymized-mean %s'% arr_mean_2)
+arr_std_gt = np.std(arrival_gt.values)
+print('arrival-ground truth-std %s'% arr_std_gt)
+arr_std_2 = np.std(arrival_sn.values)
+print('arrival-2 anonymized-std %s'% arr_std_2)
+arr_mode_gt = scipy.stats.mode(arrival_gt.values)
+print('arrival-ground truth-mode %s'% arr_mode_gt[0])
+arr_mode_2 = scipy.stats.mode(arrival_sn.values)
+print('arrival-2 anonymized-mode %s'% arr_mode_2[0])
+
+
+# departure
+dep_mean_gt = np.mean(depart_gt.values)
+print('departure-ground truth-mean %s'% dep_mean_gt)
+dep_mean_2 = np.mean(depart_sn.values)
+print('departure-2 anonymized-mean %s'% dep_mean_2)
+dep_std_gt = np.std(depart_gt.values)
+print('departure-ground truth-std %s'% dep_std_gt)
+dep_std_2 = np.std(depart_sn.values)
+print('departure-2 anonymized-std %s'% dep_std_2)
+dep_mode_gt = scipy.stats.mode(depart_gt.values)
+print('departure-ground truth-mode %s'% dep_mode_gt[0])
+dep_mode_2 = scipy.stats.mode(depart_sn.values)
+print('departure-2 anonymized-mode %s'% dep_mode_2[0])
+
+
+# usage
+use_mean_gt = np.mean(usage_gt.values)
+print('usage-ground truth-mean %s'% use_mean_gt)
+use_mean_2 = np.mean(usage_sn.values)
+print('usage-2 anonymized-mean %s'% use_mean_2)
+use_std_gt = np.std(usage_gt.values)
+print('usage-ground truth-std %s'% use_std_gt)
+use_std_2 = np.std(usage_sn.values)
+print('usage-2 anonymized-std %s'% use_std_2)
+use_mode_gt = scipy.stats.mode(usage_gt.values)
+print('usage-ground truth-mode %s'% use_mode_gt[0])
+use_mode_2 = scipy.stats.mode(usage_sn.values)
+print('usage-2 anonymized-mode %s'% use_mode_2[0])
+
+
 

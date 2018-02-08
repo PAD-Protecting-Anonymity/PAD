@@ -1,61 +1,14 @@
 import itertools
-
 import cvxpy as cvx
 import numpy as np
+import pdb
 from cvxpy import *
-
 from helper import Miscellaneous
 import numpy as np
 
-np.random.seed(0)
-
-
-class Subsampling:
-    def __init__(self,data):
-        self.data = data # sanitized database to be sampled from
-        self.pair_index_all = list(itertools.combinations(self.data.index,2))
-        self.pairsize_total = len(self.pair_index_all)
-        self.size_total = len(self.data)
-        self.pairdata_labeled = []
-        self.label = []
-        self.k_already = 0
-        self.subsample_status = np.zeros(self.pairsize_total)
-        self.dist_pairdata_us = []
-        self.dist_pairdata_s = []
-
-    def get_pairdata(self,pair_subsample_index):
-        pairdata = [(self.data.loc[ind1], self.data.loc[ind2]) for ind1, ind2 in pair_subsample_index]
-        return pairdata
-
-    def uniform_sampling(self,subsample_size):
-        pair_subsample_i = np.random.choice(a=self.pairsize_total,size=subsample_size,replace=False)
-        pair_subsample_index = [self.pair_index_all[i] for i in pair_subsample_i]
-        pair_subsample = self.get_pairdata(pair_subsample_index=pair_subsample_index)
-        return pair_subsample
-
-    def batch_uniform_sampled(self,batch_size):
-        unsample_idx = [i for i in range(len(self.subsample_status)) if self.subsample_status[i] == 0]
-        pair_subsample_i = np.random.choice(a=len(unsample_idx), size=batch_size, replace=False)
-        next_sample_idx = [unsample_idx[i] for i in pair_subsample_i]
-        pair_subsample_index = [self.pair_index_all[j] for j in next_sample_idx]
-        pair_subsample = self.get_pairdata(pair_subsample_index=pair_subsample_index)
-        for i in pair_subsample_i:
-            self.subsample_status[unsample_idx[i]] = 1
-        return pair_subsample,next_sample_idx
-
-    def get_range_n_clusters(self,datasize,max_allowed):
-        max_n_clusters = int(np.floor(datasize / 2))
-        if max_n_clusters <= 2:
-            range_n_clusters = [2]
-        elif max_n_clusters >= max_allowed:
-            range_n_clusters = range(2, max_allowed)
-        else:
-            range_n_clusters = range(2, max_n_clusters)
-        return range_n_clusters
-
 
 class MetricLearning:
-    def learn_with_similarity_label(self, data, label, mode, **kwargs):
+    def learn_with_similarity_label(self, data, label, mode, lam):
         """
         Implement the metric learning algorithm in "Distance metric learning, with application to clustering with
         side-information" by Eric P. Xing, et al. The alg learns distance metrics from similarity labels of data pairs
@@ -77,6 +30,7 @@ class MetricLearning:
             for i in range(len(X_ns)):
                 obj_neg = obj_neg + sqrt(sum_entries(mul_elemwise(np.square(X_ns[i]), x)))
             obj = obj - cvx.log(obj_neg)
+            obj = obj + lam * norm(x, 1)
             constraints = [x >= 0]
             obj_cvx = cvx.Minimize(obj)
             prob = cvx.Problem(obj_cvx, constraints)
@@ -119,6 +73,10 @@ class MetricLearning:
         misc = Miscellaneous()
         s_size = len(X_s)
         ns_size = len(X_ns)
+
+        if s_size == 0 or ns_size == 0:
+            return None
+
         X_s_train = X_s[:int(s_size * train_portion),:]
         X_s_test = X_s[int(s_size * train_portion):,:]
         X_ns_train = X_ns[:int(ns_size * train_portion),:]
@@ -162,7 +120,7 @@ class MetricLearning:
             else:
                 ratio_drop_nan = [ratio[i] for i in range(len(ratio)) if ~np.isnan(ratio[i])]
                 best_idx = np.where(ratio == min(ratio_drop_nan))[0]
-                print(lam_vec[best_idx[0]])
+                print('best lambda is %s'%lam_vec[best_idx[0]])
                 print(ratio)
                 break
         return dist_metric[best_idx[0]]

@@ -30,10 +30,11 @@ class K_ward:
             self.VI = kwargs['VI']
         if distance_metric == 'deep':
             self.dm = kwargs['deep_model']
-        
         if distance_metric == 'self-defined':
             self.mode = kwargs['mode']
             if self.mode == 'window-usage':
+                self.window = kwargs['window']
+            elif self.mode == 'segment':
                 self.window = kwargs['window']
 
     def get_distance(self, d_profile_data):
@@ -64,7 +65,10 @@ class K_ward:
                     df2 = data[j,:]
                     if self.mode == 'window-usage':
                         distance[i, j] = self.stat_util.get_statistic_distance(df1, df2, index=cols,
-                                                                               mode=self.mode,window=self.window)
+                                                                            mode=self.mode,window=self.window)
+                    elif self.mode == 'segment':
+                        distance[i, j] = self.stat_util.get_statistic_distance(df1, df2, index=cols,
+                                                                            mode=self.mode, window=self.window)
                     else:
                         distance[i,j] = self.stat_util.get_statistic_distance(df1,df2,index=cols,mode=self.mode)
 
@@ -190,8 +194,10 @@ class K_ward:
             card_status = [card >= self.upperbound for card in self.cards]
 
     def deep_metric(self, x, y):
-        x, y = self.dm.transform((x,y))
-        dist = np.linalg.norm(x-y)
+        # x, y = self.dm.transform((x,y))
+        # dist = np.linalg.norm(x-y)
+        dist = self.dm.transform((x,y))
+        # print(dist)
         return dist
 
 class Group:
@@ -255,15 +261,23 @@ class Distance:
         if mode == "arrival":
             stat1 = util.compute_arrival_time(x_df1,index,1)
             stat2 = util.compute_arrival_time(x_df2,index,1)
+            dist = abs(stat1-stat2)
         elif mode == "departure":
             stat1 = util.compute_departure_time(x_df1, index,1)
             stat2 = util.compute_departure_time(x_df2, index,1)
+            dist = abs(stat1-stat2)
         elif mode == "usage":
             stat1 = util.compute_total_usage(x_df1, index)
             stat2 = util.compute_total_usage(x_df2, index)
+            dist = abs(stat1-stat2)
         elif mode == "window-usage":
             window = kwargs['window']
             stat1 = util.compute_window_usage(x_df1, index,window)
             stat2 = util.compute_window_usage(x_df2, index,window)
-        dist = abs(stat1-stat2)
+            dist = abs(stat1-stat2)
+        elif mode == "segment":
+            window = kwargs['window']
+            stat1 = util.compute_window(x_df1, index,window)
+            stat2 = util.compute_window(x_df2, index,window)
+            dist = np.linalg.norm(stat1-stat2)
         return dist
