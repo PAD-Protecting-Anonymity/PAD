@@ -1,4 +1,4 @@
-# pad
+# PAD
 PAD is a novel privacy-preserving data publication system that leverages interactions with data users to improve utility of privatized datasets.
 
 The repository contains the source code and demos of PAD in Python.
@@ -15,3 +15,39 @@ To cite the paper:
   organization={ACM}
 }
 ```
+
+## Dependencies
+- `python3.5` Python environment
+- `sklearn` 
+- `numpy` 
+- `keras` 
+- `pandas` 
+- `tensorflow` 
+- `scipy` 
+- `matplotlib`
+
+
+#PAD repository
+The repo contains a number of foldes:
+- [Dataset](#Dataset)
+- [Demo](#Demo)
+- [Utilities](#utilities)
+- [K-ward](#K-ward)
+- [Metric_Learning](#Metric_Learning)
+
+## Dataset
+Datasets made availible for showcasing PAD.
+
+## Demo
+Exsamples on how to use PAD.
+Contines various exsample on have to use PAD, incluting linear, nonlinear data. Also on how to use the options of various kind of simularaty in the data.
+
+## Utilities
+Contines helper functions used in PAD.
+
+## K-ward
+Implamentation of K-ward algorithm.
+
+## Metric_Learning
+Learning metrics's which can be used in PAD.
+Available is implementation for linear and nonlinear data.
