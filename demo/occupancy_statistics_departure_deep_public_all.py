@@ -3,6 +3,7 @@ sys.path.append(os.path.abspath("./"))
 sys.path.append(os.path.abspath("./framework"))
 sys.path.append(os.path.abspath("./kward"))
 sys.path.append(os.path.abspath("./metric_learning"))
+sys.path.append(os.path.abspath("./utilities"))
 from helper import Utilities, PerformanceEvaluation
 import pandas as pd
 from user_feedback import Similarity

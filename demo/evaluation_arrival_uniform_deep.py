@@ -2,7 +2,7 @@ import sys;
 import os
 
 sys.path.append(os.path.abspath("./"))
-sys.path.append(os.path.abspath("./framework"))
+sys.path.append(os.path.abspath("./utilities"))
 sys.path.append(os.path.abspath("./kward"))
 sys.path.append(os.path.abspath("./metric_learning"))
 from helper import Utilities, PerformanceEvaluation
@@ -100,7 +100,6 @@ for mc_i in range(len(seed_vec)):
 
         dm = Deep_Metric()
         dm.train(pairdata, pairdata_label)
-
 
         # sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",
         #                                        anonymity_level=anonymity_level,

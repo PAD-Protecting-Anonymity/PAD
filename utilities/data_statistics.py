@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 import pdb
 
-
-
 class OccupancyStatistics:
     '''
     Extract ocupancy statistics from the daily profile

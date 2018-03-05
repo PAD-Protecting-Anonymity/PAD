@@ -24,16 +24,16 @@ To cite the paper:
 - `pandas` 
 - `tensorflow` 
 - `scipy` 
-- `matplotlib`
+- `matplotlib` 
 
 
 # PAD repository
 The repo contains a number of folders:
-- [Dataset](#Dataset)
-- [Demo](#Demo)
+- [Dataset](#dataset)
+- [Demo](#demo)
 - [Utilities](#utilities)
-- [K-ward](#K-ward)
-- [Metric_Learning](#Metric_Learning)
+- [K-ward](#k-ward)
+- [Metric_Learning](#metric_Learning)
 
 ## Dataset
 Datasets made available for showcasing PAD.

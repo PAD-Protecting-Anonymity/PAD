@@ -67,7 +67,7 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
     # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
     lm = Linear_Metric()
     lm.train(data_pair, similarity_label)
-
+    
     dm = Deep_Metric()
     dm.train(data_pair, similarity_label)
 

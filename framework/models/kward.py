@@ -1,17 +1,13 @@
 import numpy as np
 import pandas as pd
-from sklearn.neighbors.dist_metrics import DistanceMetric
-
-from data_statistics import UtilityOccupancyStatistics
-
 np.random.seed(0)
 
 
-class K_ward:
+class K_ward():
     """
     K-ward algorithm
     """
-    def __init__(self, data, distance_metric,k,rep_mode,**kwargs):
+    def __init__(self, data, distance_metric_type,k,rep_mode,**kwargs):
         self.data = data # dataset where each row corresponds to an individual
         self.datasize = data.shape[0] # the number of indivduals contained in the database
         self.k = k # anonymity level
@@ -19,78 +15,33 @@ class K_ward:
         self.group_num = 0
         self.upperbound = 2*self.k
         self.lowerbound = self.k
-        self.distance_metric = distance_metric
-        if self.distance_metric == 'self-defined':
-            self.stat_util = Distance()
+        self.distance_metric_type = distance_metric_type
+        # if self.distance_metric == 'self-defined':
+        #     self.stat_util = Distance()
         self.rep_mode = rep_mode
         self.cards = []
         self.kwargs = kwargs
 
-        if distance_metric == 'mahalanobis':
-            self.VI = kwargs['VI']
-        if distance_metric == 'deep':
-            self.dm = kwargs['deep_model']
-        if distance_metric == 'self-defined':
-            self.mode = kwargs['mode']
-            if self.mode == 'window-usage':
-                self.window = kwargs['window']
-            elif self.mode == 'segment':
-                self.window = kwargs['window']
+        # if distance_metric == 'mahalanobis':
+        #     self.VI = kwargs['VI']
+        # if distance_metric == 'deep':
+        #     self.dm = kwargs['deep_model']
+        # if distance_metric == 'self-defined':
+        #     self.mode = kwargs['mode']
+        #     if self.mode == 'window-usage':
+        #         self.window = kwargs['window']
+        #     elif self.mode == 'segment':
+        #         self.window = kwargs['window']
 
     def get_distance(self, d_profile_data):
         """
         Given the day profile, return the pairwise distance between each of the two individual series
         """
-        data = d_profile_data.copy()
-        data = data.fillna(0)
-        data = data.as_matrix()
-        data_size = data.shape[0]
-        if self.distance_metric != 'self-defined':
-            if self.distance_metric == 'euclidean':
-                dist = DistanceMetric.get_metric('euclidean')
-            elif self.distance_metric == 'mahalanobis':
-                dist = DistanceMetric.get_metric('mahalanobis', VI=self.VI)
-            elif self.distance_metric == 'deep':
-                dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
-            distance = dist.pairwise(data)
-
+        df = None
+        if self.distance_metric_type == "init":
+            df= self.kwargs["initProfile"].get_distance(d_profile_data)
         else:
-            distance = np.empty((data_size,data_size))
-            cols = d_profile_data.columns
-
-            for i in range(data_size):
-                df1 = data[i, :]
-                for j in range(data_size):
-                    df2 = data[j,:]
-                    if i > j:
-                        distance[i,j] = distance[j,i]
-                        continue
-                    elif i == j:
-                        distance[i,j] = 0
-                        continue
-                    if self.mode == 'window-usage':
-                        distance[i, j] = self.stat_util.get_statistic_distance(df1, df2, index=cols,
-                                                                            mode=self.mode,window=self.window)
-                    elif self.mode == 'segment':
-                        distance[i, j] = self.stat_util.get_statistic_distance(df1, df2, index=cols,
-                                                                            mode=self.mode, window=self.window)
-                    else:
-                        distance[i,j] = self.stat_util.get_statistic_distance(df1,df2,index=cols,mode=self.mode)
-
-        df = pd.DataFrame(distance)
-        df.columns = d_profile_data.index
-        df.index = d_profile_data.index
-
-        distance = df
-        x, y = np.meshgrid(distance.index, distance.columns)
-        df = pd.DataFrame(columns=["x", "y", "distance"])
-        df["x"] = y.ravel()
-        df["y"] = x.ravel()
-        df["distance"] = distance.as_matrix().ravel()
-
-        df = df[df["x"] != df["y"]]
-        df = df.sort_values('distance')
-        df.distance.loc[np.isnan(df.distance)] = 0
+            df= self.kwargs["metric"].get_distance(d_profile_data)
         return df
 
     def add_group(self,group):
@@ -191,19 +142,12 @@ class K_ward:
             recurse_df = recurse_group.get_dataframe()
             if len(recurse_df) < self.upperbound:
                 print("error")
-            recurse_kward = K_ward(data=recurse_df,k=self.k,distance_metric=self.distance_metric,
+            recurse_kward = K_ward(data=recurse_df,k=self.k,distance_metric_type=self.distance_metric_type,
                                    rep_mode = self.rep_mode,**self.kwargs)
             recurse_kward.get_cluster()
             new_groups = recurse_kward.groups
             self.replace(recurse_id,new_groups)
             card_status = [card >= self.upperbound for card in self.cards]
-
-    def deep_metric(self, x, y):
-        # x, y = self.dm.transform((x,y))
-        # dist = np.linalg.norm(x-y)
-        dist = self.dm.transform((x,y))
-        # print(dist)
-        return dist
 
 class Group:
     def __init__(self, id=None, data=None, rep_mode="mean"):
@@ -259,30 +203,29 @@ class Group:
         df = pd.DataFrame().from_dict(self.member).transpose()
         return df
 
-
-class Distance:
-    def get_statistic_distance(self,x_df1,x_df2,index,mode,**kwargs):
-        util = UtilityOccupancyStatistics()
-        if mode == "arrival":
-            stat1 = util.compute_arrival_time(x_df1,index,1)
-            stat2 = util.compute_arrival_time(x_df2,index,1)
-            dist = abs(stat1-stat2)
-        elif mode == "departure":
-            stat1 = util.compute_departure_time(x_df1, index,1)
-            stat2 = util.compute_departure_time(x_df2, index,1)
-            dist = abs(stat1-stat2)
-        elif mode == "usage":
-            stat1 = util.compute_total_usage(x_df1, index)
-            stat2 = util.compute_total_usage(x_df2, index)
-            dist = abs(stat1-stat2)
-        elif mode == "window-usage":
-            window = kwargs['window']
-            stat1 = util.compute_window_usage(x_df1, index,window)
-            stat2 = util.compute_window_usage(x_df2, index,window)
-            dist = abs(stat1-stat2)
-        elif mode == "segment":
-            window = kwargs['window']
-            stat1 = util.compute_window(x_df1, index,window)
-            stat2 = util.compute_window(x_df2, index,window)
-            dist = np.linalg.norm(stat1-stat2)
-        return dist
+# class Distance:
+#     def get_statistic_distance(self,x_df1,x_df2,index,mode,**kwargs):
+#         util = UtilityOccupancyStatistics()
+#         if mode == "arrival":
+#             stat1 = util.compute_arrival_time(x_df1,index,1)
+#             stat2 = util.compute_arrival_time(x_df2,index,1)
+#             dist = abs(stat1-stat2)
+#         elif mode == "departure":
+#             stat1 = util.compute_departure_time(x_df1, index,1)
+#             stat2 = util.compute_departure_time(x_df2, index,1)
+#             dist = abs(stat1-stat2)
+#         elif mode == "usage":
+#             stat1 = util.compute_total_usage(x_df1, index)
+#             stat2 = util.compute_total_usage(x_df2, index)
+#             dist = abs(stat1-stat2)
+#         elif mode == "window-usage":
+#             window = kwargs['window']
+#             stat1 = util.compute_window_usage(x_df1, index,window)
+#             stat2 = util.compute_window_usage(x_df2, index,window)
+#             dist = abs(stat1-stat2)
+#         elif mode == "segment":
+#             window = kwargs['window']
+#             stat1 = util.compute_window(x_df1, index,window)
+#             stat2 = util.compute_window(x_df2, index,window)
+#             dist = np.linalg.norm(stat1-stat2)
+#         return dist
