@@ -8,9 +8,24 @@ import pandas as pd
 
 class GlobalSimularity(BaseSimularity):
 
-    def __init__(self, sampling_frequency,output_genelaraty, genelaraty_mode, data_window=None, distance_metric=SimularityTerms.EUCLIDEAN,**kwargs):
+
+    '''
+    distance_metric can 
+    EUCLIDEAN,
+    MAHALAOBIS = "mahalanobis"
+    CHEBYSHEV = "chebyshev"
+    MANHATTAN = "manhattan"
+    MINKOWSKI = "minkowski"
+    WMINKOWSKI = "wminkowski"
+    SEUCLIDEAN = "seuclidean"
+    CUSTOM: add FUNC to calc the distance
+    '''
+    def __init__(self, sampling_frequency,output_genelaraty, genelaraty_mode, data_window=None,**kwargs):
         super().__init__(SimularityTerms.GLOBAL,sampling_frequency,output_genelaraty, genelaraty_mode=genelaraty_mode, data_window=data_window)
-        self.distance_metric = distance_metric
+        if "distance_metric" in kwargs and kwargs["distance_metric"] is not None:
+            self.distance_metric = kwargs["distance_metric"]
+        else:
+            self.distance_metric = SimularityTerms.EUCLIDEAN
         self.kwargs = kwargs
 
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):
