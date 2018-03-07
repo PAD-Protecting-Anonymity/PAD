@@ -30,8 +30,6 @@ class Deep_Metric:
 
     def __init__(self, mode = "non_linear"):
         self.mode = "linear"
-        
-
         self.batch_size = 10
         self.epochs = 200
 

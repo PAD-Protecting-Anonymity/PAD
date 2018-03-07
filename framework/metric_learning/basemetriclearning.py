@@ -2,8 +2,10 @@ import numpy as np
 import pandas as pd
 
 class BaseMetriLearming():
-    def __init__(self, **kwargs):
-        raise NotImplementedError('users must define train in class to use this base class')
+    def __init__(self,metric_learning_terms, **kwargs):
+        if self.__class__ == BaseMetriLearming:
+            raise Exception('abstract class')
+        self.metric_learning_terms = metric_learning_terms
 
     def train(self, data_pairs, similarity_labels,**kwargs):
         raise NotImplementedError('users must define train in class to use this base class')

@@ -3,6 +3,7 @@ from similarity.simularatielist import SimularatieList
 from similarity.similarity import Similarity
 from models.kward import K_ward
 from metric_learning.linearmetric import Linear_Metric
+from metric_learning.nonlineardeepmetric import NonlinearDeepMetric
 from scipy.misc import comb
 
 import pandas as pd
@@ -27,9 +28,9 @@ class Framwork:
         raise NotImplementedError('NotImplemented')
     
     def _find_Metric_Leaning(self,data_pair,similarity_label):
-        lm = Linear_Metric()
-        lm.train(data_pair, similarity_label)
-        return lm
+        nonlm = NonlinearDeepMetric()
+        nonlm.train(data_pair, similarity_label)
+        return nonlm
 
     def _find_Model(self, data):
         # TODO: make my
@@ -76,17 +77,18 @@ class Framwork:
 
     def run(self):
         presenitized_data = self._presanitized()
+        loss_presenitized=  self.simularatie_list.get_statistics_loss(presenitized_data,self.data)
+        print("information loss with presenitized %s" % loss_presenitized)
         similarity_label, data_subsample = self._subsample(presenitized_data)
         model = self._find_Metric_Leaning(data_subsample,similarity_label)
         final_samitized_data = self._sanitize_data(data = self.data, distance_metric_type="metric", rep_mode = "mean",
                         anonymity_level=self.anonymity_level,metric=model)
+        loss_metric=  self.simularatie_list.get_statistics_loss(final_samitized_data,self.data)
+        print("information loss with nonlm metric %s" % loss_metric)
+        nonlm = Linear_Metric()
+        nonlm.train(data_subsample, similarity_label)
+        final_samitized_data = self._sanitize_data(data = self.data, distance_metric_type="metric", rep_mode = "mean",
+                        anonymity_level=self.anonymity_level,metric=model)
+        loss_metric=  self.simularatie_list.get_statistics_loss(final_samitized_data,self.data)
+        print("information loss with Linear_Metric metric %s" % loss_metric)
         return final_samitized_data
-        
-
-
-    
-
-        
-        
-        
-        

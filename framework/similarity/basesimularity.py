@@ -4,7 +4,7 @@ import numpy as np
 
 class BaseSimularity():
     """"""
-    def __init__(self, simularity_type,sampling_frequency,output_genelaraty, data_window=None, genelaraty_mode=None):
+    def __init__(self, simularity_type,sampling_frequency,output_genelaraty, data_window=None, genelaraty_mode=None,**kwargs):
         if self.__class__ == BaseSimularity:
             raise Exception('abstract class')
         self.simularity_type = simularity_type
@@ -27,7 +27,6 @@ class BaseSimularity():
         if (self.sampling_frequency is None):
             raise NotImplementedError('users must define sampling_frequency')
         return self.sampling_frequency
-
 
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):
         raise NotImplementedError('users must define get_information_loss in class to use this base class')

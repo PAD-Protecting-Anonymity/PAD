@@ -1,25 +1,40 @@
+'''Trains a simple deep NN on the MNIST dataset.
+Gets to 98.40% test accuracy after 20 epochs
+(there is *a lot* of margin for parameter tuning).
+2 seconds per epoch on a K520 GPU.
+'''
+
+# from __future__ import print_function
+
 from metric_learning.basemetriclearning import BaseMetriLearming
 from metric_learning.metriclearningterms import MetricLearningTerms
 
-from sklearn.preprocessing import StandardScaler
-import keras
+import copy
 import numpy as np
+import numpy.random as rng
+import pandas as pd
+import keras
 from keras.models import Sequential, Model
-from keras.optimizers import RMSprop, Adam
 from keras.layers import Dense, Dropout, Activation, Add, Merge, Input, merge
+from keras.optimizers import RMSprop, Adam
+from keras.preprocessing import sequence
 from keras import backend as K
+from keras.layers.normalization import BatchNormalization
+from keras.callbacks import ModelCheckpoint
+from keras.regularizers import l2
+from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors.dist_metrics import DistanceMetric
 
-class Linear_Metric(BaseMetriLearming):
 
+class NonlinearDeepMetric(BaseMetriLearming):
     def __init__(self, **kwargs):
-        super().__init__(MetricLearningTerms.LINEAR)
+        super().__init__(MetricLearningTerms.NONLINEAR)
         self.kwargs = kwargs
-        
-    def train(self, data_pairs, similarity_labels,**kwargs):
-        self.scaler = StandardScaler()
         self.batch_size = 10
         self.epochs = 4
+
+    def train(self, data_pairs, similarity_labels,**kwargs):
+        self.scaler = StandardScaler()
         X1 = []
         X2 = []
         for x, y in data_pairs:
@@ -31,7 +46,7 @@ class Linear_Metric(BaseMetriLearming):
 
         train_portion = 0.8
         input_shape = data_pairs[0][0].shape
-        # kernels = int(round(input_shape[0]))
+
         kernels = 100
         s_size = len(similarity_labels)
         x1_train = X1[:int(s_size * train_portion)]
@@ -47,22 +62,19 @@ class Linear_Metric(BaseMetriLearming):
 
         left_input = Input(input_shape)
         right_input = Input(input_shape)
+        
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
+        # model.add(Dense(kernels, activation='relu', input_shape = input_shape, kernel_regularizer=l2(2e-4)))
+        # model.add(Dense(kernels, activation='relu', kernel_regularizer=l2(2e-4)))
+        # model.add(Dense(kernels, activation='sigmoid', kernel_regularizer=l2(1e-3)))
 
-        # model.add(Dense(kernels, input_shape = input_shape))
-        # model.add(Dense(kernels))
-        # model.add(Dense(kernels))
-
-        model.add(Dense(kernels, activation='linear', input_shape = input_shape))
+        model.add(Dense(kernels, activation='relu', input_shape = input_shape))
         model.add(Dropout(0.2))
-        model.add(Dense(kernels, activation='linear'))
+        model.add(Dense(kernels, activation='relu'))
         model.add(Dropout(0.2))
-        model.add(Dense(kernels, activation='linear'))
+        model.add(Dense(kernels, activation='sigmoid'))
 
-        # model.add(Dense(kernels,  input_shape = input_shape, kernel_regularizer=l2(2e-4)))
-        # model.add(Dense(kernels,  kernel_regularizer=l2(2e-4)))
-        # model.add(Dense(kernels,  kernel_regularizer=l2(1e-3)))
 
         #encode each of the two inputs into a vector with the model
         encoded_l = model(left_input)
@@ -71,12 +83,10 @@ class Linear_Metric(BaseMetriLearming):
         #merge two encoded inputs with the l1 distance between them
         L1_distance = lambda x: K.abs(x[0]-x[1])
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
-        prediction = Dense(number_classes)(both)
+        prediction = Dense(number_classes,activation='sigmoid')(both)
         siamese_net = Model(input=[left_input,right_input],output=prediction)
 
-        # optimizer = Adam(0.00006)
         optimizer = RMSprop()
-        # siamese_net.compile(loss="binary_crossentropy", optimizer=optimizer)
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
     
         siamese_net.count_params()
@@ -94,10 +104,11 @@ class Linear_Metric(BaseMetriLearming):
         y_train = keras.utils.to_categorical(similarity_labels, number_classes)
 
         data = np.append(x1_train, x2_train, axis=0)
-        
+
         self.scaler.fit(data)
         x1_train = self.scaler.transform(x1_train)
         x2_train = self.scaler.transform(x2_train)
+
 
         history = siamese_net.fit([x1_train, x2_train], y_train,
                             batch_size=self.batch_size,
@@ -115,11 +126,12 @@ class Linear_Metric(BaseMetriLearming):
         self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]]) 
         self.functor2 = K.function([inp2]+ [K.learning_phase()], [func[1]])
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
-
+    
     def transform(self, data_pairs):
         x, y = data_pairs
         x = self.scaler.transform(np.array([x]))
         y = self.scaler.transform(np.array([y]))
+
         distance = self.functor3([*[x, y], 1.])
         return distance[0].mean()
 
@@ -127,6 +139,7 @@ class Linear_Metric(BaseMetriLearming):
         margin = 1
         return K.mean((1-y_true) * 0.5 * K.square(y_pred) + 0.5 * y_true * K.square(K.maximum(margin - y_pred, 0)))
 
+    
     def penalized_loss(self, branch1, branch2):
         def loss(y_true, y_pred):
             return K.mean(K.square(y_pred - y_true) - K.square(y_true - y_pred), axis=-1)
@@ -151,12 +164,13 @@ class Linear_Metric(BaseMetriLearming):
         return K.variable(values,name=name)
 
     def deep_metric(self, x, y):
+        # x, y = self.dm.transform((x,y))
+        # dist = np.linalg.norm(x-y)
         dist = self.transform((x,y))
+        # print(dist)
         return dist
 
     def get_distance(self,data):
         dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
         distance = dist.pairwise(data)
         return super().compute_distance(distance,data.index)
-
-
