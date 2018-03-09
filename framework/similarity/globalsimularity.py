@@ -20,8 +20,8 @@ class GlobalSimularity(BaseSimularity):
     SEUCLIDEAN = "seuclidean"
     CUSTOM: add FUNC to calc the distance
     '''
-    def __init__(self, sampling_frequency,output_genelaraty, genelaraty_mode, data_window=None,**kwargs):
-        super().__init__(SimularityTerms.GLOBAL,sampling_frequency,output_genelaraty, genelaraty_mode=genelaraty_mode, data_window=data_window)
+    def __init__(self, sampling_frequency,output_frequency, genelaraty_mode, datatype,data_window=None,**kwargs):
+        super().__init__(SimularityTerms.GLOBAL,sampling_frequency,output_frequency,datatype, genelaraty_mode=genelaraty_mode, data_window=data_window)
         if "distance_metric" in kwargs and kwargs["distance_metric"] is not None:
             self.distance_metric = kwargs["distance_metric"]
         else:

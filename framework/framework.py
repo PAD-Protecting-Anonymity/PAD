@@ -5,6 +5,7 @@ from models.kward import K_ward
 from metric_learning.linearmetric import Linear_Metric
 from metric_learning.nonlineardeepmetric import NonlinearDeepMetric
 from scipy.misc import comb
+from utilities.outputgroupper import OutputGroupper
 
 import pandas as pd
 
@@ -79,16 +80,18 @@ class Framwork:
         presenitized_data = self._presanitized()
         loss_presenitized=  self.simularatie_list.get_statistics_loss(presenitized_data,self.data)
         print("information loss with presenitized %s" % loss_presenitized)
-        similarity_label, data_subsample = self._subsample(presenitized_data)
-        model = self._find_Metric_Leaning(data_subsample,similarity_label)
-        final_samitized_data = self._sanitize_data(data = self.data, distance_metric_type="metric", rep_mode = "mean",
-                        anonymity_level=self.anonymity_level,metric=model)
-        loss_metric=  self.simularatie_list.get_statistics_loss(final_samitized_data,self.data)
-        print("information loss with nonlm metric %s" % loss_metric)
-        nonlm = Linear_Metric()
-        nonlm.train(data_subsample, similarity_label)
-        final_samitized_data = self._sanitize_data(data = self.data, distance_metric_type="metric", rep_mode = "mean",
-                        anonymity_level=self.anonymity_level,metric=model)
-        loss_metric=  self.simularatie_list.get_statistics_loss(final_samitized_data,self.data)
-        print("information loss with Linear_Metric metric %s" % loss_metric)
-        return final_samitized_data
+        print("amount of samples presenitized_data  %s" % len(presenitized_data))
+        # similarity_label, data_subsample = self._subsample(presenitized_data)
+        # model = self._find_Metric_Leaning(data_subsample,similarity_label)
+        # final_samitized_data = self._sanitize_data(data = self.data, distance_metric_type="metric", rep_mode = "mean",
+        #                 anonymity_level=self.anonymity_level,metric=model)
+        # loss_metric=  self.simularatie_list.get_statistics_loss(final_samitized_data,self.data)
+        # print("information loss with nonlm metric %s" % loss_metric)
+        # lm = Linear_Metric()
+        # lm.train(data_subsample, similarity_label)
+        # final_samitized_data = self._sanitize_data(data = self.data, distance_metric_type="metric", rep_mode = "mean",
+        #                 anonymity_level=self.anonymity_level,metric=lm)
+        # loss_metric=  self.simularatie_list.get_statistics_loss(final_samitized_data,self.data)
+        # print("information loss with Linear_Metric metric %s" % loss_metric)
+        transformed_data = OutputGroupper(self.simularatie_list).transform_data(presenitized_data)
+        return transformed_data

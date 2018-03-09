@@ -4,24 +4,25 @@ import numpy as np
 
 class BaseSimularity():
     """"""
-    def __init__(self, simularity_type,sampling_frequency,output_genelaraty, data_window=None, genelaraty_mode=None,**kwargs):
+    def __init__(self, simularity_type,sampling_frequency,output_frequency,data_type, data_window=None, genelaraty_mode=None,**kwargs):
         if self.__class__ == BaseSimularity:
             raise Exception('abstract class')
         self.simularity_type = simularity_type
         self.sampling_frequency = sampling_frequency
-        self.output_genelaraty = output_genelaraty
+        self.output_frequency = output_frequency
         self.genelaraty_mode = genelaraty_mode
         self.data_window = data_window
+        self.data_type = data_type
         
     def get_simularity_type(self):
         if (self.simularity_type is None):
             raise NotImplementedError('users must define simularity_type')
         return self.simularity_type
 
-    def get_output_genelaraty(self):
-        if (self.output_genelaraty is None):
-            raise NotImplementedError('users must define output_genelaraty')
-        return self.output_genelaraty
+    def get_output_frequency(self):
+        if (self.output_frequency is None):
+            raise NotImplementedError('users must define output_frequency')
+        return self.output_frequency
 
     def get_sampling_frequency(self):
         if (self.sampling_frequency is None):
