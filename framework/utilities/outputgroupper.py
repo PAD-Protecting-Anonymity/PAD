@@ -12,18 +12,19 @@ class OutputGroupper:
         output_data = pd.DataFrame(index=data.index)
         index_data_insert = 0
         for simularatie in self.simularatie_List.simularaties:
-            input_output_factor =  simularatie.output_frequency/simularatie.sampling_frequency
-            amount_of_slices = math.ceil(len(data.columns) / input_output_factor)
+            input_output_factor =  simularatie.data_desciiptor.output_frequency/simularatie.data_desciiptor.sampling_frequency
+            amount_of_samples_in_slice = simularatie.data_desciiptor.data_end_index - simularatie.data_desciiptor.data_start_index
+            amount_of_slices = math.floor(amount_of_samples_in_slice / input_output_factor) #Floor to ensure that we do not groups for small data amounts
             for i in range(amount_of_slices):
                 data_slice_index_start = int(input_output_factor*i)
                 data_slice_index_start_end = int(input_output_factor*(i+1))
                 data_slices = data.iloc[:,data_slice_index_start:data_slice_index_start_end]
                 tm = None
-                if simularatie.data_type == SimularityTerms.BOOLAEN:
+                if simularatie.data_desciiptor.data_type == SimularityTerms.BOOLAEN:
                     tm = OutoutGroupperBoolean()
-                elif simularatie.data_type == SimularityTerms.NUMBER:
+                elif simularatie.data_desciiptor.data_type == SimularityTerms.NUMBER:
                     tm = OutoutGroupperNumber()
-                transfomred_data = tm.transform(data_slices,simularatie.genelaraty_mode)
+                transfomred_data = tm.transform(data_slices,simularatie.data_desciiptor.genelaraty_mode)
                 output_data[str(index_data_insert)] = transfomred_data
                 # output_data = output_data(index_data_insert=transfomred_data)
                 index_data_insert += 1

@@ -4,15 +4,12 @@ import numpy as np
 
 class BaseSimularity():
     """"""
-    def __init__(self, simularity_type,sampling_frequency,output_frequency,data_type, data_window=None, genelaraty_mode=None,**kwargs):
+    def __init__(self, simularity_terms, data_desciiptor, data_window=None,**kwargs):
         if self.__class__ == BaseSimularity:
             raise Exception('abstract class')
-        self.simularity_type = simularity_type
-        self.sampling_frequency = sampling_frequency
-        self.output_frequency = output_frequency
-        self.genelaraty_mode = genelaraty_mode
+        self.simularity_terms = simularity_terms
+        self.data_desciiptor = data_desciiptor
         self.data_window = data_window
-        self.data_type = data_type
         
     def get_simularity_type(self):
         if (self.simularity_type is None):

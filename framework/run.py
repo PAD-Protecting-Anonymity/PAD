@@ -5,9 +5,10 @@ sys.path.insert(0,os.path.abspath("./"))
 # sys.path.append(os.path.abspath("/framework/simulraty"))
 from framework.framework import Framwork
 from framework.similarity import arrivalsimularity
-from framework.similarity import segmentsimularity
+from framework.similarity.segmentsimularity import SegmentSimularity
 from framework.similarity import globalsimularity
-from framework.similarity import simularityterms
+from framework.similarity.simularityterms import SimularityTerms
+from framework.utilities.datadescriptor import DataDescriptor
 import pandas as pd
 
 data = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
@@ -21,12 +22,17 @@ anonymity_level = 2
 
 framework = Framwork(data,amount_Of_Variables,anonymity_level)
 
-sampling_frequency = simularityterms.SimularityTerms.MINUE
-output_genelaraty = simularityterms.SimularityTerms.QUARETER
-genelaraty_mode = simularityterms.SimularityTerms.MODE
-data_type = simularityterms.SimularityTerms.NUMBER
+sampling_frequency = SimularityTerms.MINUE
+output_genelaraty = SimularityTerms.QUARETER
+genelaraty_mode = SimularityTerms.MODE
+data_type = SimularityTerms.NUMBER
 
-test = segmentsimularity.SegmentSimularity(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,data_window=[10,15])
-framework.add_simularatie(test)
-# framework.add_simularatie(test)
+dd = DataDescriptor(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,0,30)
+dd1 = DataDescriptor(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,31,60)
+
+segmentedData = SegmentSimularity(dd,[10,15])
+segmentedData1 = SegmentSimularity(dd1,[10,15])
+
+framework.add_simularatie(segmentedData)
+framework.add_simularatie(segmentedData1)
 framework.run()
