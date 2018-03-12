@@ -11,25 +11,7 @@ class SimularityTerms:
     TOTAL = "total" #used to sum a time series counter
     WINDOW_TOTAL = "window-total"  #used to sum a time series counter in window
 
-    #Genelaraty
-    # EVENT = "event"
-    SECOND = 1
-    MINUE = 60
-    QUARETER = 900
-    HALFHOUR = 1800
-    HOUR = 3600
-    DAY = 86400
-
-    #Genelaraty Mode
-    MEAN = "mean"
-    MODE = "mode"
-    MEDIAN = "median"    
-    MIN = "min"
-    MAX = "max"
-
-    #Datatypes
-    NUMBER = "number"
-    BOOLAEN = "boolean"
+    
 
     #Global distance_metric
     EUCLIDEAN = "euclidean"
@@ -40,8 +22,3 @@ class SimularityTerms:
     WMINKOWSKI = "wminkowski"
     SEUCLIDEAN = "seuclidean"
     CUSTOM = "custom"
-    
-    
-    
-    
-    

@@ -2,34 +2,65 @@ import statistics
 import numpy as np
 import pandas as pd
 import math
-from similarity.simularityterms import SimularityTerms
+from utilities.datadescriptor import DataDescriptorTerms
+from framework.utilities.datadescriptor import DataDescriptorBase, DataDescriptorMetadata, DataDescriptorTimeSerice
 
 class OutputGroupper:
-    def __init__(self,simularatie_List):
-        self.simularatie_List = simularatie_List
+    def __init__(self,dataset_descriptions):
+        self.dataset_descriptions = dataset_descriptions
 
     def transform_data(self,data):
-        output_data = pd.DataFrame(index=data.index)
+        output_data = pd.DataFrame()
         index_data_insert = 0
-        for simularatie in self.simularatie_List.simularaties:
-            input_output_factor =  simularatie.data_desciiptor.output_frequency/simularatie.data_desciiptor.sampling_frequency
-            amount_of_samples_in_slice = simularatie.data_desciiptor.data_end_index - simularatie.data_desciiptor.data_start_index
-            amount_of_slices = math.floor(amount_of_samples_in_slice / input_output_factor) #Floor to ensure that we do not groups for small data amounts
+        for dataset_description in self.dataset_descriptions:
+            if isinstance(dataset_description, DataDescriptorTimeSerice):
+                index_data_insert = self.transform_data_time_serices(data,dataset_description,index_data_insert,output_data)
+            elif isinstance(dataset_description, DataDescriptorMetadata):
+                index_data_insert = self.transform_data_metadata(data,dataset_description,index_data_insert,output_data)
+        print(output_data)
+        return output_data
+        
+    def transform_data_metadata(self,data,dataset_description,index_data_insert,output_data):
+        data_slice_index_start = dataset_description.data_start_index
+        data_slice_index_end = dataset_description.data_end_index
+        data_slices = None
+        if data_slice_index_start == data_slice_index_end:
+            data_slices = data.iloc[:,data_slice_index_start]        
+        else:
+            data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end]
+        output_data[str(index_data_insert)] = data_slices
+        index_data_insert += 1
+        return index_data_insert
+
+    def transform_data_time_serices(self,data,dataset_description,index_data_insert,output_data):
+        input_output_factor =  dataset_description.output_frequency/dataset_description.sampling_frequency
+        amount_of_samples_in_slice = (dataset_description.data_end_index - dataset_description.data_start_index)+1
+        amount_of_slices = math.floor(amount_of_samples_in_slice / input_output_factor) #Floor to ensure that we do not groups for small data amounts
+        if amount_of_slices > 1:
             for i in range(amount_of_slices):
                 data_slice_index_start = int(input_output_factor*i)
-                data_slice_index_start_end = int(input_output_factor*(i+1))
-                data_slices = data.iloc[:,data_slice_index_start:data_slice_index_start_end]
+                data_slice_index_end = int(input_output_factor*(i+1))
+                data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end]
                 tm = None
-                if simularatie.data_desciiptor.data_type == SimularityTerms.BOOLAEN:
+                if dataset_description.data_type == DataDescriptorTerms.BOOLAEN:
                     tm = OutoutGroupperBoolean()
-                elif simularatie.data_desciiptor.data_type == SimularityTerms.NUMBER:
+                elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                     tm = OutoutGroupperNumber()
-                transfomred_data = tm.transform(data_slices,simularatie.data_desciiptor.genelaraty_mode)
+                transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
                 output_data[str(index_data_insert)] = transfomred_data
-                # output_data = output_data(index_data_insert=transfomred_data)
                 index_data_insert += 1
-        return output_data
-
+        elif amount_of_slices <= 1:
+            data_slice_index_start = dataset_description.data_start_index
+            data_slice_index_end = dataset_description.data_end_index
+            data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end]
+            if dataset_description.data_type == DataDescriptorTerms.BOOLAEN:
+                tm = OutoutGroupperBoolean()
+            elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
+                tm = OutoutGroupperNumber()
+            transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
+            output_data[str(index_data_insert)] = transfomred_data
+            index_data_insert += 1
+        return index_data_insert
 
 class OutoutGroupperTypeBase:
     def __init__(self):
@@ -38,15 +69,15 @@ class OutoutGroupperTypeBase:
 
     def transform(self,data_slices, genelaraty_mode):
         data_out = None
-        if genelaraty_mode == SimularityTerms.MEAN:
+        if genelaraty_mode == DataDescriptorTerms.MEAN:
             data_out = self._transform_mean(data_slices)
-        elif genelaraty_mode == SimularityTerms.MEDIAN:
+        elif genelaraty_mode == DataDescriptorTerms.MEDIAN:
             data_out = self._transform_median(data_slices)
-        elif genelaraty_mode == SimularityTerms.MIN:
+        elif genelaraty_mode == DataDescriptorTerms.MIN:
             data_out = self._transform_min(data_slices)
-        elif genelaraty_mode == SimularityTerms.MAX:
+        elif genelaraty_mode == DataDescriptorTerms.MAX:
             data_out = self._transform_max(data_slices)
-        elif genelaraty_mode == SimularityTerms.MODE:
+        elif genelaraty_mode == DataDescriptorTerms.MODE:
             data_out = self._transform_mode(data_slices)
         return data_out
     

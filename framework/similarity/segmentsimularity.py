@@ -7,8 +7,8 @@ class SegmentSimularity(BaseSimularity):
     '''
 
     '''
-    def __init__(self, data_desciiptor, data_window,**kwargs):
-        super().__init__(SimularityTerms.SEGMENT,data_desciiptor, data_window)
+    def __init__(self, data_window,**kwargs):
+        super().__init__(SimularityTerms.SEGMENT, data_window)
         self.kwargs = kwargs
 
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):

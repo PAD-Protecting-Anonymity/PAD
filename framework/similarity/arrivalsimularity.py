@@ -9,7 +9,7 @@ class ArrivalSimularity(BaseSimularity):
     '''
 
     '''
-    def __init__(self, data_desciiptor, data_window,**kwargs):
+    def __init__(self, data_desciiptor, data_window=None,**kwargs):
         super().__init__(SimularityTerms.ARRIVAL,data_desciiptor, data_window=data_window)
         self.kwargs = kwargs
 

@@ -25,7 +25,7 @@ class Similarity:
 
     def extract_interested_attribute(self,simularaties):
         data_interested = None
-        for simularatie in simularaties:
+        for simularatie in simularaties: #Problem
             temp_data_interested = simularatie.get_statistics(self.dataSubsample)            
             if data_interested is not None:
                 data_interested = data_interested + temp_data_interested                
