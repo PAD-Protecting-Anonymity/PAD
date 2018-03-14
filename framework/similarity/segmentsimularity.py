@@ -2,13 +2,15 @@ from similarity.simularityterms import SimularityTerms
 from similarity.basesimularity import BaseSimularity
 import numpy as np
 import pandas as pd
+import math
+
 
 class SegmentSimularity(BaseSimularity):
     '''
 
     '''
-    def __init__(self, data_window,**kwargs):
-        super().__init__(SimularityTerms.SEGMENT, data_window)
+    def __init__(self, data_descriptor, data_window,**kwargs):
+        super().__init__(SimularityTerms.SEGMENT,data_descriptor, data_window)
         self.kwargs = kwargs
 
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):
@@ -20,8 +22,12 @@ class SegmentSimularity(BaseSimularity):
         return err_sum_sqrt
 
     def get_statistics_distance(self, sample1, sample2, **kwargs):
-        stat1 = self.compute_segment(sample1,kwargs["index"],self.data_window)
-        stat2 = self.compute_segment(sample2,kwargs["index"],self.data_window)
+        if self.data_descriptor.data_window_size is None:
+            stat1 = self.compute_segment(sample1,kwargs["index"],self.data_window)
+            stat2 = self.compute_segment(sample2,kwargs["index"],self.data_window)
+        else:
+            stat1 = self.compute_segment_data_window_size(sample1,kwargs["index"],self.data_window,self.data_descriptor.data_window_size)
+            stat2 = self.compute_segment_data_window_size(sample2,kwargs["index"],self.data_window,self.data_descriptor.data_window_size)
         dist = np.linalg.norm(stat1-stat2)
         return dist
 
@@ -60,4 +66,16 @@ class SegmentSimularity(BaseSimularity):
             x = list(x)
         df = x[win_start:win_end]
         return df
-        
+    
+    def compute_segment_data_window_size(self,x,index, window,data_window_size):
+        amount_of_colums = x.size
+        amount_of_slices = math.floor(amount_of_colums/data_window_size)
+        df = None
+        for i in range(0,amount_of_slices):
+            data_slice = x[data_window_size*i:data_window_size*(i+1)]
+            restult =self.compute_segment(data_slice,index,window)
+            if df is not None:
+                df = np.append(df,restult)
+            else:
+                df = np.array(restult)
+        return df

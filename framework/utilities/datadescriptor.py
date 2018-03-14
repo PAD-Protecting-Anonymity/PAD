@@ -1,18 +1,21 @@
 class DataDescriptorBase:
-    def __init__(self, data_descriptor_type,data_start_index,data_end_index,data_decription=""):
+    def __init__(self, data_descriptor_type,data_start_index,data_end_index,
+            data_decription=""):
         self.data_descriptor_type = data_descriptor_type
         self.data_start_index = data_start_index
         self.data_end_index = data_end_index
         self.data_decription = data_decription
 
 class DataDescriptorTimeSerice(DataDescriptorBase):
-    def __init__(self, sampling_frequency,output_frequency, genelaraty_mode,data_type,data_start_index,data_end_index,simularity,data_decription=""):
+    def __init__(self, sampling_frequency,output_frequency, genelaraty_mode,data_type,
+            data_start_index,data_end_index,
+            data_window_size= None, data_decription=""):
         super().__init__(DataDescriptorTerms.TIMESEICE,data_start_index,data_end_index,data_decription)
         self.sampling_frequency = sampling_frequency
         self.output_frequency = output_frequency
         self.genelaraty_mode = genelaraty_mode
         self.data_type = data_type
-        self.simularity = simularity
+        self.data_window_size = data_window_size
 
 class DataDescriptorMetadata(DataDescriptorBase):
     def __init__(self,data_start_index,data_end_index=None,data_decription=""):

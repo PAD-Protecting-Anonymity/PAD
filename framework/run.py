@@ -25,16 +25,18 @@ sampling_frequency = DataDescriptorTerms.MINUE
 output_genelaraty = DataDescriptorTerms.QUARETER
 genelaraty_mode = DataDescriptorTerms.MEAN
 data_type = DataDescriptorTerms.NUMBER
+data_window = 15
 
-segmentedData = SegmentSimularity([10,15])
-segmentedData1 = SegmentSimularity([10,15])
+dd = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,0,30,data_window_size=data_window)
+dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,31,61,data_window_size=data_window)
 
-dd = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,0,29,segmentedData)
-dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,30,60,segmentedData1)
-dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,61,74,segmentedData1)
-metaData = DataDescriptorMetadata(75, data_decription= "Meta Data")
+segmentedData = GlobalSimularity(dd,[10,15])
+segmentedData1 = GlobalSimularity(dd1,[10,15])
 
-framework.add_data_descriptor(dd)
-framework.add_data_descriptor(dd1)
-framework.add_data_descriptor(metaData)
+# dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,61,74,segmentedData1)
+metaData = DataDescriptorMetadata(75, data_decription="Meta Data")
+
+framework.add_simularatie(segmentedData)
+framework.add_simularatie(segmentedData1)
+framework.add_meta_data(metaData)
 framework.run()

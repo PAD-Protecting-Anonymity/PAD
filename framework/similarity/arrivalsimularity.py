@@ -3,6 +3,7 @@ from similarity.simularityterms import SimularityTerms
 from similarity.basesimularity import BaseSimularity
 import numpy as np
 import pandas as pd
+import math
 
 class ArrivalSimularity(BaseSimularity):
 
@@ -22,15 +23,33 @@ class ArrivalSimularity(BaseSimularity):
         return err_sum_sqrt
 
     def get_statistics_distance(self, sample1, sample2, **kwargs):
-        if self.data_window is not None:
-            stat1 = self.compute_arrival_time_window(sample1,kwargs["index"],kwargs["flag"],self.data_window)
-            stat2 = self.compute_arrival_time_window(sample2,kwargs["index"],kwargs["flag"],self.data_window)
+        if self.data_descriptor.data_window_size is None:
+            if self.data_window is not None:
+                stat1 = self.compute_arrival_time_window(sample1,kwargs["index"],kwargs["flag"],self.data_window)
+                stat2 = self.compute_arrival_time_window(sample2,kwargs["index"],kwargs["flag"],self.data_window)
+            else:
+                stat1 = self.compute_arrival_time(sample1,kwargs["index"],kwargs["flag"])
+                stat2 = self.compute_arrival_time(sample2,kwargs["index"],kwargs["flag"])
+            dist = abs(stat1-stat2)
         else:
-            stat1 = self.compute_arrival_time(sample1,kwargs["index"],kwargs["flag"])
-            stat2 = self.compute_arrival_time(sample2,kwargs["index"],kwargs["flag"])
-        dist = abs(stat1-stat2)
+            slice_size = self.data_descriptor.data_window_size
+            sample1 = list(sample1)
+            sample2 = list(sample1)
+            amount_of_slices = math.floor(len(sample1) /slice_size)
+            dist = 0
+            for i in range(0,amount_of_slices):
+                index_from = slice_size*i
+                index_to = slice_size*(i+1)
+                if self.data_window is not None:
+                    stat1 = self.compute_arrival_time_window(sample1[index_from:index_to],kwargs["index"],kwargs["flag"],self.data_window)
+                    stat2 = self.compute_arrival_time_window(sample2[index_from:index_to],kwargs["index"],kwargs["flag"],self.data_window)
+                else:
+                    stat1 = self.compute_arrival_time(sample1[index_from:index_to],kwargs["index"],kwargs["flag"])
+                    stat2 = self.compute_arrival_time(sample2[index_from:index_to],kwargs["index"],kwargs["flag"])
+                dist += abs(stat1-stat2)
         return dist
-        
+
+
     def compute_arrival_time_window(self,x,index,flag,window):
         '''
         :return: arrival time
@@ -42,34 +61,20 @@ class ArrivalSimularity(BaseSimularity):
             win_start = window[0]
             win_end = window[1] 
             x = list(x[win_start:win_end])
-        # pdb.set_trace()
-        if x[0] == 0:
-            arrival_time_ind = next((ind for ind, value in enumerate(x) if value > 0), np.nan)
-        elif x[0] > 0:
-            late_morning_dep = next((ind for ind, value in enumerate(x) if value == 0), None)
-            if late_morning_dep is None:
-                arrival_time_ind = np.inf
-            else:
-                x_sub = x[late_morning_dep:]
-                arrival_time_ind_offset = next((ind for ind, value in enumerate(x_sub) if value > 0), None)
-                if arrival_time_ind_offset is None:
-                    arrival_time_ind = np.nan
-                else:
-                    arrival_time_ind = late_morning_dep + arrival_time_ind_offset
-        # else:
-        #     arrival_time_ind = np.nan
-        # print(x)
-        # print(arrival_time_ind)
-        if np.isnan(arrival_time_ind): # if no arrival in the day
-            if flag == 0:
-                arrival_time = np.nan
-            else:
-                arrival_time = 0
-        elif np.isinf(arrival_time_ind): # if constantly occupied in the day
-            arrival_time = 0
-        else:
-            arrival_time = index[arrival_time_ind]
-        return arrival_time
+        return self.compute_arrival_time(x,index,flag)
+
+    def compute_arrival_time_window(self,x,index,flag,window):
+        '''
+        :return: arrival time
+                - nan indicates no arrivals in the day
+                - inf indicates constant occupied in the day
+                - number indicates the time when people arrive
+        '''
+        if isinstance(x,pd.Series):
+            win_start = window[0]
+            win_end = window[1] 
+            x = list(x[win_start:win_end])
+        return self.compute_arrival_time(x,index,flag)
 
     def compute_arrival_time(self,x,index,flag):
         '''

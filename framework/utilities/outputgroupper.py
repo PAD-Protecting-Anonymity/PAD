@@ -2,7 +2,7 @@ import statistics
 import numpy as np
 import pandas as pd
 import math
-from utilities.datadescriptor import DataDescriptorTerms
+from framework.utilities.datadescriptor import DataDescriptorTerms
 from framework.utilities.datadescriptor import DataDescriptorBase, DataDescriptorMetadata, DataDescriptorTimeSerice
 
 class OutputGroupper:

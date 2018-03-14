@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-class BaseMetriLearming():
+class BasemetricLearning():
     def __init__(self,metric_learning_terms, **kwargs):
-        if self.__class__ == BaseMetriLearming:
+        if self.__class__ == BasemetricLearning:
             raise Exception('abstract class')
         self.metric_learning_terms = metric_learning_terms
 

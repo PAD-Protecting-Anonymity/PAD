@@ -1,4 +1,4 @@
-from metric_learning.basemetriclearning import BaseMetriLearming
+from metric_learning.basemetriclearning import BasemetricLearning
 from metric_learning.metriclearningterms import MetricLearningTerms
 
 from sklearn.preprocessing import StandardScaler
@@ -10,8 +10,7 @@ from keras.layers import Dense, Dropout, Activation, Add, Merge, Input, merge
 from keras import backend as K
 from sklearn.neighbors.dist_metrics import DistanceMetric
 
-class Linear_Metric(BaseMetriLearming):
-
+class Linear_Metric(BasemetricLearning):
     def __init__(self, **kwargs):
         super().__init__(MetricLearningTerms.LINEAR)
         self.kwargs = kwargs

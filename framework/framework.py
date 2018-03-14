@@ -1,35 +1,45 @@
-from utilities.subsampling import Subsampling
-from similarity.simularatielist import SimularatieList
-from similarity.similarity import Similarity
-from models.kward import K_ward
-from metric_learning.linearmetric import Linear_Metric
-from metric_learning.nonlineardeepmetric import NonlinearDeepMetric
+from framework.utilities.subsampling import Subsampling
+from framework.similarity.simularatielist import SimularatieList
+from framework.similarity.similarity import Similarity
+from framework.models.kward import K_ward
+from framework.metric_learning.linearmetric import Linear_Metric
+from framework.metric_learning.nonlineardeepmetric import NonlinearDeepMetric
 from scipy.misc import comb
-from utilities.outputgroupper import OutputGroupper
+from framework.utilities.outputgroupper import OutputGroupper
+from framework.utilities.datadescriptor import DataDescriptorMetadata, DataDescriptorBase
+from framework.similarity.basesimularity import BaseSimularity
 
 import pandas as pd
-
 class Framwork:
     def __init__(self, data, anonymity_level,dataset_description=""):
         self.data = data
         self._simularatie_list = SimularatieList()
-        self.dataset_descriptions = []        
+        self.data_descriptors = []        
         self.anonymity_level = anonymity_level
         self.subsampling = None
         self.similarity = None
         self.dataset_description = dataset_description
 
-    def define_data_struckture(self):
-        test = 1
-    
-    def add_data_descriptor(self,data_descriptor):
-        self.dataset_descriptions.append(data_descriptor)
-        if hasattr(data_descriptor, 'simularity'):
-            data_descriptor.simularity.data_desciiptor = data_descriptor
-            self._add_simularatie(data_descriptor.simularity)
+    def _verify_configuration_of_framework(self):
+        amount_of_colums = len(self.data.columns) - 1
+        if self._simularatie_list.get_amount_of_simularaties() < 1:
+            raise ValueError("No data to process, use add_simularatie to add processing on the data")
+        for data_descriptor in self.data_descriptors:
+            #Test if the data decriptors are refering to data witch is not in the datastrame
+            if data_descriptor.data_start_index > amount_of_colums:
+                raise ValueError("refer to index wich is not in datastrame: Index %s goes out of bound for the data stream in data descriptor in data_start_index" % data_descriptor.data_start_index)
+            elif data_descriptor.data_end_index > amount_of_colums:
+                raise ValueError("refer to index wich is not in datastrame: Index %s goes out of bound for the data stream in data descriptor in data_end_index" % data_descriptor.data_end_index)
+                
+    def add_meta_data(self,data_descriptor):
+        if isinstance(data_descriptor, DataDescriptorMetadata):
+            self.data_descriptors.append(data_descriptor)
 
-    def _add_simularatie(self,simularatie):
+    def add_simularatie(self,simularatie):
+        # if isinstance(simularatie, BaseSimularity):
         self._simularatie_list.add_simularatie(simularatie)
+            # if isinstance(simularatie.data_descriptor, DataDescriptorBase):
+        self.data_descriptors.append(simularatie.data_descriptor)
 
     def _find_Simularaty(self):
         # TODO: make my
@@ -88,6 +98,7 @@ class Framwork:
         
 
     def run(self):
+        self._verify_configuration_of_framework()
         presenitized_data = self._presanitized()
         loss_presenitized=  self._simularatie_list.get_statistics_loss(presenitized_data,self.data)
         print("information loss with presenitized %s" % loss_presenitized)
@@ -104,5 +115,5 @@ class Framwork:
         #                 anonymity_level=self.anonymity_level,metric=lm)
         # loss_metric=  self.simularatie_list.get_statistics_loss(final_samitized_data,self.data)
         # print("information loss with Linear_Metric metric %s" % loss_metric)
-        transformed_data = OutputGroupper(self.dataset_descriptions).transform_data(presenitized_data)
+        transformed_data = OutputGroupper(self.data_descriptors).transform_data(presenitized_data)
         return transformed_data

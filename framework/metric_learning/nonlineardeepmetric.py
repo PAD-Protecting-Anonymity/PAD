@@ -6,7 +6,7 @@ Gets to 98.40% test accuracy after 20 epochs
 
 # from __future__ import print_function
 
-from metric_learning.basemetriclearning import BaseMetriLearming
+from metric_learning.basemetriclearning import BasemetricLearning
 from metric_learning.metriclearningterms import MetricLearningTerms
 
 import copy
@@ -26,7 +26,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors.dist_metrics import DistanceMetric
 
 
-class NonlinearDeepMetric(BaseMetriLearming):
+class NonlinearDeepMetric(BasemetricLearning):
     def __init__(self, **kwargs):
         super().__init__(MetricLearningTerms.NONLINEAR)
         self.kwargs = kwargs

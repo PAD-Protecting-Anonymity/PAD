@@ -18,6 +18,9 @@ class SimularatieList:
     def add_simularatie(self,simularatie):
         self.simularaties.append(simularatie)
 
+    def get_amount_of_simularaties(self):
+        return len(self.simularaties)
+        
     def get_statistics_loss(self,data_org, data_sanitized):
         err_sum_sqrt = None
         for simularatie in self.simularaties:
@@ -30,5 +33,5 @@ class SimularatieList:
 
 
     def _get_data_slice(self,simularatie,data):
-        data_slices = data.iloc[:,simularatie.data_desciiptor.data_start_index:simularatie.data_desciiptor.data_end_index]
+        data_slices = data.iloc[:,simularatie.data_descriptor.data_start_index:simularatie.data_descriptor.data_end_index]
         return data_slices
