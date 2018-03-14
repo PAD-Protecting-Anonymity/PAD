@@ -93,10 +93,9 @@ class Framwork:
         sanitized_df.columns = data.columns
         return sanitized_df
 
-    def _crate_data_description(self,data_desciptors):
-        raise NotImplementedError('NotImplemented')
+    
         
-
+    
     def run(self):
         self._verify_configuration_of_framework()
         presenitized_data = self._presanitized()

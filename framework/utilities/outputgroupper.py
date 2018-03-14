@@ -8,17 +8,24 @@ from framework.utilities.datadescriptor import DataDescriptorBase, DataDescripto
 class OutputGroupper:
     def __init__(self,dataset_descriptions):
         self.dataset_descriptions = dataset_descriptions
+        self.dd_string_out = []
+
+    def _crate_data_description(self, dataset_description, start_index, end_index):
+            self.dd_string_out.append(dataset_description.get_str_description(start_index,end_index))
 
     def transform_data(self,data):
         output_data = pd.DataFrame()
         index_data_insert = 0
         for dataset_description in self.dataset_descriptions:
+            start_index = len(output_data.columns)
             if isinstance(dataset_description, DataDescriptorTimeSerice):
                 index_data_insert = self.transform_data_time_serices(data,dataset_description,index_data_insert,output_data)
             elif isinstance(dataset_description, DataDescriptorMetadata):
                 index_data_insert = self.transform_data_metadata(data,dataset_description,index_data_insert,output_data)
+            self._crate_data_description(dataset_description,  start_index, len(output_data.columns)-1)
         print(output_data)
-        return output_data
+        print('\n'.join(self.dd_string_out))
+        return output_data, '\n'.join(self.dd_string_out)
         
     def transform_data_metadata(self,data,dataset_description,index_data_insert,output_data):
         data_slice_index_start = dataset_description.data_start_index
@@ -33,7 +40,7 @@ class OutputGroupper:
         return index_data_insert
 
     def transform_data_time_serices(self,data,dataset_description,index_data_insert,output_data):
-        input_output_factor =  dataset_description.output_frequency/dataset_description.sampling_frequency
+        input_output_factor =  dataset_description.output_frequency.value/dataset_description.sampling_frequency.value
         amount_of_samples_in_slice = (dataset_description.data_end_index - dataset_description.data_start_index)+1
         amount_of_slices = math.floor(amount_of_samples_in_slice / input_output_factor) #Floor to ensure that we do not groups for small data amounts
         if amount_of_slices > 1:

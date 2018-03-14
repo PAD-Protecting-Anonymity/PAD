@@ -30,8 +30,8 @@ data_window = 15
 dd = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,0,30,data_window_size=data_window)
 dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,31,61,data_window_size=data_window)
 
-segmentedData = GlobalSimularity(dd,[10,15])
-segmentedData1 = GlobalSimularity(dd1,[10,15])
+segmentedData = SegmentSimularity(dd,[10,15])
+segmentedData1 = SegmentSimularity(dd1,[10,15])
 
 # dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,61,74,segmentedData1)
 metaData = DataDescriptorMetadata(75, data_decription="Meta Data")
