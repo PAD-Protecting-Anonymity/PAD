@@ -54,7 +54,7 @@ class Similarity:
         for n_clusters in range_n_clusters:
             clusterer = KMeans(n_clusters=n_clusters)
             cluster_labels_current = clusterer.fit_predict(self.data_interested)
-            silhouette_avg_current = silhouette_score(self.data_interested,cluster_labels_current)
+            silhouette_avg_current = silhouette_score(self.data_interested,cluster_labels_current) #BUG
             print("For n_clusters =", n_clusters,
                 "The average silhouette_score is :", silhouette_avg_current)
             cluster_labels.append(cluster_labels_current)

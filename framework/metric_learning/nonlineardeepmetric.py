@@ -15,7 +15,7 @@ import numpy.random as rng
 import pandas as pd
 import keras
 from keras.models import Sequential, Model
-from keras.layers import Dense, Dropout, Activation, Add, Merge, Input, merge
+from keras.layers import Dense, Dropout, Activation, Add, Merge, Input, add, merge
 from keras.optimizers import RMSprop, Adam
 from keras.preprocessing import sequence
 from keras import backend as K
@@ -82,9 +82,10 @@ class NonlinearDeepMetric(BasemetricLearning):
 
         #merge two encoded inputs with the l1 distance between them
         L1_distance = lambda x: K.abs(x[0]-x[1])
+        
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
         prediction = Dense(number_classes,activation='sigmoid')(both)
-        siamese_net = Model(input=[left_input,right_input],output=prediction)
+        siamese_net = keras.models.Model(inputs=[left_input,right_input],outputs=prediction)
 
         optimizer = RMSprop()
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)

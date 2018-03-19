@@ -71,7 +71,7 @@ class Linear_Metric(BasemetricLearning):
         L1_distance = lambda x: K.abs(x[0]-x[1])
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
         prediction = Dense(number_classes)(both)
-        siamese_net = Model(input=[left_input,right_input],output=prediction)
+        siamese_net = keras.models.Model(inputs=[left_input,right_input],outputs=prediction)
 
         # optimizer = Adam(0.00006)
         optimizer = RMSprop()

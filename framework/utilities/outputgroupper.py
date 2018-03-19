@@ -19,27 +19,27 @@ class OutputGroupper:
         for dataset_description in self.dataset_descriptions:
             start_index = len(output_data.columns)
             if isinstance(dataset_description, DataDescriptorTimeSerice):
-                index_data_insert = self.transform_data_time_serices(data,dataset_description,index_data_insert,output_data)
+                output_data = self.transform_data_time_serices(data,dataset_description,output_data)
             elif isinstance(dataset_description, DataDescriptorMetadata):
-                index_data_insert = self.transform_data_metadata(data,dataset_description,index_data_insert,output_data)
-            self._crate_data_description(dataset_description,  start_index, len(output_data.columns)-1)
-        print(output_data)
-        print('\n'.join(self.dd_string_out))
-        return output_data, '\n'.join(self.dd_string_out)
+                output_data = self.transform_data_metadata(data,dataset_description,output_data)
+            # self._crate_data_description(dataset_description,  start_index, len(output_data.columns)-1)
+        # print('\n'.join(self.dd_string_out))
+        return output_data #, '\n'.join(self.dd_string_out)
         
-    def transform_data_metadata(self,data,dataset_description,index_data_insert,output_data):
+    def transform_data_metadata(self,data,dataset_description,output_data):
         data_slice_index_start = dataset_description.data_start_index
         data_slice_index_end = dataset_description.data_end_index
         data_slices = None
         if data_slice_index_start == data_slice_index_end:
-            data_slices = data.iloc[:,data_slice_index_start]        
+            data_slices = data.iloc[:,data_slice_index_start]     
         else:
             data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end]
-        output_data[str(index_data_insert)] = data_slices
-        index_data_insert += 1
-        return index_data_insert
+        output_data = pd.concat([output_data,data_slices], axis=0)
+        # output_data[str(index_data_insert)] = output_data data_slices
+        # index_data_insert += 1
+        # return index_data_insert
 
-    def transform_data_time_serices(self,data,dataset_description,index_data_insert,output_data):
+    def transform_data_time_serices(self,data,dataset_description,output_data):
         input_output_factor =  dataset_description.output_frequency.value/dataset_description.sampling_frequency.value
         amount_of_samples_in_slice = (dataset_description.data_end_index - dataset_description.data_start_index)+1
         amount_of_slices = math.floor(amount_of_samples_in_slice / input_output_factor) #Floor to ensure that we do not groups for small data amounts
@@ -47,27 +47,29 @@ class OutputGroupper:
             for i in range(amount_of_slices):
                 data_slice_index_start = int(input_output_factor*i)
                 data_slice_index_end = int(input_output_factor*(i+1))
-                data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end]
+                data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end+1]
                 tm = None
                 if dataset_description.data_type == DataDescriptorTerms.BOOLAEN:
                     tm = OutoutGroupperBoolean()
                 elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                     tm = OutoutGroupperNumber()
                 transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
-                output_data[str(index_data_insert)] = transfomred_data
-                index_data_insert += 1
+                output_data = pd.concat([output_data,transfomred_data], axis=0)
+                # output_data = output_data.append(transfomred_data,axis=2)
+                # index_data_insert += 1
         elif amount_of_slices <= 1:
             data_slice_index_start = dataset_description.data_start_index
             data_slice_index_end = dataset_description.data_end_index
-            data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end]
+            data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end+1]
             if dataset_description.data_type == DataDescriptorTerms.BOOLAEN:
                 tm = OutoutGroupperBoolean()
             elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                 tm = OutoutGroupperNumber()
             transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
-            output_data[str(index_data_insert)] = transfomred_data
-            index_data_insert += 1
-        return index_data_insert
+            output_data = pd.concat([output_data,pd.Series(transfomred_data)], axis=0)
+            # output_data = output_data.append(transfomred_data,axis=2)
+            # index_data_insert += 1
+        return output_data
 
 class OutoutGroupperTypeBase:
     def __init__(self):
@@ -86,9 +88,14 @@ class OutoutGroupperTypeBase:
             data_out = self._transform_max(data_slices)
         elif genelaraty_mode == DataDescriptorTerms.MODE:
             data_out = self._transform_mode(data_slices)
+        elif genelaraty_mode == DataDescriptorTerms.SUM:
+            data_out = self._transform_sum(data_slices)
         return data_out
     
     def _transform_mean(self,data_slices):
+        raise NotImplementedError('NotImplemented')
+
+    def _transform_sum(self,data_slices):
         raise NotImplementedError('NotImplemented')
         
     def _transform_min(self,data_slices):

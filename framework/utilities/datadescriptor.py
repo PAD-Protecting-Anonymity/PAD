@@ -31,6 +31,7 @@ class DataDescriptorTimeSerice(DataDescriptorBase):
                 date_type_decription = self.data_type.value
         else:
             date_type_decription = self.data_type.value
+
         if self.data_decription is not "":
             return "Data Decription: {0} Data Type: Time Serice Data Type: {1} Start Index: {2} End Index: {3} Frequency: {4} Genelaraty Mode: {5}".format(self.data_decription,date_type_decription, output_start_index, output_end_index, self.output_frequency.name, self.genelaraty_mode.value)
         return "Data Type: Time Serice Data Type: {0} Start Index: {1} End Index: {2} Frequency: {3} Genelaraty Mode: {4}".format(date_type_decription, output_start_index, output_end_index, self.output_frequency.name, self.genelaraty_mode.value)
@@ -40,7 +41,6 @@ class DataDescriptorMetadata(DataDescriptorBase):
         super().__init__(DataDescriptorTerms.METADATA,data_start_index,data_end_index,data_decription)
         if data_end_index is None:
             self.data_end_index = data_start_index
-
     def get_str_description(self, output_start_index, output_end_index):
         if self.data_decription is not "":
             return "Data Decription: {0} Data Type: Meta Data, Start Index: {1} End Index: {2}".format(self.data_decription,output_start_index, output_end_index)
@@ -59,6 +59,8 @@ class DataDescriptorTerms(Enum):
     MEDIAN = "median"    
     MIN = "min"
     MAX = "max"
+    SUM = "sum"
+    
 
     #Datatypes
     NUMBER = "number"
