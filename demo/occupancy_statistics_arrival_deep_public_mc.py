@@ -120,7 +120,5 @@ for n in range(2,8):
         print('anonymity level %s' % n)
         print('mc iteration %s' % mc_i)
 
-
     with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_%s_mc.pickle'%(mode), 'wb') as f:
             pickle.dump([sanitized, losses, sample_sizes,losses_best, losses_generic], f)
-

@@ -1,21 +1,20 @@
 import numpy as np
 import pandas as pd
-np.random.seed(0)
+from framework.models.basemodel import BaseModel 
+# np.random.seed(0)
 
 
-class K_ward():
+class K_ward(BaseModel):
     """
     K-ward algorithm
     """
-    def __init__(self, data, distance_metric_type,k,rep_mode,**kwargs):
-        self.data = data # dataset where each row corresponds to an individual
-        self.datasize = data.shape[0] # the number of indivduals contained in the database
+    def __init__(self, data,k,rep_mode,**kwargs):
+        super().__init__(data)
         self.k = k # anonymity level
-        self.groups = []
         self.group_num = 0
         self.upperbound = 2*self.k
         self.lowerbound = self.k
-        self.distance_metric_type = distance_metric_type
+        # self.distance_metric_type = distance_metric_type
         # if self.distance_metric == 'self-defined':
         #     self.stat_util = Distance()
         self.rep_mode = rep_mode
@@ -33,25 +32,21 @@ class K_ward():
         #     elif self.mode == 'segment':
         #         self.window = kwargs['window']
 
-    def get_distance(self, d_profile_data):
+    def _get_distance(self, d_profile_data):
         """
         Given the day profile, return the pairwise distance between each of the two individual series
         """
-        df = None
-        if self.distance_metric_type == "init":
-            df= self.kwargs["initProfile"].get_distance(d_profile_data)
-        else:
-            df= self.kwargs["metric"].get_distance(d_profile_data)
+        df = self.kwargs["metric"].get_distance(d_profile_data)
         return df
 
-    def add_group(self,group):
-        self.groups.append(group)
+    def _add_group(self,group):
+        self._groups.append(group)
         self.group_num += 1
 
-    def initialize_groups(self):
+    def _initialize_groups(self):
         # boolean variable indicating if each individual has been assigned or not
         group_assign_status = dict(zip(self.data.index,np.zeros(self.datasize)))
-        pairwise_dist = self.get_distance(self.data)
+        pairwise_dist = self._get_distance(self.data)
         max_dist = pairwise_dist[pairwise_dist["distance"] == pairwise_dist["distance"].max()]
         max_dist = max_dist.iloc[-1, :]
         extreme_points = [max_dist["x"], max_dist["y"]]
@@ -77,26 +72,26 @@ class K_ward():
 
             for i in range(len(keys)):
                 group_assign_status[keys[i]] = 1
-            self.add_group(new_group)
+            self._add_group(new_group)
 
         for key in group_assign_status.keys():
             if group_assign_status[key] == 0:
                 new_group = Group(id=[key], data=self.data.loc[key].as_matrix(), rep_mode=self.rep_mode)
-                self.add_group(new_group)
+                self._add_group(new_group)
 
-        self.cards = self.get_cards()
+        self.cards = self._get_cards()
 
-    def get_cards(self):
-        cards = [self.groups[i].get_card() for i in range(self.group_num)]
+    def _get_cards(self):
+        cards = [self._groups[i].get_card() for i in range(self.group_num)]
         return cards
 
-    def compare_and_merge(self):
+    def _compare_and_merge(self):
         cards = self.cards
         centroid_df = pd.DataFrame()
         for i in range(self.group_num):
-            centroid_df = centroid_df.append(self.groups[i].rep,ignore_index=True)
+            centroid_df = centroid_df.append(self._groups[i].rep,ignore_index=True)
 
-        pairwise_dist = self.get_distance(centroid_df)
+        pairwise_dist = self._get_distance(centroid_df)
         # never merge two groups that both have size >= k
         good_keys = [i for i in range(len(cards)) if cards[i]<self.lowerbound]
 
@@ -107,46 +102,46 @@ class K_ward():
         min_dist = min_dist.iloc[-1,:]
         group1_id = int(min_dist["x"])
         group2_id = int(min_dist["y"])
-        self.merge(group_id1=group1_id,group_id2=group2_id)
+        self._merge(group_id1=group1_id,group_id2=group2_id)
 
-    def merge(self,group_id1,group_id2):
-        group1 = self.groups[group_id1]
-        group2 = self.groups[group_id2]
+    def _merge(self,group_id1,group_id2):
+        group1 = self._groups[group_id1]
+        group2 = self._groups[group_id2]
         group1.merge_group(group2)
         self.cards[group_id1] = group1.get_card()
-        del self.groups[group_id2]
+        del self._groups[group_id2]
         del self.cards[group_id2]
         self.group_num -= 1
 
-    def replace(self,group_id,groups):
+    def _replace(self,group_id,groups):
         groups_num = len(groups)
         for i in range(groups_num):
-            self.groups.append(groups[i])
+            self._groups.append(groups[i])
             self.cards.append(groups[i].get_card())
-        del self.groups[group_id]
+        del self._groups[group_id]
         del self.cards[group_id]
         self.group_num = self.group_num - 1 + groups_num
 
-    def get_cluster(self):
-        self.initialize_groups()
+    def find_clusters(self):
+        self._initialize_groups()
         i = 0
         while all(card >= self.lowerbound for card in self.cards) is False:
-            self.compare_and_merge()
+            self._compare_and_merge()
 
         card_status = [card >= self.upperbound for card in self.cards]
         while any(card_status):
             recurse_ids = [i for i in range(len(card_status)) if card_status[i] == True]
             recurse_id = recurse_ids[0]
 
-            recurse_group = self.groups[recurse_id]
+            recurse_group = self._groups[recurse_id]
             recurse_df = recurse_group.get_dataframe()
             if len(recurse_df) < self.upperbound:
                 print("error")
-            recurse_kward = K_ward(data=recurse_df,k=self.k,distance_metric_type=self.distance_metric_type,
+            recurse_kward = K_ward(data=recurse_df,k=self.k,
                                    rep_mode = self.rep_mode,**self.kwargs)
-            recurse_kward.get_cluster()
-            new_groups = recurse_kward.groups
-            self.replace(recurse_id,new_groups)
+            recurse_kward.find_clusters()
+            new_groups = recurse_kward.get_groups()
+            self._replace(recurse_id,new_groups)
             card_status = [card >= self.upperbound for card in self.cards]
 
 class Group:

@@ -35,7 +35,6 @@ class BaseSimularity():
     def get_statistics_distance(self, sample1, sample2, **kwargs):
         raise NotImplementedError('users must define get_statistics_distance to use this base class')
 
-
     def get_statistics(self,data,**kwargs):
         raise NotImplementedError('users must define get_statistics to use this base class')
         

@@ -10,6 +10,24 @@ class DataDescriptorBase:
 
     def get_str_description(self, output_start_index, output_end_index):
         raise NotImplementedError('users must define get_str_description in class to use this base class')
+        
+    def verify_configuration_data_descriptor_config(self,amount_of_colums):
+        """Test if the data decriptors are refering to data witch is not in the datastrame
+        
+        Arguments:
+            amount_of_colums {int} -- the total amount of colums in the datastrame
+        Raises:
+            ValueError -- if config does not complie with the framework
+        """
+        if self.data_start_index > amount_of_colums:
+            raise ValueError("refer to index wich is not in datastrame: Index %s goes out of bound for the data stream in data descriptor in data_start_index" % self.data_start_index)
+        elif self.data_end_index > amount_of_colums:
+                raise ValueError("refer to index wich is not in datastrame: Index %s goes out of bound for the data stream in data descriptor in data_end_index" % self.data_end_index)
+        if self.data_start_index > self.data_end_index:
+            temp_holder = self.data_start_index
+            self.data_start_index = self.data_end_index
+            self.data_end_index = temp_holder
+        
 
 class DataDescriptorTimeSerice(DataDescriptorBase):
     def __init__(self, sampling_frequency,output_frequency, genelaraty_mode,data_type,
@@ -36,11 +54,19 @@ class DataDescriptorTimeSerice(DataDescriptorBase):
             return "Data Decription: {0} Data Type: Time Serice Data Type: {1} Start Index: {2} End Index: {3} Frequency: {4} Genelaraty Mode: {5}".format(self.data_decription,date_type_decription, output_start_index, output_end_index, self.output_frequency.name, self.genelaraty_mode.value)
         return "Data Type: Time Serice Data Type: {0} Start Index: {1} End Index: {2} Frequency: {3} Genelaraty Mode: {4}".format(date_type_decription, output_start_index, output_end_index, self.output_frequency.name, self.genelaraty_mode.value)
 
+    def verify_configuration_data_descriptor_config(self,amount_of_colums):
+        super().verify_configuration_data_descriptor_config(amount_of_colums)
+        if self.sampling_frequency.value > self.output_frequency.value:
+            raise ValueError("For DataDescriptorTimeSerice the sampling rate most be >= to the output frequency")
+        if (self.data_end_index - self.data_start_index) < (self.output_frequency.value / self.sampling_frequency.value):
+            raise ValueError("For DataDescriptorTimeSerice, there are not enough input samples to produce an output with the selected output frequency")
+
 class DataDescriptorMetadata(DataDescriptorBase):
     def __init__(self,data_start_index,data_end_index=None,data_decription=""):
         super().__init__(DataDescriptorTerms.METADATA,data_start_index,data_end_index,data_decription)
         if data_end_index is None:
             self.data_end_index = data_start_index
+
     def get_str_description(self, output_start_index, output_end_index):
         if self.data_decription is not "":
             return "Data Decription: {0} Data Type: Meta Data, Start Index: {1} End Index: {2}".format(self.data_decription,output_start_index, output_end_index)
@@ -74,4 +100,4 @@ class DataDescriptorTerms(Enum):
     HALFHOUR = 1800
     HOUR = 3600
     DAY = 86400
-    
+    WEEK = 604800

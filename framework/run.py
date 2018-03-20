@@ -10,6 +10,7 @@ from framework.similarity.globalsimularity import GlobalSimularity
 from framework.similarity.simularityterms import SimularityTerms
 from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescriptorTimeSerice,DataDescriptorTerms
 import pandas as pd
+import pickle
 
 data = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
 # data = data.iloc[0:90, 0::60] # the database to be published
@@ -46,3 +47,6 @@ framework.add_meta_data(metaData)
 framework.add_meta_data(metaData1)
 out = framework.run()
 print(out)
+
+# with open('./result/FWResult.pickle', 'wb') as f:
+#     pickle.dump([out], f)
