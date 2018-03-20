@@ -39,8 +39,11 @@ class Framwork:
                 temp_holder = data_descriptor.data_start_index
                 data_descriptor.data_start_index = data_descriptor.data_end_index
                 data_descriptor.data_end_index = temp_holder
-            if isinstance(data_descriptor, DataDescriptorTimeSerice) and data_descriptor.sampling_frequency.value > data_descriptor.output_frequency.value:
-                raise ValueError("For DataDescriptorTimeSerice the sampling rate most be >= to the output frequency")
+            if isinstance(data_descriptor, DataDescriptorTimeSerice):
+                if data_descriptor.sampling_frequency.value > data_descriptor.output_frequency.value:
+                    raise ValueError("For DataDescriptorTimeSerice the sampling rate most be >= to the output frequency")
+                if (data_descriptor.data_end_index - data_descriptor.data_start_index) < (data_descriptor.output_frequency.value / data_descriptor.sampling_frequency.value):
+                    raise ValueError("For DataDescriptorTimeSerice, there are not enough input samples to produce an output with the selected output frequency")
 
     def _can_insture_k_anonymity(self):
         if (2*self.anonymity_level-1)*5<self.amount_of_sensors:
@@ -125,7 +128,7 @@ class Framwork:
             new_data = pd.DataFrame.from_items([(i, new_data)],orient='index', columns=list(range(index,index+len(new_data))))
             row_data = pd.concat([self.row_meta_data,new_data], axis=1)
             output_data = output_data.append(row_data.iloc[i])
-        print(output_data)
+        # print(output_data)
         return output_data
         
 

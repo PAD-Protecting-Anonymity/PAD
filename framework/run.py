@@ -24,7 +24,7 @@ framework = Framwork(data,anonymity_level)
 sampling_frequency = DataDescriptorTerms.MINUE
 output_genelaraty = DataDescriptorTerms.QUARETER
 genelaraty_mode = DataDescriptorTerms.MEAN
-data_type = DataDescriptorTerms.NUMBER
+data_type = DataDescriptorTerms.BOOLAEN
 data_window = 15
 
 # dd = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,0,30,data_window_size=data_window)
@@ -44,4 +44,5 @@ framework.add_simularatie(segmentedData)
 # framework.add_simularatie(segmentedData1)
 framework.add_meta_data(metaData)
 framework.add_meta_data(metaData1)
-framework.run()
+out = framework.run()
+print(out)

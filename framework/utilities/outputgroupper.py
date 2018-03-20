@@ -4,6 +4,7 @@ import pandas as pd
 import math
 from framework.utilities.datadescriptor import DataDescriptorTerms
 from framework.utilities.datadescriptor import DataDescriptorBase, DataDescriptorMetadata, DataDescriptorTimeSerice
+from itertools import chain
 
 class OutputGroupper:
     def __init__(self,dataset_descriptions):
@@ -24,6 +25,7 @@ class OutputGroupper:
                 output_data = self.transform_data_metadata(data,dataset_description,output_data)
             # self._crate_data_description(dataset_description,  start_index, len(output_data.columns)-1)
         # print('\n'.join(self.dd_string_out))
+        output_data.columns = list(range(0,len(output_data.columns)))
         return output_data #, '\n'.join(self.dd_string_out)
         
     def transform_data_metadata(self,data,dataset_description,output_data):
@@ -34,10 +36,11 @@ class OutputGroupper:
             data_slices = data.iloc[:,data_slice_index_start]     
         else:
             data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end]
-        output_data = pd.concat([output_data,data_slices], axis=0)
+        output_data = pd.concat([output_data,data_slices], axis=1)
         # output_data[str(index_data_insert)] = output_data data_slices
         # index_data_insert += 1
         # return index_data_insert
+        return output_data
 
     def transform_data_time_serices(self,data,dataset_description,output_data):
         input_output_factor =  dataset_description.output_frequency.value/dataset_description.sampling_frequency.value
@@ -54,9 +57,7 @@ class OutputGroupper:
                 elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                     tm = OutoutGroupperNumber()
                 transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
-                output_data = pd.concat([output_data,transfomred_data], axis=0)
-                # output_data = output_data.append(transfomred_data,axis=2)
-                # index_data_insert += 1
+                output_data = pd.concat([output_data, pd.Series(transfomred_data)], axis=1)
         elif amount_of_slices <= 1:
             data_slice_index_start = dataset_description.data_start_index
             data_slice_index_end = dataset_description.data_end_index
@@ -66,9 +67,7 @@ class OutputGroupper:
             elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                 tm = OutoutGroupperNumber()
             transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
-            output_data = pd.concat([output_data,pd.Series(transfomred_data)], axis=0)
-            # output_data = output_data.append(transfomred_data,axis=2)
-            # index_data_insert += 1
+            output_data = pd.concat([output_data,pd.Series(transfomred_data)], axis=1)
         return output_data
 
 class OutoutGroupperTypeBase:
@@ -96,7 +95,8 @@ class OutoutGroupperTypeBase:
         raise NotImplementedError('NotImplemented')
 
     def _transform_sum(self,data_slices):
-        raise NotImplementedError('NotImplemented')
+        sum_value = data_slices.sum(axis=1)
+        return sum_value._values
         
     def _transform_min(self,data_slices):
         min_value = data_slices.min(axis=1)
@@ -117,16 +117,7 @@ class OutoutGroupperTypeBase:
 class OutoutGroupperBoolean(OutoutGroupperTypeBase):
     def _transform_mean(self,data_slices):
         amount_Of_True = data_slices.sum(axis=1)
-        return amount_Of_True/len(data_slices)
-
-    # def _transform_median(self,data_slices):
-    #     return np.median(data_slices[~np.isnan(data_slices)])
-
-    # def _transform_min(self,data_slices):
-    #     return all(data_slices)
-
-    # def _transform_max(self,data_slices):
-    #     raise any(data_slices)
+        return amount_Of_True/len(data_slices.columns)
 
 class OutoutGroupperNumber(OutoutGroupperTypeBase):
     def _transform_mean(self,data_slices):
