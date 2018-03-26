@@ -63,7 +63,7 @@ class OutputGroupper:
                     tm = OutoutGroupperBoolean()
                 elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                     tm = OutoutGroupperNumber()
-                transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
+                transfomred_data = tm.transform(data_slices,dataset_description.generality_mode)
                 output_data = pd.concat([output_data, pd.Series(transfomred_data)], axis=1)
         elif amount_of_slices <= 1:
             data_slice_index_start = dataset_description.data_start_index
@@ -73,7 +73,7 @@ class OutputGroupper:
                 tm = OutoutGroupperBoolean()
             elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                 tm = OutoutGroupperNumber()
-            transfomred_data = tm.transform(data_slices,dataset_description.genelaraty_mode)
+            transfomred_data = tm.transform(data_slices,dataset_description.generality_mode)
             output_data = pd.concat([output_data,pd.Series(transfomred_data)], axis=1)
         return output_data
 
@@ -82,19 +82,19 @@ class OutoutGroupperTypeBase:
         if self.__class__ == OutoutGroupperTypeBase:
             raise Exception('abstract class')
 
-    def transform(self,data_slices, genelaraty_mode):
+    def transform(self,data_slices, generality_mode):
         data_out = None
-        if genelaraty_mode == DataDescriptorTerms.MEAN:
+        if generality_mode == DataDescriptorTerms.MEAN:
             data_out = self._transform_mean(data_slices)
-        elif genelaraty_mode == DataDescriptorTerms.MEDIAN:
+        elif generality_mode == DataDescriptorTerms.MEDIAN:
             data_out = self._transform_median(data_slices)
-        elif genelaraty_mode == DataDescriptorTerms.MIN:
+        elif generality_mode == DataDescriptorTerms.MIN:
             data_out = self._transform_min(data_slices)
-        elif genelaraty_mode == DataDescriptorTerms.MAX:
+        elif generality_mode == DataDescriptorTerms.MAX:
             data_out = self._transform_max(data_slices)
-        elif genelaraty_mode == DataDescriptorTerms.MODE:
+        elif generality_mode == DataDescriptorTerms.MODE:
             data_out = self._transform_mode(data_slices)
-        elif genelaraty_mode == DataDescriptorTerms.SUM:
+        elif generality_mode == DataDescriptorTerms.SUM:
             data_out = self._transform_sum(data_slices)
         return data_out
     

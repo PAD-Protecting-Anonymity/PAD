@@ -31,6 +31,7 @@ class Resampler:
         _data_descriptors = []
         _simularatie_list = SimularatieList()
         index = 0
+        
         for simularatie in simularatie_list.simularaties:
             data_descriptor = simularatie.data_descriptor
             if isinstance(data_descriptor, DataDescriptorTimeSerice):
@@ -63,7 +64,7 @@ class Resampler:
         
         amount_of_inputs = len(transformed_data.index)
 
-        time_Serices_lenged = math.floor(amount_of_inputs / amount_of_sensors)
+        time_Serices_lenged = math.floor(amount_of_inputs / amount_of_sensors)*len(transformed_data.columns)
 
         for simularatie in simularatie_list.simularaties:
             simularatie.data_descriptor.data_start_index = index
@@ -78,7 +79,6 @@ class Resampler:
             row_data = pd.concat([self.row_meta_data,new_data], axis=1)
             output_data = output_data.append(row_data.iloc[i])
         return output_data, _simularatie_list, _data_descriptors
-
 
 class Subsampling:
     def __init__(self,data):

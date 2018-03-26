@@ -29,23 +29,25 @@ class DataDescriptorBase:
             temp_holder = self.data_start_index
             self.data_start_index = self.data_end_index
             self.data_end_index = temp_holder
-        
 
 class DataDescriptorTimeSerice(DataDescriptorBase):
-    def __init__(self, sampling_frequency,output_frequency, genelaraty_mode,data_type,
-            data_start_index,data_end_index,
+    def __init__(self, sampling_frequency, generality_mode,data_type,
+            data_start_index,data_end_index, output_frequency=None,
             data_window_size= None, data_decription=""):
         super().__init__(DataDescriptorTerms.TIMESEICE,data_start_index,data_end_index,data_decription)
         self.sampling_frequency = sampling_frequency
-        self.output_frequency = output_frequency
-        self.genelaraty_mode = genelaraty_mode
+        if output_frequency is None:
+            self.output_frequency = sampling_frequency
+        else:
+            self.output_frequency = output_frequency
+        self.generality_mode = generality_mode
         self.data_type = data_type
         self.data_window_size = data_window_size
 
     def get_str_description(self):
         date_type_decription = None
         if self.data_type == DataDescriptorTerms.BOOLAEN:
-            if self.genelaraty_mode == DataDescriptorTerms.MEAN:
+            if self.generality_mode == DataDescriptorTerms.MEAN:
                 date_type_decription = "Percentage"
             else:
                 date_type_decription = self.data_type.value
@@ -53,8 +55,8 @@ class DataDescriptorTimeSerice(DataDescriptorBase):
             date_type_decription = self.data_type.value
 
         if self.data_decription is not "":
-            return "Data Decription: {0} Data Type: Time Serice Data Type: {1} Start Index: {2} End Index: {3} Frequency: {4} Genelaraty Mode: {5}".format(self.data_decription,date_type_decription, self.data_start_index, self.data_end_index, self.output_frequency.name, self.genelaraty_mode.value)
-        return "Data Type: Time Serice Data Type: {0} Start Index: {1} End Index: {2} Frequency: {3} Genelaraty Mode: {4}".format(date_type_decription, self.data_start_index, self.data_end_index, self.output_frequency.name, self.genelaraty_mode.value)
+            return "Data Decription: {0} Data Type: Time Serice Data Type: {1} Start Index: {2} End Index: {3} Frequency: {4} Genelaraty Mode: {5}".format(self.data_decription,date_type_decription, self.data_start_index, self.data_end_index, self.output_frequency.name, self.generality_mode.value)
+        return "Data Type: Time Serice Data Type: {0} Start Index: {1} End Index: {2} Frequency: {3} Genelaraty Mode: {4}".format(date_type_decription, self.data_start_index, self.data_end_index, self.output_frequency.name, self.generality_mode.value)
 
     def verify_configuration_data_descriptor_config(self,amount_of_colums, data):
         super().verify_configuration_data_descriptor_config(amount_of_colums,data)
@@ -66,7 +68,6 @@ class DataDescriptorTimeSerice(DataDescriptorBase):
         for i in range(self.data_start_index, self.data_end_index):
             if  not np.issubdtype(data.dtypes[i], np.number):
                 raise ValueError("For DataDescriptorTimeSerice, data types have to be of type number, see https://docs.scipy.org/doc/numpy/reference/arrays.scalars.html for help")
-
 class DataDescriptorMetadata(DataDescriptorBase):
     def __init__(self,data_start_index,data_end_index=None,data_decription=""):
         super().__init__(DataDescriptorTerms.METADATA,data_start_index,data_end_index,data_decription)

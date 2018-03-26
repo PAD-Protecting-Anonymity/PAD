@@ -132,6 +132,8 @@ class Framwork:
         can_insture_k_anonymity = self._can_insture_k_anonymity()
         if not can_insture_k_anonymity:
             self.data, self._simularatie_list, self.data_descriptors = self._resampler.resample_data_into_blocks_of_output_rate(self.data, self.data_descriptors, self._simularatie_list)
+            print("amount of samples after spilt %s" % len(self.data.index))
+            print("amount of columns after spilt %s" % len(self.data.columns))
         presenitized_data = self._presanitized()
         loss_presenitized=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),presenitized_data)
         print("information loss with presenitized %s" % loss_presenitized)
@@ -153,6 +155,7 @@ class Framwork:
         # print("information loss with Linear_Metric metric %s" % loss_metric)
         if not can_insture_k_anonymity:
             transformed_data, self._simularatie_list, self.data_descriptors = self._resampler.create_timeserices_from_slices_of_data(final_sanitized_data, self._simularatie_list, self.amount_of_sensors)
+            transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
         else:
             transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
         return transformed_data, loss_metric
