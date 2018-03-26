@@ -67,7 +67,6 @@ class DataDescriptorTimeSerice(DataDescriptorBase):
             if  not np.issubdtype(data.dtypes[i], np.number):
                 raise ValueError("For DataDescriptorTimeSerice, data types have to be of type number, see https://docs.scipy.org/doc/numpy/reference/arrays.scalars.html for help")
 
-
 class DataDescriptorMetadata(DataDescriptorBase):
     def __init__(self,data_start_index,data_end_index=None,data_decription=""):
         super().__init__(DataDescriptorTerms.METADATA,data_start_index,data_end_index,data_decription)

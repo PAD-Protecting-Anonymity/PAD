@@ -11,13 +11,17 @@ class OutputGroupper:
         self.dataset_descriptions = dataset_descriptions
         self.dd_string_out = []
 
+    def sort_dataset_descriptions(self):
+        sorted_dd = sorted(self.dataset_descriptions, key=lambda x: x.data_start_index)
+        return sorted_dd
+
     def _crate_data_description(self, dataset_description, start_index, end_index):
             self.dd_string_out.append(dataset_description.get_str_description(start_index,end_index))
 
     def transform_data(self,data):
         output_data = pd.DataFrame()
         index_data_insert = 0
-        for dataset_description in self.dataset_descriptions:
+        for dataset_description in self.sort_dataset_descriptions():
             start_index = len(output_data.columns)
             if isinstance(dataset_description, DataDescriptorTimeSerice):
                 output_data = self.transform_data_time_serices(data,dataset_description,output_data)
