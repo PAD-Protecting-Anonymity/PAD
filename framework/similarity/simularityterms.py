@@ -11,8 +11,6 @@ class SimularityTerms:
     TOTAL = "total" #used to sum a time series counter
     WINDOW_TOTAL = "window-total"  #used to sum a time series counter in window
 
-    
-
     #Global distance_metric
     EUCLIDEAN = "euclidean"
     MAHALAOBIS = "mahalanobis"

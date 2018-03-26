@@ -40,7 +40,7 @@ class NonlinearDeepMetric(BasemetricLearning):
         for x, y in data_pairs:
             X1.append(x)
             X2.append(y)
-        print(len(X1), len(X2), len(similarity_labels))
+        # print(len(X1), len(X2), len(similarity_labels))
         number_classes = len(np.unique(similarity_labels)) 
         # convert class vectors to binary class matrices
 

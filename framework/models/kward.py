@@ -164,11 +164,10 @@ class Group:
         return self.card
 
     def get_member_ids(self):
-        return list(self.member.keys())
+            return list(self.member.keys())
 
     def get_rep(self):
-        df = pd.DataFrame().from_dict(self.member, orient='index')
-
+        df = pd.DataFrame().from_dict(self.member, orient='index', dtype="float64")
         if self.rep_mode == 'mean':
             rep =  df.mean(axis=0)
         elif self.rep_mode == 'mean-round':

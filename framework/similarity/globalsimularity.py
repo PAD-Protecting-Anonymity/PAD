@@ -31,6 +31,8 @@ class GlobalSimularity(BaseSimularity):
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):
         stat_gt = self.get_global(data_originally)
         stat_sanitized = self.get_global(data_sanitized)
+        # print(stat_gt)
+        # print(stat_sanitized)
         df = stat_gt - stat_sanitized
         df = df.as_matrix()
         err_sum_sqrt = np.mean(np.absolute(df))
