@@ -21,16 +21,19 @@ class OutputGroupper:
     def transform_data(self,data):
         output_data = pd.DataFrame()
         index_data_insert = 0
-        for dataset_description in self.sort_dataset_descriptions():
+        sorted_dd = self.sort_dataset_descriptions()
+        for dataset_description in sorted_dd:
             start_index = len(output_data.columns)
             if isinstance(dataset_description, DataDescriptorTimeSerice):
                 output_data = self.transform_data_time_serices(data,dataset_description,output_data)
             elif isinstance(dataset_description, DataDescriptorMetadata):
                 output_data = self.transform_data_metadata(data,dataset_description,output_data)
+            dataset_description.data_start_index = start_index
+            dataset_description.data_end_index = len(output_data.columns) -1 
             # self._crate_data_description(dataset_description,  start_index, len(output_data.columns)-1)
         # print('\n'.join(self.dd_string_out))
         output_data.columns = list(range(0,len(output_data.columns)))
-        return output_data #, '\n'.join(self.dd_string_out)
+        return output_data, sorted_dd #, '\n'.join(self.dd_string_out)
         
     def transform_data_metadata(self,data,dataset_description,output_data):
         data_slice_index_start = dataset_description.data_start_index

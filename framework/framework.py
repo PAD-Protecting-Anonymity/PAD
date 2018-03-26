@@ -151,7 +151,8 @@ class Framwork:
         #                 anonymity_level=self.anonymity_level,metric=lm)
         # loss_metric=  self._simularatie_list.get_statistics_loss(final_sanitized_data,self.data)
         # print("information loss with Linear_Metric metric %s" % loss_metric)
-        transformed_data = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
         if not can_insture_k_anonymity:
-            transformed_data, self._simularatie_list, self.data_descriptors = self._resampler.create_timeserices_from_slices_of_data(transformed_data, self._simularatie_list, self.amount_of_sensors)
+            transformed_data, self._simularatie_list, self.data_descriptors = self._resampler.create_timeserices_from_slices_of_data(final_sanitized_data, self._simularatie_list, self.amount_of_sensors)
+        else:
+            transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
         return transformed_data, loss_metric
