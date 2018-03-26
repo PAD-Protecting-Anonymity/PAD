@@ -12,6 +12,7 @@ import math
 import copy
 from itertools import chain
 import pandas as pd
+import numpy as np
 
 import pandas as pd
 class Framwork:
@@ -42,6 +43,14 @@ class Framwork:
         output_data = pd.concat([output_data,sanitize_data], axis=1)
         return output_data
 
+    def _verify_data_input(self):
+        #remove samples with only nan
+        for similarity in self._simularatie_list.simularaties:
+            all_nan = self.data.iloc[:,similarity.data_descriptor.data_start_index:similarity.data_descriptor.data_end_index+1].isnull().all(axis=1)
+            self.data = self.data.loc[np.invert(all_nan)]
+        self.data = self.data.fillna(0)
+        
+        
     def _verify_configuration_of_framework(self):
         amount_of_colums = len(self.data.columns) - 1
         if self._simularatie_list.get_amount_of_simularaties() < 1:
@@ -128,6 +137,7 @@ class Framwork:
         return '\n'.join(dd_string_out)
 
     def run(self):
+        self._verify_data_input()
         self._verify_configuration_of_framework()
         can_insture_k_anonymity = self._can_insture_k_anonymity()
         if not can_insture_k_anonymity:

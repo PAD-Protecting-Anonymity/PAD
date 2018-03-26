@@ -24,17 +24,17 @@ data = pd.read_csv("./dataset/PreprocedHamiltonData_HamiltonData_air_hum.csv")
 # data = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
 # data = data.iloc[0:90, 0::60] # the database to be published
 data = data.iloc[:,0:50] # the database to be published
-data = data.fillna(0)
+# data = data.fillna(0)
 
 data = data.infer_objects()
 
 print("amount of samples %s" % len(data.index))
 print("amount of columns %s" % len(data.columns))
-anonymity_level = 2
+anonymity_level = 5
 
 framework = Framwork(data,anonymity_level)
 
-sampling_frequency = DataDescriptorTerms.MINUE
+sampling_frequency = DataDescriptorTerms.SECOND_20
 output_genelaraty = DataDescriptorTerms.MINUE
 genelaraty_mode = DataDescriptorTerms.MEAN
 data_type = DataDescriptorTerms.NUMBER
@@ -42,11 +42,11 @@ data_window = 15
 
 # dd = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,0,30,data_window_size=data_window)
 # dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,31,61,data_window_size=data_window)
-dd = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,1,len(data.columns)-1)
+dd = DataDescriptorTimeSerice(sampling_frequency,genelaraty_mode,data_type,1,len(data.columns)-1, output_frequency=output_genelaraty)
 # dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,31,61)
 
-segmentedData = GlobalSimularity(dd)
-# segmentedData1 = SegmentSimularity(dd1,[10,15])
+# segmentedData = GlobalSimularity(dd)
+segmentedData = SegmentSimularity(dd,[10,15])
 
 # dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,61,74,segmentedData1)
 metaData = DataDescriptorMetadata(0, data_decription="Meta Data")
