@@ -8,24 +8,23 @@ from framework.utilities.outputgroupper import OutputGroupper
 from framework.utilities.datadescriptor import DataDescriptorMetadata, DataDescriptorBase, DataDescriptorTimeSerice
 from framework.similarity.basesimularity import BaseSimularity
 from framework.utilities.resampler import Resampler, Subsampling
+from framework.utilities.configverify import Verifyerror
 import math
 import copy
 from itertools import chain
 import pandas as pd
-import numpy as np
 
-import pandas as pd
 class Framwork:
     def __init__(self, data, anonymity_level=5,dataset_description=None):
         self.data = data
         self._simularatie_list = SimularatieList()
-        self.data_descriptors = []        
+        self.data_descriptors = []
         self.anonymity_level = anonymity_level
         self.subsampling = None
         self.similarity = None
         self.dataset_description = dataset_description
         self.data_has_been_resample_data_into_blocks_of_output_rate = False
-        self.amount_of_sensors =len(data.index)
+        self.amount_of_sensors =None
         self._resampler = Resampler()
 
     def _get_data_for_sanitize(self):
@@ -34,7 +33,7 @@ class Framwork:
             if not isinstance(dd, DataDescriptorMetadata):
                 output_data = pd.concat([output_data,self.data.iloc[:,dd.data_start_index:dd.data_end_index+1]], axis=1)
         return output_data
-    
+
     def _add_metadata_for_sanitize_data(self,sanitize_data):
         output_data = pd.DataFrame()
         for dd in self.data_descriptors:
@@ -43,26 +42,11 @@ class Framwork:
         output_data = pd.concat([output_data,sanitize_data], axis=1)
         return output_data
 
-    def _verify_data_input(self):
-        #remove samples with only nan
-        for similarity in self._simularatie_list.simularaties:
-            all_nan = self.data.iloc[:,similarity.data_descriptor.data_start_index:similarity.data_descriptor.data_end_index+1].isnull().all(axis=1)
-            self.data = self.data.loc[np.invert(all_nan)]
-        self.data = self.data.fillna(0)
-        
-        
-    def _verify_configuration_of_framework(self):
-        amount_of_colums = len(self.data.columns) - 1
-        if self._simularatie_list.get_amount_of_simularaties() < 1:
-            raise ValueError("No data to process, use add_simularatie to add processing on the data")
-        for data_descriptor in self.data_descriptors:
-            data_descriptor.verify_configuration_data_descriptor_config(amount_of_colums, self.data)
-    
     def _can_insture_k_anonymity(self):
         if (2*self.anonymity_level-1)*5<self.amount_of_sensors:
             return True
         return False
-        
+
     def add_meta_data(self,data_descriptor):
         if isinstance(data_descriptor, DataDescriptorMetadata):
             self.data_descriptors.append(data_descriptor)
@@ -76,7 +60,7 @@ class Framwork:
     def _find_Simularaty(self):
         # TODO: make my
         raise NotImplementedError('NotImplemented')
-    
+
     def _find_Metric_Leaning(self,data_pair,similarity_label):
         nonlm = NonlinearDeepMetric()
         nonlm.train(data_pair, similarity_label)
@@ -85,7 +69,7 @@ class Framwork:
     def _find_Model(self, data):
         # TODO: make my
         raise NotImplementedError('NotImplemented')
-    
+
     def _subsample(self,presenitizedData, sub_sampling_size=0.1, seed=None):
         self.subsampling = Subsampling(presenitizedData.sample(frac=sub_sampling_size))
         subsample_size_max = int(comb(len(self.subsampling.data), 2))
@@ -137,8 +121,8 @@ class Framwork:
         return '\n'.join(dd_string_out)
 
     def run(self):
-        self._verify_data_input()
-        self._verify_configuration_of_framework()
+        self.data = Verifyerror().verify(self.data, self._simularatie_list, self.data_descriptors)
+        self.amount_of_sensors = len(self.data.index)
         can_insture_k_anonymity = self._can_insture_k_anonymity()
         if not can_insture_k_anonymity:
             self.data, self._simularatie_list, self.data_descriptors = self._resampler.resample_data_into_blocks_of_output_rate(self.data, self.data_descriptors, self._simularatie_list)
