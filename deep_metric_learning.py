@@ -25,10 +25,7 @@ from keras.regularizers import l2
 from sklearn.preprocessing import StandardScaler
 np.random.seed(0)
 
-
-
 class Deep_Metric:
-
     def train(self, data_pairs, similarity_labels):
         self.scaler = StandardScaler()
         self.batch_size = 10
@@ -56,9 +53,6 @@ class Deep_Metric:
         y_train = similarity_labels[:int(s_size * train_portion)]
         y_test = similarity_labels[int(s_size * train_portion): ]
 
-        labels = keras.utils.to_categorical(similarity_labels, number_classes)
-        y_train = keras.utils.to_categorical(y_train, number_classes)
-        y_test = keras.utils.to_categorical(y_test, number_classes)
 
         left_input = Input(input_shape)
         right_input = Input(input_shape)
@@ -66,21 +60,19 @@ class Deep_Metric:
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
         model.add(Dense(kernels, activation='relu', input_shape = input_shape))
-        model.add(Dropout(0.2))
+        model.add(Dropout(0.1))
         model.add(Dense(kernels, activation='relu'))
-        model.add(Dropout(0.2))
-        model.add(Dense(kernels, activation='sigmoid'))
-
+        model.add(Dropout(0.1))
+        model.add(Dense(kernels, activation='relu'))
 
         #encode each of the two inputs into a vector with the model
         encoded_l = model(left_input)
         encoded_r = model(right_input)
 
         #merge two encoded inputs with the l1 distance between them
-        L1_distance = lambda x: K.square(x[0]-x[1])
+        L1_distance = lambda x: K.sqrt(K.sum((K.square(x[0] - x[1])), axis=1, keepdims=True))
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
-        prediction = Dense(number_classes,activation='sigmoid')(both)
-        siamese_net = Model(input=[left_input,right_input],output=prediction)
+        siamese_net = Model(input=[left_input,right_input], output=both)
 
         optimizer = RMSprop()
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
@@ -112,12 +104,11 @@ class Deep_Metric:
         
         inp1, inp2 = siamese_net.input
 
-        func = siamese_net.layers[-2].input
-        dist = siamese_net.layers[-2].output    
+        func = siamese_net.layers[-1].input
+        dist = siamese_net.layers[-1].output    
         self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]]) 
         self.functor2 = K.function([inp2]+ [K.learning_phase()], [func[1]])
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
-
           
     def transform(self, data_pairs):
         x, y = data_pairs

@@ -64,9 +64,9 @@ class Linear_Metric:
         model = Sequential()
 
         model.add(Dense(kernels, activation='linear', input_shape = input_shape))
-        model.add(Dropout(0.2))
+        model.add(Dropout(0.1))
         model.add(Dense(kernels, activation='linear'))
-        model.add(Dropout(0.2))
+        model.add(Dropout(0.1))
         model.add(Dense(kernels, activation='linear'))
 
         #encode each of the two inputs into a vector with the model
@@ -74,10 +74,9 @@ class Linear_Metric:
         encoded_r = model(right_input)
 
         #merge two encoded inputs with the l1 distance between them
-        L1_distance = lambda x: K.square(x[0]-x[1])
+        L1_distance = lambda x: K.sqrt(K.sum((K.square(x[0] - x[1])), axis=1, keepdims=True))
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
-        prediction = Dense(number_classes)(both)
-        siamese_net = Model(input=[left_input,right_input],output=prediction)
+        siamese_net = Model(input=[left_input,right_input], output=both)
 
         optimizer = RMSprop()
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
@@ -91,11 +90,12 @@ class Linear_Metric:
         x1_test = np.array(x1_test)
         x2_test = np.array(x2_test)
         y_test = np.array(y_test)
-
+        
         x1_train = self.scaler.transform(x1_train)
         x2_train = self.scaler.transform(x2_train)
         x1_test = self.scaler.transform(x1_test)
         x2_test = self.scaler.transform(x2_test)
+
 
         history = siamese_net.fit([x1_train, x2_train], y_train,
                             batch_size=self.batch_size,
@@ -108,13 +108,12 @@ class Linear_Metric:
         
         inp1, inp2 = siamese_net.input
 
-        func = siamese_net.layers[-2].input
-        dist = siamese_net.layers[-2].output    
+        func = siamese_net.layers[-1].input
+        dist = siamese_net.layers[-1].output    
         self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]]) 
         self.functor2 = K.function([inp2]+ [K.learning_phase()], [func[1]])
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
-
-          
+        
     def transform(self, data_pairs):
         x, y = data_pairs
         x = self.scaler.transform(np.array([x]))
@@ -126,7 +125,6 @@ class Linear_Metric:
         margin = 1
         return K.mean((1-y_true) * 0.5 * K.square(y_pred) + 0.5 * y_true * K.square(K.maximum(margin - y_pred, 0)))
 
-    
     def penalized_loss(self, branch1, branch2):
         def loss(y_true, y_pred):
             return K.mean(K.square(y_pred - y_true) - K.square(y_true - y_pred), axis=-1)
