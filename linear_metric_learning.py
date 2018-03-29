@@ -102,13 +102,6 @@ class Linear_Metric:
         x2_test = np.array(x2_test)
         y_test = np.array(y_test)
 
-        # x1_train = np.array(X1)
-        # x2_train = np.array(X2)
-        # y_train = keras.utils.to_categorical(similarity_labels, number_classes)
-
-        # data = np.append(x1_train, x2_train, axis=0)
-        
-        # self.scaler.fit(data)
         x1_train = self.scaler.transform(x1_train)
         x2_train = self.scaler.transform(x2_train)
         x1_test = self.scaler.transform(x1_test)

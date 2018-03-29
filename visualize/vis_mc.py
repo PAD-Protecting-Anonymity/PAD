@@ -7,7 +7,7 @@ import numpy as np
 
 
 
-## arrival
+# arrival
 with open('result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival_mc.pickle', 'rb') as f:
    _, losses, _, losses_best, losses_generic = pickle.load(f)
 
@@ -61,7 +61,7 @@ plt.show()
 
 
 # energy
-with open('result_scripts/loss_vs_privacy_energy_usage_public_deep_mc.pickle', 'rb') as f:
+with open('result_scripts/loss_vs_privacy_energy_usage_public_deep_mc_low.pickle', 'rb') as f:
    _, losses, _, losses_best, losses_generic = pickle.load(f)
 
 anonymity_vec = range(2, 8)

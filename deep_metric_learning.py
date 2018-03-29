@@ -98,14 +98,6 @@ class Deep_Metric:
         x1_test = np.array(x1_test)
         x2_test = np.array(x2_test)
         y_test = np.array(y_test)
-
-        # x1_train = np.array(X1)
-        # x2_train = np.array(X2)
-        # y_train = keras.utils.to_categorical(similarity_labels, number_classes)
-        # y_train = keras.utils.to_categorical(y_train, number_classes)
-
-        # data = np.append(x1_train, x2_train, axis=0)
-        # self.scaler.fit(data)
         
         x1_train = self.scaler.transform(x1_train)
         x2_train = self.scaler.transform(x2_train)
@@ -135,9 +127,6 @@ class Deep_Metric:
         x, y = data_pairs
         x = self.scaler.transform(np.array([x]))
         y = self.scaler.transform(np.array([y]))
-
-        # x = x.reshape(1, x.shape[0])
-        # y = y.reshape(1, y.shape[0])
         distance = self.functor3([*[x, y], 1.])
         return distance[0].sum()
 
