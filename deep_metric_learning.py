@@ -119,7 +119,8 @@ class Deep_Metric:
 
     def contrastive_loss(self, y_true, y_pred):
         margin = 1
-        return K.mean((1-y_true) * 0.5 * K.square(y_pred) + 0.5 * y_true * K.square(K.maximum(margin - y_pred, 0)))
+        return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))        
+        # return K.mean((1-y_true) * 0.5 * K.square(y_pred) + 0.5 * y_true * K.square(K.maximum(margin - y_pred, 0)))
     
     def penalized_loss(self, branch1, branch2):
         def loss(y_true, y_pred):
