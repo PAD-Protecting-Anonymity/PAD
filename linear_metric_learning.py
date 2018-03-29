@@ -63,19 +63,11 @@ class Linear_Metric:
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
 
-        # model.add(Dense(kernels, input_shape = input_shape))
-        # model.add(Dense(kernels))
-        # model.add(Dense(kernels))
-
         model.add(Dense(kernels, activation='linear', input_shape = input_shape))
         model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='linear'))
         model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='linear'))
-
-        # model.add(Dense(kernels,  input_shape = input_shape, kernel_regularizer=l2(2e-4)))
-        # model.add(Dense(kernels,  kernel_regularizer=l2(2e-4)))
-        # model.add(Dense(kernels,  kernel_regularizer=l2(1e-3)))
 
         #encode each of the two inputs into a vector with the model
         encoded_l = model(left_input)
@@ -87,9 +79,7 @@ class Linear_Metric:
         prediction = Dense(number_classes)(both)
         siamese_net = Model(input=[left_input,right_input],output=prediction)
 
-        # optimizer = Adam(0.00006)
         optimizer = RMSprop()
-        # siamese_net.compile(loss="binary_crossentropy", optimizer=optimizer)
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
     
         siamese_net.count_params()
@@ -127,12 +117,8 @@ class Linear_Metric:
           
     def transform(self, data_pairs):
         x, y = data_pairs
-
         x = self.scaler.transform(np.array([x]))
         y = self.scaler.transform(np.array([y]))
-        
-        # x = x.reshape(1, x.shape[0])
-        # y = y.reshape(1, y.shape[0])
         distance = self.functor3([*[x, y], 1.])
         return distance[0].sum()
 

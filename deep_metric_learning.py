@@ -65,10 +65,6 @@ class Deep_Metric:
         
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
-        # model.add(Dense(kernels, activation='relu', input_shape = input_shape, kernel_regularizer=l2(2e-4)))
-        # model.add(Dense(kernels, activation='relu', kernel_regularizer=l2(2e-4)))
-        # model.add(Dense(kernels, activation='sigmoid', kernel_regularizer=l2(1e-3)))
-
         model.add(Dense(kernels, activation='relu', input_shape = input_shape))
         model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='relu'))
