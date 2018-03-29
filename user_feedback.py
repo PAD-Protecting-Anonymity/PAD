@@ -59,7 +59,7 @@ class Similarity:
         similarity_label = []
         for ind1,ind2 in self.pair_index:
             if best_cluster_label[self.unique_index[ind1]] == best_cluster_label[self.unique_index[ind2]]:
-                similarity_label.append(1)
-            else:
                 similarity_label.append(0)
+            else:
+                similarity_label.append(1)
         return similarity_label, self.dataSubsample
