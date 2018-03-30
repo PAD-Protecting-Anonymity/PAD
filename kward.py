@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.neighbors.dist_metrics import DistanceMetric
 
 from data_statistics import UtilityOccupancyStatistics
-
+import pdb
 np.random.seed(0)
 
 
@@ -86,6 +86,7 @@ class K_ward:
         df = df[df["x"] != df["y"]]
         df = df.sort_values('distance')
         df.distance.loc[np.isnan(df.distance)] = 0
+
         return df
 
     def add_group(self,group):
@@ -197,7 +198,6 @@ class K_ward:
         # x, y = self.dm.transform((x,y))
         # dist = np.linalg.norm(x-y)
         dist = self.dm.transform((x,y))
-        # print(dist)
         return dist
 
 class Group:

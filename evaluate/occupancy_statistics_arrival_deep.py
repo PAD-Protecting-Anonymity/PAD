@@ -98,12 +98,12 @@ sanitized = {}
 losses = {}
 sample_sizes = []
 mode = "arrival"
-for n in range(2,8):    
+for n in range(2,8):
     s, l, ss = evaluation_occupancy_statistics(n, mode)
     sanitized[n] = s
     losses[n] = l
     sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_%s.pickle'%(mode), 'wb') as f: 
+with open('result_scripts/loss_vs_privacy_occupancy_statistics_normal_deep_%s.pickle'%(mode), 'wb') as f:
         pickle.dump([sanitized, losses, sample_sizes], f)
 
