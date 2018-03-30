@@ -18,7 +18,7 @@ pe = PerformanceEvaluation()
 mel = MetricLearning()
 
 # step 1: get the database to be published
-day_profile = pd.read_pickle('./dataset/dataframe_all_binary.pkl')
+day_profile = pd.read_pickle('../dataset/dataframe_all_binary.pkl')
 day_profile = day_profile.iloc[0::4,0::60]
 rep_mode = 'mean'
 anonymity_level = 2 # desired anonymity level
@@ -43,7 +43,7 @@ print('total number of pairs is %s' % subsample_size_max)
 # step 4: sample a subset of pre-sanitized database and form the data points into pairs
 subsample_size = int(round(subsample_size_max))
 sp = Subsampling(data=df_subsampled_from)
-data_pair = sp.uniform_sampling(subsample_size=subsample_size)
+data_pair, _ = sp.uniform_sampling(subsample_size=subsample_size)
 
 # User receives the data pairs and label the similarity
 sim = Similarity(data=data_pair)

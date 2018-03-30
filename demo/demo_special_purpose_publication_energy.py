@@ -47,7 +47,7 @@ print('total number of pairs is %s' % subsample_size_max)
 # step 4: sample a subset of pre-sanitized database and form the data points into pairs
 subsample_size = int(round(subsample_size_max/2))
 sp = Subsampling(data=df_subsampled_from)
-data_pair = sp.uniform_sampling(subsample_size=subsample_size)
+data_pair,_ = sp.uniform_sampling(subsample_size=subsample_size)
 
 # User receives the data pairs and label the similarity
 sim = Similarity(data=data_pair)

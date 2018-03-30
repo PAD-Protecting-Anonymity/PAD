@@ -136,6 +136,12 @@ for mc_i in range(mc_num):
     dist_metric = None
     sp.reset()
     while k <= subsample_size_max:
+<<<<<<< HEAD
+=======
+        # pairdata, pairdata_idx = sp.active_sampling(dist_metric=dist_metric,
+        #                                             k_init=k_init,
+        #                                             batch_size=1)
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
         pairdata, pairdata_idx = sp.active_sampling(dist_metric=dist_metric,
                                                     k_init=k_init,
                                                     batch_size=1,

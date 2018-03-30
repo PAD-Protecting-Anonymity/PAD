@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="1690bdf5-22c6-4426-a34f-9e7457790890" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/evaluate/test_script.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -10,6 +11,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/linear_metric_learning.py" afterPath="$PROJECT_DIR$/linear_metric_learning.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualize/vis_mc.py" afterPath="$PROJECT_DIR$/visualize/vis_mc.py" />
     </list>
+=======
+    <list default="true" id="6a407f4d-f1d7-43ee-ae72-838f1e699be6" name="Default" comment="" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
     <ignored path="PAD.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -21,16 +25,24 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/PAD$test_script.coverage" NAME="test_script Coverage Results" MODIFIED="1522428291127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
     <SUITE FILE_PATH="coverage/PAD$occupancy_window_deep_public_mc.coverage" NAME="occupancy_window_deep_public_mc Coverage Results" MODIFIED="1516038031769" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
     <SUITE FILE_PATH="coverage/PAD$evaluation_window_active_vs_uniform.coverage" NAME="evaluation_window_active_vs_uniform Coverage Results" MODIFIED="1515713447961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
     <SUITE FILE_PATH="coverage/PAD$vis_hist_arrival_times.coverage" NAME="vis_hist_arrival_times Coverage Results" MODIFIED="1515979459402" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/visualize" />
     <SUITE FILE_PATH="coverage/PAD$occupancy_statistics_arrival_test.coverage" NAME="occupancy_statistics_arrival_test Coverage Results" MODIFIED="1522085784620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
     <SUITE FILE_PATH="coverage/PAD$evaluation_window_active.coverage" NAME="evaluation_window_active Coverage Results" MODIFIED="1515721153338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
+=======
+    <SUITE FILE_PATH="coverage/PAD$demo_efficient_labeling.coverage" NAME="demo_efficient_labeling Coverage Results" MODIFIED="1515616507176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/PAD$occupancy_window_deep_public.coverage" NAME="occupancy_window_deep_public Coverage Results" MODIFIED="1515691538204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evaluate" />
+    <SUITE FILE_PATH="coverage/PAD$demo_special_purpose_publication_occupancy.coverage" NAME="demo_special_purpose_publication_occupancy Coverage Results" MODIFIED="1514075625798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/demo" />
+    <SUITE FILE_PATH="coverage/PAD$vis_energy_total_usage.coverage" NAME="vis_energy_total_usage Coverage Results" MODIFIED="1515690616276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/visualize" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+<<<<<<< HEAD
   <component name="DatabaseView">
     <option name="GROUP_SCHEMA" value="true" />
     <option name="GROUP_CONTENTS" value="false" />
@@ -39,12 +51,15 @@
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
   </component>
+=======
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="PAD" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file leaf-file-name="vis_mc.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/visualize/vis_mc.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -64,11 +79,21 @@
               <caret line="59" column="72" selection-start-line="59" selection-start-column="44" selection-end-line="59" selection-end-column="72" />
               <folding>
                 <element signature="e#308#319#0" expanded="true" />
+=======
+      <file leaf-file-name="demo_efficient_labeling.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="152" column="56" selection-start-line="152" selection-start-column="56" selection-end-line="152" selection-end-column="56" />
+              <folding>
+                <element signature="e#58#109#0" expanded="true" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="data_statistics.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data_statistics.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -120,6 +145,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="343">
               <caret line="90" column="18" selection-start-line="90" selection-start-column="18" selection-end-line="90" selection-end-column="18" />
+=======
+      <file leaf-file-name="user_feedback.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/user_feedback.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="417">
+              <caret line="55" column="55" selection-start-line="55" selection-start-column="55" selection-end-line="55" selection-end-column="55" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
               <folding />
             </state>
           </provider>
@@ -140,6 +172,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/evaluate/evaluation_window_active_vs_uniform.py" />
         <option value="$PROJECT_DIR$/demo/demo_efficient_labeling.py" />
         <option value="$PROJECT_DIR$/metric_learning.py" />
@@ -185,6 +218,15 @@
         <option value="$PROJECT_DIR$/kward.py" />
         <option value="$PROJECT_DIR$/deep_metric_learning.py" />
         <option value="$PROJECT_DIR$/evaluate/test_script.py" />
+=======
+        <option value="$PROJECT_DIR$/user_feedback.py" />
+        <option value="$PROJECT_DIR$/demo/demo_special_purpose_publication_energy.py" />
+        <option value="$PROJECT_DIR$/demo/demo_special_purpose_publication_energy_deep.py" />
+        <option value="$PROJECT_DIR$/demo/demo_special_purpose_publication_occupancy.py" />
+        <option value="$PROJECT_DIR$/demo/demo_special_purpose_publication_occupancy_deep.py" />
+        <option value="$PROJECT_DIR$/metric_learning.py" />
+        <option value="$PROJECT_DIR$/demo/demo_efficient_labeling.py" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       </list>
     </option>
   </component>
@@ -195,10 +237,16 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="1280" />
     <option name="y" value="-257" />
     <option name="width" value="1852" />
     <option name="height" value="1057" />
+=======
+    <option name="y" value="23" />
+    <option name="width" value="1216" />
+    <option name="height" value="777" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -225,6 +273,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
+=======
+      <pane id="Scope" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -254,6 +306,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+<<<<<<< HEAD
               <option name="myItemId" value="visualize" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -282,6 +335,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+=======
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
               <option name="myItemId" value="result" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -296,6 +351,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+<<<<<<< HEAD
               <option name="myItemId" value="evaluate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -310,10 +366,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+=======
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
               <option name="myItemId" value="demo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+<<<<<<< HEAD
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="PAD" />
@@ -412,37 +471,69 @@
       <method />
     </configuration>
     <configuration default="false" name="occupancy_statistics_arrival_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+=======
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunManager" selected="Python.demo_efficient_labeling">
+    <configuration default="false" name="demo_efficient_labeling" type="PythonConfigurationType" factoryName="Python" temporary="true">
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+<<<<<<< HEAD
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluate" />
+=======
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="PAD" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+<<<<<<< HEAD
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/occupancy_statistics_arrival_test.py" />
+=======
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/demo/demo_efficient_labeling.py" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
+<<<<<<< HEAD
     <configuration default="false" name="test_script" type="PythonConfigurationType" factoryName="Python" temporary="true">
+=======
+    <configuration default="false" name="demo_special_purpose_publication_occupancy" type="PythonConfigurationType" factoryName="Python" temporary="true">
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+<<<<<<< HEAD
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/evaluate" />
+=======
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/demo" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="PAD" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+<<<<<<< HEAD
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluate/test_script.py" />
+=======
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/demo/demo_special_purpose_publication_occupancy.py" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -655,6 +746,7 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
+<<<<<<< HEAD
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.evaluation_window_active" />
       <item index="1" class="java.lang.String" itemvalue="Python.vis_hist_arrival_times" />
@@ -669,6 +761,16 @@
         <item index="2" class="java.lang.String" itemvalue="Python.occupancy_window_deep_public_mc" />
         <item index="3" class="java.lang.String" itemvalue="Python.vis_hist_arrival_times" />
         <item index="4" class="java.lang.String" itemvalue="Python.evaluation_window_active" />
+=======
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Python.demo_efficient_labeling" />
+      <item index="1" class="java.lang.String" itemvalue="Python.demo_special_purpose_publication_occupancy" />
+    </list>
+    <recent_temporary>
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Python.demo_efficient_labeling" />
+        <item index="1" class="java.lang.String" itemvalue="Python.demo_special_purpose_publication_occupancy" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       </list>
     </recent_temporary>
   </component>
@@ -680,15 +782,24 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
       <changelist id="1690bdf5-22c6-4426-a34f-9e7457790890" name="Default" comment="" />
       <created>1515696667408</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1515696667408</updated>
+=======
+      <changelist id="6a407f4d-f1d7-43ee-ae72-838f1e699be6" name="Default" comment="" />
+      <created>1514071467916</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1514071467916</updated>
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="1280" y="-257" width="1852" height="1057" extended-state="6" />
     <editor active="false" />
     <layout>
@@ -703,11 +814,28 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32953367" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3492228" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+=======
+    <frame x="0" y="23" width="1216" height="777" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29642248" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44145077" sideWeight="0.5022124" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28613138" sideWeight="0.49778762" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34160584" sideWeight="0.49778762" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+<<<<<<< HEAD
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329927" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -716,6 +844,12 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+=======
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
       <collection />
@@ -729,14 +863,26 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+<<<<<<< HEAD
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
       <option name="time" value="26" />
+=======
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="1" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/evaluate/evaluation_moments_distribution.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -878,12 +1024,142 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/result_scripts/loss_vs_privacy_occupancy_statistics_public_deep_arrival.pickle">
+=======
+    <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3105">
+          <caret line="214" column="10" selection-start-line="180" selection-start-column="0" selection-end-line="214" selection-end-column="10" />
+          <folding>
+            <element signature="e#58#109#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metric_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generate_occup_sanitized_generic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="22" column="69" selection-start-line="21" selection-start-column="4" selection-end-line="22" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#58#109#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metric_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1485">
+          <caret line="107" column="38" selection-start-line="107" selection-start-column="38" selection-end-line="107" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generate_occup_sanitized_generic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="22" column="69" selection-start-line="21" selection-start-column="4" selection-end-line="22" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1293">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/pandas/core/series.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="1457" column="0" selection-start-line="1457" selection-start-column="0" selection-end-line="1457" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/pandas/io/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="384" column="0" selection-start-line="384" selection-start-column="0" selection-end-line="384" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_occupancy_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="81" column="45" selection-start-line="81" selection-start-column="45" selection-end-line="81" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_general_purpose_publication_occupancy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-64">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_occupancy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="45" column="12" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="81" column="17" selection-start-line="81" selection-start-column="17" selection-end-line="81" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_energy_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="92" column="99" selection-start-line="92" selection-start-column="99" selection-end-line="92" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_energy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="49" column="11" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/evaluate/occupancy_statistics_arrival_deep_public_all.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-465">
@@ -958,16 +1234,99 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+=======
+    <entry file="file://$PROJECT_DIR$/data_statistics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-592">
+          <caret line="54" column="41" selection-start-line="54" selection-start-column="39" selection-end-line="54" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90">
+          <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="214" selection-end-column="10" />
+          <folding>
+            <element signature="e#58#109#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metric_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="71" column="49" selection-start-line="71" selection-start-column="49" selection-end-line="71" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generate_occup_sanitized_generic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="22" column="69" selection-start-line="21" selection-start-column="4" selection-end-line="22" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate/occupancy_window_deep_public.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="27" column="43" selection-start-line="27" selection-start-column="43" selection-end-line="27" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualize/vis_energy_total_usage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="55" column="10" selection-start-line="0" selection-start-column="0" selection-end-line="55" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/user_feedback.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="56" column="55" selection-start-line="56" selection-start-column="55" selection-end-line="56" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1293">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/pandas/core/series.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="1457" column="0" selection-start-line="1457" selection-start-column="0" selection-end-line="1457" selection-end-column="0" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
         </state>
       </provider>
     </entry>
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/pandas/io/common.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="228">
+=======
+        <state relative-caret-position="127">
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
           <caret line="384" column="0" selection-start-line="384" selection-start-column="0" selection-end-line="384" selection-end-column="0" />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="371">
@@ -1002,18 +1361,38 @@
     <entry file="file://$PROJECT_DIR$/saimese.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
+=======
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_occupancy_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="81" column="45" selection-start-line="81" selection-start-column="45" selection-end-line="81" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_general_purpose_publication_occupancy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-64">
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/keras/engine/training.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
           <caret line="449" column="0" selection-start-line="449" selection-start-column="0" selection-end-line="449" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/user_feedback.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="55" column="55" selection-start-line="55" selection-start-column="55" selection-end-line="55" selection-end-column="55" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/linear_metric_learning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="441">
@@ -1090,30 +1469,92 @@
           <caret line="97" column="10" selection-start-line="97" selection-start-column="10" selection-end-line="97" selection-end-column="10" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_occupancy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="45" column="12" selection-start-line="45" selection-start-column="12" selection-end-line="45" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="81" column="17" selection-start-line="81" selection-start-column="17" selection-end-line="81" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_energy_deep.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="92" column="99" selection-start-line="92" selection-start-column="99" selection-end-line="92" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/demo/demo_special_purpose_publication_energy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="49" column="11" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generate_occup_sanitized_generic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="69" selection-start-line="21" selection-start-column="4" selection-end-line="22" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/data_statistics.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="555">
           <caret line="43" column="26" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="26" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/metric_learning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1822">
+          <caret line="107" column="38" selection-start-line="107" selection-start-column="38" selection-end-line="107" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/deep_metric_learning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="159">
           <caret line="59" column="72" selection-start-line="59" selection-start-column="44" selection-end-line="59" selection-end-column="72" />
           <folding>
             <element signature="e#308#319#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/demo/demo_efficient_labeling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="152" column="56" selection-start-line="152" selection-start-column="56" selection-end-line="152" selection-end-column="56" />
+          <folding>
+            <element signature="e#58#109#0" expanded="true" />
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/evaluate/test_script.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="284">
@@ -1122,5 +1563,7 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
   </component>
 </project>
