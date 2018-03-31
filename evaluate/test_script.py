@@ -75,21 +75,21 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
     print("information loss with best metric %s" % loss_best_metric)
     print("information loss with generic metric %s" % loss_generic_metric)
 
-    # # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
-    # lm = Linear_Metric()
-    # lm.train(data_pair, similarity_label)
+    # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
+    lm = Linear_Metric()
+    lm.train(data_pair, similarity_label)
 
 
 
-    # # step 6: the original database is privatized using the learned metric
-    # sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
-    #                                     rep_mode=rep_mode, deep_model=lm)
-    #
-    # # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
-    # loss_learned_metric = pe.get_statistics_loss(data_gt=day_profile,
-    #                                             data_sanitized=sanitized_profile.round(),
-    #                                             mode = mode)
-    # print("information loss with learned metric %s" % loss_learned_metric)
+    # step 6: the original database is privatized using the learned metric
+    sanitized_profile = util.sanitize_data(day_profile, distance_metric="deep",anonymity_level=anonymity_level,
+                                        rep_mode=rep_mode, deep_model=lm)
+
+    # (optionally for evaluation purpose) Evaluating the information loss of the sanitized database
+    loss_learned_metric = pe.get_statistics_loss(data_gt=day_profile,
+                                                data_sanitized=sanitized_profile.round(),
+                                                mode = mode)
+    print("information loss with learned metric %s" % loss_learned_metric)
 
 
     ## deep
@@ -104,11 +104,11 @@ def evaluation_occupancy_statistics(n, mode = "arrival"):
     print("information loss with learned metric deep  %s" % (loss_learned_metric_deep))
     # return (sanitized_profile_deep), (loss_learned_metric_deep), subsample_size
     # return (sanitized_profile_baseline, sanitized_profile_deep), (loss_generic_metric, loss_learned_metric_deep), subsample_size
-    return (sanitized_profile_best, sanitized_profile_baseline,  sanitized_profile_deep), (loss_best_metric, loss_generic_metric, loss_learned_metric_deep), subsample_size
+    # return (sanitized_profile_best, sanitized_profile_baseline,  sanitized_profile_deep), (loss_best_metric, loss_generic_metric, loss_learned_metric_deep), subsample_size
 
 
-    # return (sanitized_profile_best, sanitized_profile_baseline, sanitized_profile, sanitized_profile_deep), (loss_best_metric, loss_generic_metric, loss_learned_metric, loss_learned_metric_deep), subsample_size
-    #
+    return (sanitized_profile_best, sanitized_profile_baseline, sanitized_profile, sanitized_profile_deep), (loss_best_metric, loss_generic_metric, loss_learned_metric, loss_learned_metric_deep), subsample_size
+
 
 sanitized = {}
 losses = {}
