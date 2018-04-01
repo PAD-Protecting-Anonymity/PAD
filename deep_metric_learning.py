@@ -107,16 +107,18 @@ class Deep_Metric:
                             validation_data=([x1_test, x2_test], y_test), verbose=1)
 
 
-        d_test = self.distance_model.predict([x1_test,x2_test])
+        self.d_test = self.distance_model.predict([x1_test,x2_test])
         stat_util = Distance()
         cols = np.arange(x1_test.shape[1])
-        d_test_arr = np.zeros(x1_test.shape[0])
+        self.d_test_arr = np.zeros(x1_test.shape[0])
         x1_test_df = pd.DataFrame(x1_test)
         x2_test_df = pd.DataFrame(x2_test)
 
         for k in range(x1_test.shape[0]):
-            d_test_arr[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k,:],x2_test_df.iloc[k,:],
-                                                             index=cols,mode='arrival')
+            self.d_test_arr[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k,:],x2_test_df.iloc[k,:],
+                                                                  index=cols,window=[11, 15],mode='segment')
+            # self.d_test_arr[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k,:],x2_test_df.iloc[k,:],
+            #                                                  index=cols,mode='arrival')
 
         # d_train = self.distance_model.predict([x1_train, x2_train])
         # pdb.set_trace()
@@ -129,15 +131,15 @@ class Deep_Metric:
         # print('dissimilar distances var %s' % np.std(d_test[similar_ind]))
         # print('similar distances %s' % np.mean(d_test[dissimilar_ind]))
         # print('similar distances var %s' % np.std(d_test[dissimilar_ind]))
-        print('similar distances %s'%np.mean(d_test[similar_ind]))
-        print('similar distances var %s' % np.std(d_test[similar_ind]))
-        print('dissimilar distances %s' % np.mean(d_test[dissimilar_ind]))
-        print('dissimilar distances var %s' % np.std(d_test[dissimilar_ind]))
+        print('similar distances %s'%np.mean(self.d_test[similar_ind]))
+        print('similar distances var %s' % np.std(self.d_test[similar_ind]))
+        print('dissimilar distances %s' % np.mean(self.d_test[dissimilar_ind]))
+        print('dissimilar distances var %s' % np.std(self.d_test[dissimilar_ind]))
         print('======')
-        print('similar distances %s'%np.mean(d_test_arr[similar_ind]))
-        print('similar distances var %s' % np.std(d_test_arr[similar_ind]))
-        print('dissimilar distances %s' % np.mean(d_test_arr[dissimilar_ind]))
-        print('dissimilar distances var %s' % np.std(d_test_arr[dissimilar_ind]))
+        print('similar distances %s'%np.mean(self.d_test_arr[similar_ind]))
+        print('similar distances var %s' % np.std(self.d_test_arr[similar_ind]))
+        print('dissimilar distances %s' % np.mean(self.d_test_arr[dissimilar_ind]))
+        print('dissimilar distances var %s' % np.std(self.d_test_arr[dissimilar_ind]))
         # pdb.set_trace()
 
 
