@@ -126,7 +126,7 @@ for i in range(len(anonymity_levels)):
 
 # with open('./result_deep/lunchtime.pickle', 'rb') as f:
 #    anonymity_levels, losses_best, losses_generic, losses_linear, losses_deep, distances_lm, distances_dm,distances_gt = pickle.load(f)
-#
+# this 
 #
 
 
