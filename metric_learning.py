@@ -6,8 +6,6 @@ from cvxpy import *
 from helper import Miscellaneous
 import numpy as np
 
-<<<<<<< HEAD
-=======
 class Subsampling:
     def __init__(self,data):
         self.data = data # sanitized database to be sampled from
@@ -116,8 +114,6 @@ class Subsampling:
         prob_us = 1/(1+np.exp(-(dist-mu)))
         uncertainty = np.abs(prob_s-prob_us)
         return uncertainty
-
->>>>>>> 69418cbb0576c1cb2e97585a68597ea8affb2ebf
 
 class MetricLearning:
     def learn_with_similarity_label(self, data, label, mode, lam):

@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 import scipy as sp
-
-from kward import K_ward
+from kward import K_ward, Distance
 from data_statistics import OccupancyStatistics
 
 np.random.seed(0)
@@ -132,5 +131,46 @@ class Miscellaneous:
         return A_psd
 
 
+def prepare_data(data_pair, similarity_label,train_portion):
+    X1, X2 = zip(*data_pair)
+    s_size = len(similarity_label)
+    x1_train = np.array(X1[:int(s_size * train_portion)])
+    x2_train = np.array(X2[:int(s_size * train_portion)])
+    x1_test = np.array(X1[int(s_size * train_portion):])
+    x2_test = np.array(X2[int(s_size * train_portion):])
+    y_train = np.array(similarity_label[:int(s_size * train_portion)])
+    y_test = np.array(similarity_label[int(s_size * train_portion):])
+    return x1_train,x2_train,y_train,x1_test,x2_test,y_test
 
+def get_ground_truth_distance(x1,x2,mode,**kwargs):
+    stat_util = Distance()
+    n_samples = x1.shape[0]
+    cols = np.arange(x1.shape[1])
+    d_gt = np.zeros(n_samples)
+    x1_test_df = pd.DataFrame(x1)
+    x2_test_df = pd.DataFrame(x2)
+
+    if mode == "arrival":
+        for k in range(n_samples):
+            d_gt[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k,:],x2_test_df.iloc[k,:],
+                                                         index=cols,mode='arrival')
+    elif mode == "departure":
+        for k in range(n_samples):
+            d_gt[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k,:],x2_test_df.iloc[k,:],
+                                                     index=cols,mode='departure')
+    elif mode == "usage":
+        for k in range(n_samples):
+            d_gt[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k,:],x2_test_df.iloc[k,:],
+                                                     index=cols,mode='usage')
+    elif mode == "window-usage":
+        window = kwargs['window']
+        for k in range(n_samples):
+            d_gt[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k, :], x2_test_df.iloc[k, :],
+                                                   index=cols, mode='window_usage',window=window)
+    elif mode == "segment":
+        window = kwargs['window']
+        for k in range(n_samples):
+            d_gt[k] = stat_util.get_statistic_distance(x1_test_df.iloc[k, :], x2_test_df.iloc[k, :],
+                                                              index=cols, mode='segment',window=window)
+    return d_gt
 
