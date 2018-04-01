@@ -1,3 +1,5 @@
+import sys; import os
+sys.path.append(os.path.abspath("./"))
 from helper import Utilities, PerformanceEvaluation,prepare_data,get_ground_truth_distance
 import pandas as pd
 from user_feedback import Similarity
@@ -62,7 +64,7 @@ util = Utilities()
 pe = PerformanceEvaluation()
 
 # load dataset
-day_profile_all = pd.read_pickle('../dataset/dataframe_all_binary.pkl')
+day_profile_all = pd.read_pickle('dataset/dataframe_all_binary.pkl')
 day_profile_all = day_profile_all.fillna(0)
 day_profile_all[day_profile_all > 0] = 1
 res = 15
