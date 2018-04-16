@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from framework.models.basemodel import BaseModel 
+from framework.models.basemodel import BaseModel
 # np.random.seed(0)
 
 
@@ -181,6 +181,8 @@ class Group:
                 else:
                     random_ind.append(0.1)
             rep = np.around(df.median(axis=0) + random_ind)
+        elif self.rep_mode == 'max':
+            rep =  df.max(axis=0)
         return rep
 
     def get_member_data(self, identify):

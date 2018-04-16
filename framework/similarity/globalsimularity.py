@@ -1,16 +1,14 @@
 # from similarity import basesimularity as BaseSimularity, simularityterms as SimularityTerms
-from similarity.simularityterms import SimularityTerms
-from similarity.basesimularity import BaseSimularity
+from framework.similarity.simularityterms import SimularityTerms
+from framework.similarity.basesimularity import BaseSimularity
 from sklearn.neighbors.dist_metrics import DistanceMetric
 # import basesimularity as BaseSimularity
 import numpy as np
 import pandas as pd
 
 class GlobalSimularity(BaseSimularity):
-
-
     '''
-    distance_metric can 
+    distance_metric can
     EUCLIDEAN,
     MAHALAOBIS = "mahalanobis"
     CHEBYSHEV = "chebyshev"

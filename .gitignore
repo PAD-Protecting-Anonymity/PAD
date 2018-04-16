@@ -69,3 +69,6 @@ results/*
 dataset/*
 !.dataset/dataframe_all_binary.pkl
 !.dataset/dataframe_all_energy.pkl
+
+#configes
+framework/run_configes/*

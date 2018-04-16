@@ -33,7 +33,7 @@ class Utilities:
         sanitized_df = pd.DataFrame()
         for group in groups:
             sanitized_value = group.rep.to_frame().transpose()
-            keys = group.get_member_ids()            
+            keys = group.get_member_ids()
             for key in keys:
                 sanitized_value.index = [key]
                 sanitized_df = sanitized_df.append(sanitized_value)
@@ -46,13 +46,13 @@ class Utilities:
                         k=anonymity_level, **kwargs)
         k_ward.get_cluster()
         groups = k_ward.groups
-        
+
 
         sanitized_df = pd.DataFrame()
         for group in groups:
             sanitized_value = group.rep.to_frame().transpose()
             keys = group.get_member_ids()
-            
+
             merged_data.loc[keys]
             sanitized_value = merged_data.loc[keys].mean()
             for key in keys:

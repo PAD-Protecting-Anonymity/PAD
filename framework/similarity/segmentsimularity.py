@@ -34,7 +34,7 @@ class SegmentSimularity(BaseSimularity):
     def get_statistics(self,data):
         return self.get_segment(data)
 
-    def get_segment(self,data, flag=1):
+    def get_segment(self,data):
         segment_data = data.apply(self.compute_segment, axis=1,index=data.columns,window=self.data_window)
         return segment_data
 
@@ -58,7 +58,7 @@ class SegmentSimularity(BaseSimularity):
                 else:
                     distance[i,j] = self.get_statistics_distance(df1,df2,index=cols,flag=1)
         return super().compute_distance(distance,data.index)
-    
+
     def compute_segment(self,x,index, window):
         win_start = window[0]
         win_end = window[1]
@@ -66,7 +66,7 @@ class SegmentSimularity(BaseSimularity):
             x = list(x)
         df = x[win_start:win_end]
         return df
-    
+
     def compute_segment_data_window_size(self,x,index, window,data_window_size):
         amount_of_colums = x.size
         amount_of_slices = math.floor(amount_of_colums/data_window_size)

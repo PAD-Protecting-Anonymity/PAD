@@ -15,7 +15,7 @@ from itertools import chain
 import pandas as pd
 
 class Framwork:
-    def __init__(self, data, anonymity_level=5,dataset_description=None):
+    def __init__(self, data, anonymity_level=5,dataset_description=None, rep_mode = "mean"):
         self.data = data
         self._simularatie_list = SimularatieList()
         self.data_descriptors = []
@@ -25,6 +25,7 @@ class Framwork:
         self.dataset_description = dataset_description
         self.data_has_been_resample_data_into_blocks_of_output_rate = False
         self.amount_of_sensors =None
+        self.rep_mode  = rep_mode
         self._resampler = Resampler()
 
     def _get_data_for_sanitize(self):
@@ -42,7 +43,7 @@ class Framwork:
         output_data = pd.concat([output_data,sanitize_data], axis=1)
         return output_data
 
-    def _can_insture_k_anonymity(self):
+    def _can_ensure_k_anonymity(self):
         if (2*self.anonymity_level-1)*5<self.amount_of_sensors:
             return True
         return False
@@ -87,14 +88,14 @@ class Framwork:
         return similarity_label, data_pair_all
 
     def _presanitized(self):
-        sanitized_df = self._sanitize_data(data=self._get_data_for_sanitize(), distance_metric_type="init", rep_mode = "mean",
+        sanitized_df = self._sanitize_data(data=self._get_data_for_sanitize(), distance_metric_type="init", rep_mode = self.rep_mode,
                         anonymity_level=self.anonymity_level)
         return sanitized_df
 
-    def _sanitize_data(self,distance_metric_type, rep_mode, anonymity_level, data, **kwargs):
+    def _sanitize_data(self,distance_metric_type , anonymity_level, data, rep_mode, **kwargs):
         k_ward = None
         if distance_metric_type == "init":
-            k_ward = K_ward(data, rep_mode = rep_mode,k=anonymity_level, metric=self._simularatie_list)
+            k_ward = K_ward(data, rep_mode = rep_mode ,k=anonymity_level, metric=self._simularatie_list)
         else:
             metric = kwargs["metric"]
             k_ward = K_ward(data, rep_mode = rep_mode,k=anonymity_level, metric=metric)
@@ -103,6 +104,8 @@ class Framwork:
 
         sanitized_df = pd.DataFrame()
         for group in groups:
+            # group.rep_mode = "max"
+            # group.get_rep()
             sanitized_value = group.rep.to_frame().transpose()
             keys = group.get_member_ids()
             for key in keys:
@@ -123,9 +126,10 @@ class Framwork:
     def run(self):
         self.data = Verifyerror().verify(self.data, self._simularatie_list, self.data_descriptors)
         self.amount_of_sensors = len(self.data.index)
-        can_insture_k_anonymity = self._can_insture_k_anonymity()
-        if not can_insture_k_anonymity:
-            self.data, self._simularatie_list, self.data_descriptors = self._resampler.resample_data_into_blocks_of_output_rate(self.data, self.data_descriptors, self._simularatie_list)
+        _can_ensure_k_anonymity = self._can_ensure_k_anonymity()
+        if not _can_ensure_k_anonymity:
+            self.anonymity_level = self.anonymity_level * self.amount_of_sensors
+            self.data, self._simularatie_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks_of_output_rate(self.data, self.data_descriptors, self._simularatie_list)
             print("amount of samples after spilt %s" % len(self.data.index))
             print("amount of columns after spilt %s" % len(self.data.columns))
         presenitized_data = self._presanitized()
@@ -137,8 +141,8 @@ class Framwork:
         else:
             similarity_label, data_subsample = self._subsample(presenitized_data, sub_sampling_size=0.20)
         model = self._find_Metric_Leaning(data_subsample,similarity_label)
-        final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric", rep_mode = "mean",
-                        anonymity_level=self.anonymity_level,metric=model)
+        final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",
+                        anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
         loss_metric=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)
         print("information loss with nonlm metric %s" % loss_metric)
         # lm = Linear_Metric()
@@ -147,7 +151,7 @@ class Framwork:
         #                 anonymity_level=self.anonymity_level,metric=lm)
         # loss_metric=  self._simularatie_list.get_statistics_loss(final_sanitized_data,self.data)
         # print("information loss with Linear_Metric metric %s" % loss_metric)
-        if not can_insture_k_anonymity:
+        if not _can_ensure_k_anonymity:
             transformed_data, self._simularatie_list, self.data_descriptors = self._resampler.create_timeserices_from_slices_of_data(final_sanitized_data, self._simularatie_list, self.amount_of_sensors)
             transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
         else:

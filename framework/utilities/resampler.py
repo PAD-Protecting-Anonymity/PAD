@@ -16,7 +16,7 @@ class Resampler:
     def resample_data_into_blocks_of_output_rate(self,data,data_descriptors,simularatie_list):
         output_data = pd.DataFrame()
         index = 0
-        for data_descriptor in data_descriptors: 
+        for data_descriptor in data_descriptors:
             if isinstance(data_descriptor, DataDescriptorMetadata):
                 self.meta_datas.append(data_descriptor)
                 meta_data_rows = data.iloc[:, data_descriptor.data_start_index:data_descriptor.data_end_index+1]
@@ -31,12 +31,14 @@ class Resampler:
         _data_descriptors = []
         _simularatie_list = SimularatieList()
         index = 0
-        
+
         for simularatie in simularatie_list.simularaties:
             data_descriptor = simularatie.data_descriptor
             if isinstance(data_descriptor, DataDescriptorTimeSerice):
-                data_length = (data_descriptor.data_end_index - data_descriptor.data_start_index)
+                data_length = (data_descriptor.data_end_index - data_descriptor.data_start_index)+1
                 resample_factor = math.floor(simularatie.data_descriptor.output_frequency.value / data_descriptor.sampling_frequency.value)
+                if resample_factor < 15:
+                    resample_factor = 15
                 amount_of_resamples = math.floor(data_length / resample_factor)
                 start_index = data_descriptor.data_start_index
                 data_descriptor.data_start_index = index
@@ -51,7 +53,7 @@ class Resampler:
                     new_data.columns = list(range(data_descriptor.data_start_index,data_descriptor.data_end_index+1))
                     row_data = pd.concat([new_data], axis=1)
                     output_data = output_data.append(row_data, ignore_index=True)
-        return output_data, _simularatie_list, _data_descriptors
+        return output_data, _simularatie_list, _data_descriptors, resample_factor
 
     def create_timeserices_from_slices_of_data(self, transformed_data,simularatie_list, amount_of_sensors):
         output_data = pd.DataFrame()
@@ -61,17 +63,17 @@ class Resampler:
         for meta_dd in self.meta_datas:
             _data_descriptors.append(meta_dd)
             index = meta_dd.data_end_index + 1
-        
+
         amount_of_inputs = len(transformed_data.index)
 
-        time_Serices_lenged = math.floor(amount_of_inputs / amount_of_sensors)*len(transformed_data.columns)
+        time_serices_lenged = math.floor(amount_of_inputs / amount_of_sensors)*len(transformed_data.columns)
 
         for simularatie in simularatie_list.simularaties:
             simularatie.data_descriptor.data_start_index = index
-            simularatie.data_descriptor.data_end_index = index + time_Serices_lenged -1
+            simularatie.data_descriptor.data_end_index = index + time_serices_lenged -1
             _simularatie_list.add_simularatie(simularatie)
             _data_descriptors.append(simularatie.data_descriptor)
-            
+
         for i in range(0,amount_of_sensors):
             new_data = transformed_data.iloc[i::amount_of_sensors,:]._values
             new_data = list(chain.from_iterable(new_data))

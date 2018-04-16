@@ -10,7 +10,7 @@ class BaseSimularity():
         self.data_descriptor = data_descriptor
         self.simularity_terms = simularity_terms
         self.data_window = data_window
-        
+
     def get_simularity_type(self):
         if (self.simularity_type is None):
             raise NotImplementedError('users must define simularity_type')
@@ -37,7 +37,7 @@ class BaseSimularity():
 
     def get_statistics(self,data,**kwargs):
         raise NotImplementedError('users must define get_statistics to use this base class')
-        
+
     def compute_distance(self,distance,amount_of_data):
         df = pd.DataFrame(distance)
         df.columns = amount_of_data

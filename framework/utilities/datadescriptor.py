@@ -14,7 +14,7 @@ class DataDescriptorBase:
 
     def verify_configuration_data_descriptor_config(self,amount_of_colums, data):
         """Test if the data decriptors are refering to data witch is not in the datastrame
-        
+
         Arguments:
             amount_of_colums {int} -- the total amount of colums in the datastrame
             data {pandas dataframe} -- the data to be sanitized
@@ -68,6 +68,7 @@ class DataDescriptorTimeSerice(DataDescriptorBase):
         for i in range(self.data_start_index, self.data_end_index):
             if  not np.issubdtype(data.dtypes[i], np.number):
                 raise ValueError("For DataDescriptorTimeSerice, data types have to be of type number, see https://docs.scipy.org/doc/numpy/reference/arrays.scalars.html for help")
+
 class DataDescriptorMetadata(DataDescriptorBase):
     def __init__(self,data_start_index,data_end_index=None,data_decription=""):
         super().__init__(DataDescriptorTerms.METADATA,data_start_index,data_end_index,data_decription)
@@ -77,7 +78,7 @@ class DataDescriptorMetadata(DataDescriptorBase):
     def get_str_description(self):
         if self.data_decription is not "":
             return "Data Decription: {0} Data Type: Meta Data, Start Index: {1} End Index: {2}".format(self.data_decription,self.data_start_index, self.data_end_index)
-        return "Data Type: Meta Data, Start Index: {0}  End Index: {2}".format(self.data_start_index, self.data_end_index)    
+        return "Data Type: Meta Data, Start Index: {0}  End Index: {2}".format(self.data_start_index, self.data_end_index)
 
 
 
@@ -89,11 +90,11 @@ class DataDescriptorTerms(Enum):
     #Genelaraty Mode
     MEAN = "mean"
     MODE = "mode"
-    MEDIAN = "median"    
+    MEDIAN = "median"
     MIN = "min"
     MAX = "max"
     SUM = "sum"
-    
+
 
     #Datatypes
     NUMBER = "number"
@@ -102,10 +103,13 @@ class DataDescriptorTerms(Enum):
     #Genelaraty
     # EVENT = "event"
     SECOND = 1
-    SECOND_5 = 5    
+    SECOND_2 = 2
+    SECOND_5 = 5
     SECOND_20 = 20
     MINUE = 60
-    MINUE_5 = 300    
+    MINUE_2 = 120
+    MINUE_5 = 300
+    MINUE_10 = 600
     QUARETER = 900
     MINUE_20 = 1200
     HALFHOUR = 1800

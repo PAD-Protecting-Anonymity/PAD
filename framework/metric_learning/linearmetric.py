@@ -14,7 +14,7 @@ class Linear_Metric(BasemetricLearning):
     def __init__(self, **kwargs):
         super().__init__(MetricLearningTerms.LINEAR)
         self.kwargs = kwargs
-        
+
     def train(self, data_pairs, similarity_labels,**kwargs):
         self.scaler = StandardScaler()
         self.batch_size = 10
@@ -25,7 +25,7 @@ class Linear_Metric(BasemetricLearning):
             X1.append(x)
             X2.append(y)
         print(len(X1), len(X2), len(similarity_labels))
-        number_classes = len(np.unique(similarity_labels)) 
+        number_classes = len(np.unique(similarity_labels))
         # convert class vectors to binary class matrices
 
         train_portion = 0.8
@@ -77,7 +77,7 @@ class Linear_Metric(BasemetricLearning):
         optimizer = RMSprop()
         # siamese_net.compile(loss="binary_crossentropy", optimizer=optimizer)
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
-    
+
         siamese_net.count_params()
 
         x1_train = np.array(x1_train)
@@ -93,7 +93,7 @@ class Linear_Metric(BasemetricLearning):
         y_train = keras.utils.to_categorical(similarity_labels, number_classes)
 
         data = np.append(x1_train, x2_train, axis=0)
-        
+
         self.scaler.fit(data)
         x1_train = self.scaler.transform(x1_train)
         x2_train = self.scaler.transform(x2_train)
@@ -106,12 +106,12 @@ class Linear_Metric(BasemetricLearning):
         score = siamese_net.evaluate([x1_test, x2_test], y_test, verbose=0)
         print('Test loss:', score)
         print('Test accuracy:', score)
-        
+
         inp1, inp2 = siamese_net.input
 
         func = siamese_net.layers[-2].input
-        dist = siamese_net.layers[-2].output    
-        self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]]) 
+        dist = siamese_net.layers[-2].output
+        self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]])
         self.functor2 = K.function([inp2]+ [K.learning_phase()], [func[1]])
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
 

@@ -26,9 +26,9 @@ class Similarity:
     def extract_interested_attribute(self,simularaties):
         data_interested = None
         for simularatie in simularaties:
-            temp_data_interested = simularatie.get_statistics(self.dataSubsample)            
+            temp_data_interested = simularatie.get_statistics(self.dataSubsample)
             if data_interested is not None:
-                data_interested = data_interested + temp_data_interested                
+                data_interested = data_interested + temp_data_interested
             else:
                 data_interested = temp_data_interested
         self.data_interested = data_interested
@@ -53,7 +53,7 @@ class Similarity:
         silhouette_avg = []
         for n_clusters in range_n_clusters:
             clusterer = KMeans(n_clusters=n_clusters)
-            cluster_labels_current = clusterer.fit_predict(self.data_interested) #BUG, sometimes only have one cluster label
+            cluster_labels_current = clusterer.fit_predict(self.data_interested) #Problem, in output, sometimes only have one cluster label
             # if np.sum(cluster_labels_current) == 0:
             #     continue
             silhouette_avg_current = silhouette_score(self.data_interested,cluster_labels_current)

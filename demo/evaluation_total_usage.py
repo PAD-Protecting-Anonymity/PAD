@@ -1,6 +1,6 @@
 import sys; import os
 sys.path.append(os.path.abspath("./"))
-sys.path.append(os.path.abspath("./framework"))
+sys.path.append(os.path.abspath("./utilities"))
 sys.path.append(os.path.abspath("./kward"))
 sys.path.append(os.path.abspath("./metric_learning"))
 from helper import Utilities, PerformanceEvaluation
@@ -73,7 +73,7 @@ def evaluation_total_usage(n):
     # step 5: PAD learns a distance metric that represents the interest of the user from the labeled data pairs
     lm = Linear_Metric()
     lm.train(data_pair, similarity_label)
-    
+
     dm = Deep_Metric()
     dm.train(data_pair, similarity_label)
 
@@ -91,7 +91,7 @@ def evaluation_total_usage(n):
 
     loss_learned_metric = pe.get_statistics_loss(data_gt=day_profile, data_sanitized=sanitized_profile,
                                                             mode=interest,window=window)
-    
+
     print('anonymity level %s' % anonymity_level)
     print("sampled size %s" % subsample_size)
     print("information loss with best metric %s" % loss_best_metric)
@@ -104,13 +104,13 @@ def evaluation_total_usage(n):
 sanitized = {}
 losses = {}
 sample_sizes = []
-for n in range(2,8):    
+for n in range(2,8):
     s, l, ss = evaluation_total_usage(n)
     sanitized[n] = s
     losses[n] = l
     sample_sizes.append(ss)
 
-with open('result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle', 'wb') as f: 
+with open('result_scripts/loss_vs_privacy_energy_usage_normal_deep.pickle', 'wb') as f:
         pickle.dump([sanitized,losses, sample_sizes], f)
 
 
