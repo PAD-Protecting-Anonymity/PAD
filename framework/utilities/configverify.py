@@ -24,3 +24,15 @@ class Verifyerror:
             raise ValueError("No data to process, use add_simularatie to add processing on the data")
         for data_descriptor in data_descriptors:
             data_descriptor.verify_configuration_data_descriptor_config(amount_of_colums, data)
+
+    def verify_efter_can_not_ensure_k_anonymity(self,data, simularatie_list):
+        amount_of_colums = len(data.columns) - 1
+        for similarity in simularatie_list.simularaties:
+            if max(similarity.data_window) > amount_of_colums:
+                raise ValueError("data_windows is larger then the amont of elements in each data slice")
+            if hasattr(similarity.data_descriptor, 'data_window_size'):
+                if similarity.data_descriptor.data_window_size is not None and similarity.data_descriptor.data_window_size < amount_of_colums:
+                    raise ValueError("data_window_size is larger then the amont of elements in each data slice")
+
+
+

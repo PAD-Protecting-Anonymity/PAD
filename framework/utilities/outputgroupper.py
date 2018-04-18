@@ -53,7 +53,7 @@ class OutputGroupper:
         input_output_factor =  dataset_description.output_frequency.value/dataset_description.sampling_frequency.value
         amount_of_samples_in_slice = (dataset_description.data_end_index - dataset_description.data_start_index)+1
         amount_of_slices = math.floor(amount_of_samples_in_slice / input_output_factor) #Floor to ensure that we do not groups for small data amounts
-        if amount_of_slices > 1:
+        if amount_of_slices > 1 and input_output_factor != 1:
             for i in range(amount_of_slices):
                 data_slice_index_start = int(input_output_factor*i)
                 data_slice_index_end = int(input_output_factor*(i+1))
@@ -65,16 +65,16 @@ class OutputGroupper:
                     tm = OutoutGroupperNumber()
                 transfomred_data = tm.transform(data_slices,dataset_description.generality_mode)
                 output_data = pd.concat([output_data, pd.Series(transfomred_data)], axis=1)
-        elif amount_of_slices <= 1:
-            data_slice_index_start = dataset_description.data_start_index
-            data_slice_index_end = dataset_description.data_end_index
-            data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end+1]
-            if dataset_description.data_type == DataDescriptorTerms.BOOLAEN:
-                tm = OutoutGroupperBoolean()
-            elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
-                tm = OutoutGroupperNumber()
-            transfomred_data = tm.transform(data_slices,dataset_description.generality_mode)
-            output_data = pd.concat([output_data,pd.Series(transfomred_data)], axis=1)
+        else: # amount_of_slices =< 1:
+            data_index_start = dataset_description.data_start_index
+            data_index_end = dataset_description.data_end_index
+            data_slices = data.iloc[:,data_index_start:data_index_end+1]
+            output_data = pd.concat([output_data,data_slices], axis=1)
+        # else: # amount_of_slices = 1 or input_output_factor = 1
+        #     data_index_start = dataset_description.data_end_index
+        #     data_index_end = dataset_description.data_start_index
+        #     data_slices = data.iloc[:,data_index_start:data_index_end]
+        #     output_data = pd.concat([output_data,data_slices], axis=1)
         return output_data
 
 class OutoutGroupperTypeBase:

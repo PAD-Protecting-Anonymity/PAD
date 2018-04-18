@@ -27,6 +27,7 @@ class Framwork:
         self.amount_of_sensors =None
         self.rep_mode  = rep_mode
         self._resampler = Resampler()
+        self.max_clusters = 8
 
     def _get_data_for_sanitize(self):
         output_data = pd.DataFrame()
@@ -71,25 +72,32 @@ class Framwork:
         # TODO: make my
         raise NotImplementedError('NotImplemented')
 
-    def _subsample(self,presenitizedData, sub_sampling_size=0.1, seed=None):
+    def _subsample(self,presenitizedData, sub_sampling_size=0.1, subsampleTrys = 0, seed=None):
+        if subsampleTrys > 5:
+            raise ValueError("The data is to simuler to be sanitezed")
         self.subsampling = Subsampling(presenitizedData.sample(frac=sub_sampling_size))
         subsample_size_max = int(comb(len(self.subsampling.data), 2))
         print('total number of pairs is %s' % subsample_size_max)
         data_pair_all, data_pair_all_index = self.subsampling.uniform_sampling(subsample_size=subsample_size_max, seed=seed)
         self.similarity = Similarity(data=data_pair_all)
         self.similarity.extract_interested_attribute(self._simularatie_list.simularaties)
-        max_clusters = 8
-        if len(self.similarity.data_interested) < max_clusters:
-            max_clusters = len(self.similarity.data_interested)
-        similarity_label, data_subsample = self.similarity.label_via_silhouette_analysis(range_n_clusters=range(2,max_clusters))
-        # similarity_label_all_series = pd.Series(similarity_label)
-        # similarity_label_all_series.index = data_pair_all_index
-        print('similarity balance is %s'% [sum(similarity_label),len(similarity_label)])
+        if len(self.similarity.data_interested) < self.max_clusters:
+            self.max_clusters = len(self.similarity.data_interested)
+        similarity_label, data_subsample = self.similarity.label_via_silhouette_analysis(range_n_clusters=range(2,self.max_clusters))
+        if similarity_label == []:
+            return self._subsample(presenitizedData, sub_sampling_size=sub_sampling_size+0.1, subsampleTrys = subsampleTrys+1, seed=seed)
+        else:
+            # similarity_label_all_series = pd.Series(similarity_label)
+            # similarity_label_all_series.index = data_pair_all_index
+            print('similarity balance is %s'% [sum(similarity_label),len(similarity_label)])
         return similarity_label, data_pair_all
 
     def _presanitized(self):
         sanitized_df = self._sanitize_data(data=self._get_data_for_sanitize(), distance_metric_type="init", rep_mode = self.rep_mode,
                         anonymity_level=self.anonymity_level)
+        loss_presenitized=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),sanitized_df)
+        print("information loss with presenitized %s" % loss_presenitized)
+        print("amount of samples presenitized_data  %s" % len(sanitized_df))
         return sanitized_df
 
     def _sanitize_data(self,distance_metric_type , anonymity_level, data, rep_mode, **kwargs):
@@ -128,32 +136,32 @@ class Framwork:
         self.amount_of_sensors = len(self.data.index)
         _can_ensure_k_anonymity = self._can_ensure_k_anonymity()
         if not _can_ensure_k_anonymity:
-            self.anonymity_level = self.anonymity_level * self.amount_of_sensors
-            self.data, self._simularatie_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks_of_output_rate(self.data, self.data_descriptors, self._simularatie_list)
+            Verifyerror().verify_efter_can_not_ensure_k_anonymity(self.data, self._simularatie_list)
+            # self.anonymity_level = self.anonymity_level * self.amount_of_sensors
+            self.data, self._simularatie_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._simularatie_list)
             print("amount of samples after spilt %s" % len(self.data.index))
             print("amount of columns after spilt %s" % len(self.data.columns))
+
         presenitized_data = self._presanitized()
-        loss_presenitized=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),presenitized_data)
-        print("information loss with presenitized %s" % loss_presenitized)
-        print("amount of samples presenitized_data  %s" % len(presenitized_data))
-        if len(presenitized_data) > 20:
-            similarity_label, data_subsample = self._subsample(presenitized_data)
-        else:
-            similarity_label, data_subsample = self._subsample(presenitized_data, sub_sampling_size=0.20)
-        model = self._find_Metric_Leaning(data_subsample,similarity_label)
+
+        similarity_label, data_pair = self._subsample(presenitized_data)
+
+        model = self._find_Metric_Leaning(data_pair,similarity_label)
         final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",
                         anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
         loss_metric=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)
         print("information loss with nonlm metric %s" % loss_metric)
+
         # lm = Linear_Metric()
-        # lm.train(data_subsample, similarity_label)
+        # lm.train(data_pair, similarity_label)
         # final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric", rep_mode = "mean",
         #                 anonymity_level=self.anonymity_level,metric=lm)
-        # loss_metric=  self._simularatie_list.get_statistics_loss(final_sanitized_data,self.data)
+        # loss_metric=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)
         # print("information loss with Linear_Metric metric %s" % loss_metric)
+
         if not _can_ensure_k_anonymity:
             transformed_data, self._simularatie_list, self.data_descriptors = self._resampler.create_timeserices_from_slices_of_data(final_sanitized_data, self._simularatie_list, self.amount_of_sensors)
             transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
         else:
             transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
-        return transformed_data, loss_metric
+        return transformed_data.sort_index(), loss_metric

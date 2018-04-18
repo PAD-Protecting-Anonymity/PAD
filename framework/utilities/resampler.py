@@ -4,16 +4,19 @@ import pandas as pd
 from framework.utilities.datadescriptor import DataDescriptorMetadata, DataDescriptorBase, DataDescriptorTimeSerice
 from itertools import chain
 from framework.similarity.simularatielist import SimularatieList
+from framework.utilities.outputgroupper import DataDescriptorTerms
 import itertools
 import pdb
 import numpy as np
+import pickle
+
 
 class Resampler:
     def __init__(self):
         self.meta_datas = []
         self.row_meta_data = pd.DataFrame()
 
-    def resample_data_into_blocks_of_output_rate(self,data,data_descriptors,simularatie_list):
+    def resample_data_into_blocks(self,data,data_descriptors,simularatie_list):
         output_data = pd.DataFrame()
         index = 0
         for data_descriptor in data_descriptors:
@@ -26,7 +29,6 @@ class Resampler:
                 index += temp_index + 1
                 meta_data_rows.columns = [range(data_descriptor.data_start_index,data_descriptor.data_end_index+1)]
                 self.row_meta_data = pd.concat([self.row_meta_data,meta_data_rows], axis=1)
-
         #Clear framework settings
         _data_descriptors = []
         _simularatie_list = SimularatieList()
@@ -37,8 +39,9 @@ class Resampler:
             if isinstance(data_descriptor, DataDescriptorTimeSerice):
                 data_length = (data_descriptor.data_end_index - data_descriptor.data_start_index)+1
                 resample_factor = math.floor(simularatie.data_descriptor.output_frequency.value / data_descriptor.sampling_frequency.value)
-                if resample_factor < 15:
-                    resample_factor = 15
+                min_resample_factor = math.floor(DataDescriptorTerms.DAY.value / data_descriptor.sampling_frequency.value)
+                if resample_factor < min_resample_factor:
+                    resample_factor = min_resample_factor
                 amount_of_resamples = math.floor(data_length / resample_factor)
                 start_index = data_descriptor.data_start_index
                 data_descriptor.data_start_index = index
@@ -53,10 +56,12 @@ class Resampler:
                     new_data.columns = list(range(data_descriptor.data_start_index,data_descriptor.data_end_index+1))
                     row_data = pd.concat([new_data], axis=1)
                     output_data = output_data.append(row_data, ignore_index=True)
+        output_data.to_csv("./dataset/Resampled.csv", encoding='utf-8', index=False)
         return output_data, _simularatie_list, _data_descriptors, resample_factor
 
     def create_timeserices_from_slices_of_data(self, transformed_data,simularatie_list, amount_of_sensors):
         output_data = pd.DataFrame()
+        transformed_data = transformed_data.sort_index()
         _simularatie_list = SimularatieList()
         _data_descriptors = []
         index = 0
@@ -80,6 +85,8 @@ class Resampler:
             new_data = pd.DataFrame.from_items([(i, new_data)],orient='index', columns=list(range(index,index+len(new_data))))
             row_data = pd.concat([self.row_meta_data,new_data], axis=1)
             output_data = output_data.append(row_data.iloc[i])
+        output_data.to_csv("./dataset/ResampledResampled.csv", encoding='utf-8', index=False)
+        pickle.dump([output_data], open('./results/ResampledResampled.pickle', "wb"))
         return output_data, _simularatie_list, _data_descriptors
 
 class Subsampling:

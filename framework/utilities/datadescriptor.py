@@ -114,5 +114,6 @@ class DataDescriptorTerms(Enum):
     MINUE_20 = 1200
     HALFHOUR = 1800
     HOUR = 3600
+    HALFDAY = 43200
     DAY = 86400
     WEEK = 604800

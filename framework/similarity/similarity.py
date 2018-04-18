@@ -54,14 +54,17 @@ class Similarity:
         for n_clusters in range_n_clusters:
             clusterer = KMeans(n_clusters=n_clusters)
             cluster_labels_current = clusterer.fit_predict(self.data_interested) #Problem, in output, sometimes only have one cluster label
-            # if np.sum(cluster_labels_current) == 0:
-            #     continue
+            cluster_labels.append(cluster_labels_current)
+            if np.sum(cluster_labels_current) == 0:
+                continue
             silhouette_avg_current = silhouette_score(self.data_interested,cluster_labels_current)
             print("For n_clusters =", n_clusters,
                 "The average silhouette_score is :", silhouette_avg_current)
-            cluster_labels.append(cluster_labels_current)
             silhouette_avg.append(silhouette_avg_current)
-        best_n_clusters_index = np.where(silhouette_avg == max(silhouette_avg))[0]
+        if silhouette_avg == []:
+            return [], self.dataSubsample
+        else:
+            best_n_clusters_index = np.where(silhouette_avg == max(silhouette_avg))[0]
         best_cluster_label = cluster_labels[int(best_n_clusters_index[0])]
         similarity_label = []
         for ind1,ind2 in self.pair_index:
