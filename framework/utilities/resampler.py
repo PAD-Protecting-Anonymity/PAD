@@ -16,8 +16,9 @@ class Resampler:
         self.meta_datas = []
         self.row_meta_data = pd.DataFrame()
 
-    def resample_data_into_blocks(self,data,data_descriptors,simularatie_list):
+    def resample_data_into_blocks(self,data,data_descriptors,simularatie_list, min_resample_factor):
         output_data = pd.DataFrame()
+
         index = 0
         for data_descriptor in data_descriptors:
             if isinstance(data_descriptor, DataDescriptorMetadata):
@@ -39,7 +40,7 @@ class Resampler:
             if isinstance(data_descriptor, DataDescriptorTimeSerice):
                 data_length = (data_descriptor.data_end_index - data_descriptor.data_start_index)+1
                 resample_factor = math.floor(simularatie.data_descriptor.output_frequency.value / data_descriptor.sampling_frequency.value)
-                min_resample_factor = math.floor(DataDescriptorTerms.DAY.value / data_descriptor.sampling_frequency.value)
+                min_resample_factor = math.floor(DataDescriptorTerms.HOUR.value / data_descriptor.sampling_frequency.value)
                 if resample_factor < min_resample_factor:
                     resample_factor = min_resample_factor
                 amount_of_resamples = math.floor(data_length / resample_factor)
@@ -56,7 +57,6 @@ class Resampler:
                     new_data.columns = list(range(data_descriptor.data_start_index,data_descriptor.data_end_index+1))
                     row_data = pd.concat([new_data], axis=1)
                     output_data = output_data.append(row_data, ignore_index=True)
-        output_data.to_csv("./dataset/Resampled.csv", encoding='utf-8', index=False)
         return output_data, _simularatie_list, _data_descriptors, resample_factor
 
     def create_timeserices_from_slices_of_data(self, transformed_data,simularatie_list, amount_of_sensors):
@@ -80,13 +80,12 @@ class Resampler:
             _data_descriptors.append(simularatie.data_descriptor)
 
         for i in range(0,amount_of_sensors):
+            # import pdb; pdb.set_trace()
             new_data = transformed_data.iloc[i::amount_of_sensors,:]._values
             new_data = list(chain.from_iterable(new_data))
             new_data = pd.DataFrame.from_items([(i, new_data)],orient='index', columns=list(range(index,index+len(new_data))))
             row_data = pd.concat([self.row_meta_data,new_data], axis=1)
             output_data = output_data.append(row_data.iloc[i])
-        output_data.to_csv("./dataset/ResampledResampled.csv", encoding='utf-8', index=False)
-        pickle.dump([output_data], open('./results/ResampledResampled.pickle', "wb"))
         return output_data, _simularatie_list, _data_descriptors
 
 class Subsampling:
@@ -178,7 +177,7 @@ class Subsampling:
 
     def get_uncertainty_entropy_deep(self, pair, dist_metric, mu):
         dist = dist_metric.transform(pair)
-        # pdb.set_trace()]
+        # pdb.set_trace()
         if not np.isscalar(dist):
             dist = dist[0, 0]
         prob_s = 1 / (1 + np.exp(dist - mu))

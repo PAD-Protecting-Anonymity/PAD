@@ -14,8 +14,9 @@ import copy
 from itertools import chain
 import pandas as pd
 
+
 class Framwork:
-    def __init__(self, data, anonymity_level=5,dataset_description=None, rep_mode = "mean"):
+    def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",min_resample_factor = 5):
         self.data = data
         self._simularatie_list = SimularatieList()
         self.data_descriptors = []
@@ -28,6 +29,8 @@ class Framwork:
         self.rep_mode  = rep_mode
         self._resampler = Resampler()
         self.max_clusters = 8
+        self.min_resample_factor = min_resample_factor
+        self.seed = seed
 
     def _get_data_for_sanitize(self):
         output_data = pd.DataFrame()
@@ -44,10 +47,13 @@ class Framwork:
         output_data = pd.concat([output_data,sanitize_data], axis=1)
         return output_data
 
-    def _can_ensure_k_anonymity(self):
-        if (2*self.anonymity_level-1)*5<self.amount_of_sensors:
+    def _can_ensure_k_anonymity(self,anonymity_level,amount_of_inputs):
+        if (2*anonymity_level-1)*5<amount_of_inputs:
             return True
         return False
+
+    def _find_max_k(self,amount_of_inputs):
+        return math.floor((amount_of_inputs+5)/10)
 
     def add_meta_data(self,data_descriptor):
         if isinstance(data_descriptor, DataDescriptorMetadata):
@@ -83,7 +89,7 @@ class Framwork:
         self.similarity.extract_interested_attribute(self._simularatie_list.simularaties)
         if len(self.similarity.data_interested) < self.max_clusters:
             self.max_clusters = len(self.similarity.data_interested)
-        similarity_label, data_subsample = self.similarity.label_via_silhouette_analysis(range_n_clusters=range(2,self.max_clusters))
+        similarity_label, data_subsample = self.similarity.label_via_silhouette_analysis(range_n_clusters=range(2,self.max_clusters), seed=self.seed)
         if similarity_label == []:
             return self._subsample(presenitizedData, sub_sampling_size=sub_sampling_size+0.1, subsampleTrys = subsampleTrys+1, seed=seed)
         else:
@@ -131,20 +137,29 @@ class Framwork:
             dd_string_out.append(data_descriptor.get_str_description())
         return '\n'.join(dd_string_out)
 
+    def change_anonymity_level(self,resample_factor):
+        amount_of_data_slices = len(self.data.index)
+        max_k = self._find_max_k(amount_of_data_slices)
+        if max_k > self.anonymity_level * self.amount_of_sensors:
+            self.anonymity_level = self.anonymity_level * self.amount_of_sensors
+        else:
+            self.anonymity_level = max_k
+        print('anonymity_level set to: ' + str(self.anonymity_level))
+
     def run(self):
         self.data = Verifyerror().verify(self.data, self._simularatie_list, self.data_descriptors)
         self.amount_of_sensors = len(self.data.index)
-        _can_ensure_k_anonymity = self._can_ensure_k_anonymity()
+        _can_ensure_k_anonymity = self._can_ensure_k_anonymity(self.anonymity_level, self.amount_of_sensors)
         if not _can_ensure_k_anonymity:
+            self.data, self._simularatie_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._simularatie_list, self.min_resample_factor)
             Verifyerror().verify_efter_can_not_ensure_k_anonymity(self.data, self._simularatie_list)
-            # self.anonymity_level = self.anonymity_level * self.amount_of_sensors
-            self.data, self._simularatie_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._simularatie_list)
+            self.change_anonymity_level(resample_factor)
             print("amount of samples after spilt %s" % len(self.data.index))
             print("amount of columns after spilt %s" % len(self.data.columns))
 
         presenitized_data = self._presanitized()
 
-        similarity_label, data_pair = self._subsample(presenitized_data)
+        similarity_label, data_pair = self._subsample(presenitized_data,seed=self.seed)
 
         model = self._find_Metric_Leaning(data_pair,similarity_label)
         final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",
@@ -164,4 +179,4 @@ class Framwork:
             transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
         else:
             transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
-        return transformed_data.sort_index(), loss_metric
+        return transformed_data.sort_index(), loss_metric, self.anonymity_level

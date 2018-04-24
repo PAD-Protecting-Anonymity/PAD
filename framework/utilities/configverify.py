@@ -28,7 +28,7 @@ class Verifyerror:
     def verify_efter_can_not_ensure_k_anonymity(self,data, simularatie_list):
         amount_of_colums = len(data.columns) - 1
         for similarity in simularatie_list.simularaties:
-            if max(similarity.data_window) > amount_of_colums:
+            if similarity.data_window is not None and max(similarity.data_window) > amount_of_colums:
                 raise ValueError("data_windows is larger then the amont of elements in each data slice")
             if hasattr(similarity.data_descriptor, 'data_window_size'):
                 if similarity.data_descriptor.data_window_size is not None and similarity.data_descriptor.data_window_size < amount_of_colums:

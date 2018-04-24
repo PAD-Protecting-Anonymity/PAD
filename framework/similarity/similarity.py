@@ -48,11 +48,11 @@ class Similarity:
         #         window = kwargs['window']
         #         self.data_interested = stat.get_window_usage(window=window)
 
-    def label_via_silhouette_analysis(self,range_n_clusters):
+    def label_via_silhouette_analysis(self,range_n_clusters, seed=None):
         cluster_labels = []
         silhouette_avg = []
         for n_clusters in range_n_clusters:
-            clusterer = KMeans(n_clusters=n_clusters)
+            clusterer = KMeans(n_clusters=n_clusters, random_state=seed)
             cluster_labels_current = clusterer.fit_predict(self.data_interested) #Problem, in output, sometimes only have one cluster label
             cluster_labels.append(cluster_labels_current)
             if np.sum(cluster_labels_current) == 0:
