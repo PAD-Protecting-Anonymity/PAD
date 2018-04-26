@@ -15,7 +15,7 @@ class BasemetricLearning():
 
     def get_distance(self,data):
         raise NotImplementedError('users must define get_distance in class to use this base class')
-    
+
     def compute_distance(self,distance,amount_of_data):
         df = pd.DataFrame(distance)
         df.columns = amount_of_data
@@ -31,4 +31,4 @@ class BasemetricLearning():
         df = df[df["x"] != df["y"]]
         # df = df.sort_values('distance')
         df.distance.loc[np.isnan(df.distance)] = 0
-        return df 
+        return df

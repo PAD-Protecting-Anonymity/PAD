@@ -9,6 +9,9 @@ from keras.optimizers import RMSprop, Adam
 from keras.layers import Dense, Dropout, Activation, Add, Merge, Input, merge
 from keras import backend as K
 from sklearn.neighbors.dist_metrics import DistanceMetric
+from scipy.spatial.distance import pdist
+from sklearn.metrics.pairwise import pairwise_distances
+import os
 
 class Linear_Metric(BasemetricLearning):
     def __init__(self, **kwargs):
@@ -46,6 +49,7 @@ class Linear_Metric(BasemetricLearning):
 
         left_input = Input(input_shape)
         right_input = Input(input_shape)
+
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
 
@@ -114,6 +118,7 @@ class Linear_Metric(BasemetricLearning):
         self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]])
         self.functor2 = K.function([inp2]+ [K.learning_phase()], [func[1]])
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
+        return score
 
     def transform(self, data_pairs):
         x, y = data_pairs
@@ -156,6 +161,9 @@ class Linear_Metric(BasemetricLearning):
     def get_distance(self,data):
         dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
         distance = dist.pairwise(data)
+        # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=self.number_of_cpu)
+        # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=multiprocessing.cpu_count())
+        # distance = dist.pairwise(data)
         return super().compute_distance(distance,data.index)
 
 

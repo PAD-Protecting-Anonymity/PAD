@@ -1,8 +1,11 @@
 from framework.similarity.simularatielist import SimularatieList
 from framework.similarity.similarity import Similarity
 from framework.models.kward import K_ward
-from framework.metric_learning.linearmetric import Linear_Metric
-from framework.metric_learning.nonlineardeepmetric import NonlinearDeepMetric
+from .metric_learning.linearmetric import *
+from .metric_learning.nonlineardeepmetric import *
+# from framework.metric_learning.basemetriclearning import BasemetricLearning
+# from framework.metric_learning.linearmetric import Linear_Metric
+# from framework.metric_learning.nonlineardeepmetric import NonlinearDeepMetric
 from scipy.misc import comb
 from framework.utilities.outputgroupper import OutputGroupper
 from framework.utilities.datadescriptor import DataDescriptorMetadata, DataDescriptorBase, DataDescriptorTimeSerice
@@ -13,7 +16,9 @@ import math
 import copy
 from itertools import chain
 import pandas as pd
-
+import sys
+import inspect
+import random
 
 class Framwork:
     def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",min_resample_factor = 5):
@@ -37,6 +42,11 @@ class Framwork:
         for dd in self.data_descriptors:
             if not isinstance(dd, DataDescriptorMetadata):
                 output_data = pd.concat([output_data,self.data.iloc[:,dd.data_start_index:dd.data_end_index+1]], axis=1)
+        return output_data
+
+    def _get_data_for_model_optimazation(self):
+        output_data = self._get_data_for_sanitize()
+        output_data = output_data.sample(math.floor(len(output_data.index)/10))
         return output_data
 
     def _add_metadata_for_sanitize_data(self,sanitize_data):
@@ -69,10 +79,33 @@ class Framwork:
         # TODO: make my
         raise NotImplementedError('NotImplemented')
 
-    def _find_Metric_Leaning(self,data_pair,similarity_label):
-        nonlm = NonlinearDeepMetric()
-        nonlm.train(data_pair, similarity_label)
-        return nonlm
+    def _find_all_Metric_Leanings(self):
+        metrics = []
+        for name, obj in inspect.getmembers(sys.modules[__name__]):
+            if inspect.isclass(obj):
+                if "framework.metric_learning" in str(obj):
+                    if obj is Linear_Metric:
+                        metrics.append(obj)
+                    elif issubclass(obj, BasemetricLearning) and obj is not BasemetricLearning:
+                        metrics.append(obj)
+        return metrics
+
+    def _find_Metric_Leaning(self,data_pair,similarity_label, subsample):
+        metricNames = self._find_all_Metric_Leanings()
+        metricesResults = []
+        metrics = []
+        for metric in metricNames:
+            metric = metric()
+            metrics.append(metric)
+            TestLoss = metric.train(data_pair, similarity_label)
+            final_sanitized_data = self._sanitize_data(data = subsample, distance_metric_type="metric",
+                        anonymity_level=self.anonymity_level,metric=metric, rep_mode = self.rep_mode)
+            loss_metric=  self._simularatie_list.get_statistics_loss(subsample,final_sanitized_data)
+            metricesResults.append(loss_metric)
+        # nonlm = NonlinearDeepMetric()
+        # nonlm.train(data_pair, similarity_label)
+        best_model_index =  metricesResults.index(min(metricesResults))
+        return metrics[best_model_index]
 
     def _find_Model(self, data):
         # TODO: make my
@@ -161,7 +194,8 @@ class Framwork:
 
         similarity_label, data_pair = self._subsample(presenitized_data,seed=self.seed)
 
-        model = self._find_Metric_Leaning(data_pair,similarity_label)
+        model = self._find_Metric_Leaning(data_pair,similarity_label, self._get_data_for_model_optimazation())
+
         final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",
                         anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
         loss_metric=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)

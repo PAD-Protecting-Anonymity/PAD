@@ -40,7 +40,6 @@ class Resampler:
             if isinstance(data_descriptor, DataDescriptorTimeSerice):
                 data_length = (data_descriptor.data_end_index - data_descriptor.data_start_index)+1
                 resample_factor = math.floor(simularatie.data_descriptor.output_frequency.value / data_descriptor.sampling_frequency.value)
-                min_resample_factor = math.floor(DataDescriptorTerms.HOUR.value / data_descriptor.sampling_frequency.value)
                 if resample_factor < min_resample_factor:
                     resample_factor = min_resample_factor
                 amount_of_resamples = math.floor(data_length / resample_factor)

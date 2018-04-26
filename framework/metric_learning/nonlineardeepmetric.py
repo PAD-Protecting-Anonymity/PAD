@@ -6,8 +6,8 @@ Gets to 98.40% test accuracy after 20 epochs
 
 # from __future__ import print_function
 
-from metric_learning.basemetriclearning import BasemetricLearning
-from metric_learning.metriclearningterms import MetricLearningTerms
+from framework.metric_learning.basemetriclearning import BasemetricLearning
+from framework.metric_learning.metriclearningterms import MetricLearningTerms
 
 import copy
 import numpy as np
@@ -24,7 +24,9 @@ from keras.callbacks import ModelCheckpoint
 from keras.regularizers import l2
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors.dist_metrics import DistanceMetric
-
+from sklearn.metrics.pairwise import pairwise_distances
+import os
+import copy
 
 class NonlinearDeepMetric(BasemetricLearning):
     def __init__(self, **kwargs):
@@ -41,7 +43,7 @@ class NonlinearDeepMetric(BasemetricLearning):
             X1.append(x)
             X2.append(y)
         # print(len(X1), len(X2), len(similarity_labels))
-        number_classes = len(np.unique(similarity_labels)) 
+        number_classes = len(np.unique(similarity_labels))
         # convert class vectors to binary class matrices
 
         train_portion = 0.8
@@ -62,7 +64,7 @@ class NonlinearDeepMetric(BasemetricLearning):
 
         left_input = Input(input_shape)
         right_input = Input(input_shape)
-        
+
         #build f(x) to use in each siamese 'leg'
         model = Sequential()
         # model.add(Dense(kernels, activation='relu', input_shape = input_shape, kernel_regularizer=l2(2e-4)))
@@ -75,21 +77,20 @@ class NonlinearDeepMetric(BasemetricLearning):
         model.add(Dropout(0.2))
         model.add(Dense(kernels, activation='sigmoid'))
 
-
         #encode each of the two inputs into a vector with the model
         encoded_l = model(left_input)
         encoded_r = model(right_input)
 
         #merge two encoded inputs with the l1 distance between them
         L1_distance = lambda x: K.abs(x[0]-x[1])
-        
+
         both = merge([encoded_l, encoded_r], mode = L1_distance, output_shape=lambda x: x[0])
         prediction = Dense(number_classes,activation='sigmoid')(both)
         siamese_net = keras.models.Model(inputs=[left_input,right_input],outputs=prediction)
 
         optimizer = RMSprop()
         siamese_net.compile(loss=self.contrastive_loss, optimizer=optimizer)
-    
+
         siamese_net.count_params()
 
         x1_train = np.array(x1_train)
@@ -119,15 +120,16 @@ class NonlinearDeepMetric(BasemetricLearning):
         score = siamese_net.evaluate([x1_test, x2_test], y_test, verbose=0)
         print('Test loss:', score)
         print('Test accuracy:', score)
-        
+
         inp1, inp2 = siamese_net.input
 
         func = siamese_net.layers[-2].input
-        dist = siamese_net.layers[-2].output    
-        self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]]) 
+        dist = siamese_net.layers[-2].output
+        self.functor1 = K.function([inp1]+ [K.learning_phase()], [func[0]])
         self.functor2 = K.function([inp2]+ [K.learning_phase()], [func[1]])
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
-    
+        return score
+
     def transform(self, data_pairs):
         x, y = data_pairs
         x = self.scaler.transform(np.array([x]))
@@ -140,7 +142,7 @@ class NonlinearDeepMetric(BasemetricLearning):
         margin = 1
         return K.mean((1-y_true) * 0.5 * K.square(y_pred) + 0.5 * y_true * K.square(K.maximum(margin - y_pred, 0)))
 
-    
+
     def penalized_loss(self, branch1, branch2):
         def loss(y_true, y_pred):
             return K.mean(K.square(y_pred - y_true) - K.square(y_true - y_pred), axis=-1)
@@ -172,6 +174,13 @@ class NonlinearDeepMetric(BasemetricLearning):
         return dist
 
     def get_distance(self,data):
+        # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=1,object=self)
         dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
         distance = dist.pairwise(data)
         return super().compute_distance(distance,data.index)
+
+
+def deep_metric(x,y,object):
+    dist = object.transform((x,y))
+    # print(dist)
+    return dist
