@@ -23,7 +23,6 @@ from keras.layers.normalization import BatchNormalization
 from keras.callbacks import ModelCheckpoint
 from keras.regularizers import l2
 from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors.dist_metrics import DistanceMetric
 from sklearn.metrics.pairwise import pairwise_distances
 import os
 import copy
@@ -130,13 +129,13 @@ class NonlinearDeepMetric(BasemetricLearning):
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
         return score
 
-    def transform(self, data_pairs):
-        x, y = data_pairs
-        x = self.scaler.transform(np.array([x]))
-        y = self.scaler.transform(np.array([y]))
+    # def transform(self, data_pairs):
+    #     x, y = data_pairs
+    #     x = self.scaler.transform(np.array([x]))
+    #     y = self.scaler.transform(np.array([y]))
 
-        distance = self.functor3([*[x, y], 1.])
-        return distance[0].mean()
+    #     distance = self.functor3([*[x, y], 1.])
+    #     return distance[0].mean()
 
     def contrastive_loss(self, y_true, y_pred):
         margin = 1
@@ -165,22 +164,3 @@ class NonlinearDeepMetric(BasemetricLearning):
         """Initialize bias as in paper"""
         values = rng.normal(loc=0.5,scale=1e-2,size=shape)
         return K.variable(values,name=name)
-
-    def deep_metric(self, x, y):
-        # x, y = self.dm.transform((x,y))
-        # dist = np.linalg.norm(x-y)
-        dist = self.transform((x,y))
-        # print(dist)
-        return dist
-
-    def get_distance(self,data):
-        # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=1,object=self)
-        dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
-        distance = dist.pairwise(data)
-        return super().compute_distance(distance,data.index)
-
-
-def deep_metric(x,y,object):
-    dist = object.transform((x,y))
-    # print(dist)
-    return dist

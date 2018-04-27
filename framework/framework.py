@@ -12,6 +12,7 @@ from framework.utilities.datadescriptor import DataDescriptorMetadata, DataDescr
 from framework.similarity.basesimularity import BaseSimularity
 from framework.utilities.resampler import Resampler, Subsampling
 from framework.utilities.configverify import Verifyerror
+from framework.utilities.kanoymityutilties import KAnoymityUtilties
 import math
 import copy
 from itertools import chain
@@ -21,7 +22,7 @@ import inspect
 import random
 
 class Framwork:
-    def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",min_resample_factor = 5):
+    def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",min_resample_factor = 5, metric=MetricLearningTerms.LINEAR):
         self.data = data
         self._simularatie_list = SimularatieList()
         self.data_descriptors = []
@@ -36,6 +37,7 @@ class Framwork:
         self.max_clusters = 8
         self.min_resample_factor = min_resample_factor
         self.seed = seed
+        self.metric = metric
 
     def _get_data_for_sanitize(self):
         output_data = pd.DataFrame()
@@ -44,9 +46,12 @@ class Framwork:
                 output_data = pd.concat([output_data,self.data.iloc[:,dd.data_start_index:dd.data_end_index+1]], axis=1)
         return output_data
 
-    def _get_data_for_model_optimazation(self):
+    def _get_data_for_model_selecting(self, percentage_of_data=0.1, amount_of_inputs=None):
         output_data = self._get_data_for_sanitize()
-        output_data = output_data.sample(math.floor(len(output_data.index)/10))
+        if amount_of_inputs is None:
+            output_data = output_data.sample(math.floor(len(output_data.index)*percentage_of_data))
+        else:
+            output_data = output_data.sample(amount_of_inputs)
         return output_data
 
     def _add_metadata_for_sanitize_data(self,sanitize_data):
@@ -56,14 +61,6 @@ class Framwork:
                 output_data = pd.concat([output_data,self.data.iloc[:,dd.data_start_index:dd.data_end_index+1]], axis=1)
         output_data = pd.concat([output_data,sanitize_data], axis=1)
         return output_data
-
-    def _can_ensure_k_anonymity(self,anonymity_level,amount_of_inputs):
-        if (2*anonymity_level-1)*5<amount_of_inputs:
-            return True
-        return False
-
-    def _find_max_k(self,amount_of_inputs):
-        return math.floor((amount_of_inputs+5)/10)
 
     def add_meta_data(self,data_descriptor):
         if isinstance(data_descriptor, DataDescriptorMetadata):
@@ -83,25 +80,38 @@ class Framwork:
         metrics = []
         for name, obj in inspect.getmembers(sys.modules[__name__]):
             if inspect.isclass(obj):
-                if "framework.metric_learning" in str(obj):
+                if "framework.metric_learning." + self.metric in str(obj):
                     if obj is Linear_Metric:
                         metrics.append(obj)
                     elif issubclass(obj, BasemetricLearning) and obj is not BasemetricLearning:
                         metrics.append(obj)
         return metrics
 
-    def _find_Metric_Leaning(self,data_pair,similarity_label, subsample):
+    def _find_Metric_Leaning(self,data_pair,similarity_label):
         metricNames = self._find_all_Metric_Leanings()
         metricesResults = []
         metrics = []
+        if len(metricNames) == 1:
+            metric = metricNames[0]()
+            metric.train(data_pair, similarity_label)
+            return metric
+        min_amount_of_inputs_in_subsample = KAnoymityUtilties().find_min_amount_of_inputs_for_k(self.anonymity_level)
+        subsample = self._get_data_for_model_selecting(amount_of_inputs=min_amount_of_inputs_in_subsample)
+        k = KAnoymityUtilties().find_max_k(len(subsample.index))
+        # # if k == 1:
+        # if k < self.anonymity_level:
+        #     return self._find_Metric_Leaning(data_pair,similarity_label,percentage_of_data=percentage_of_data+0.1)
+
+        print("Amount of samples in subsample: ", len(subsample.index))
         for metric in metricNames:
             metric = metric()
             metrics.append(metric)
             TestLoss = metric.train(data_pair, similarity_label)
             final_sanitized_data = self._sanitize_data(data = subsample, distance_metric_type="metric",
-                        anonymity_level=self.anonymity_level,metric=metric, rep_mode = self.rep_mode)
+                        anonymity_level=k,metric=metric, rep_mode = self.rep_mode)
             loss_metric=  self._simularatie_list.get_statistics_loss(subsample,final_sanitized_data)
             metricesResults.append(loss_metric)
+            print("loss with subsample: " ,loss_metric, " For model: " , metric.metric_learning_terms)
         # nonlm = NonlinearDeepMetric()
         # nonlm.train(data_pair, similarity_label)
         best_model_index =  metricesResults.index(min(metricesResults))
@@ -114,7 +124,7 @@ class Framwork:
     def _subsample(self,presenitizedData, sub_sampling_size=0.1, subsampleTrys = 0, seed=None):
         if subsampleTrys > 5:
             raise ValueError("The data is to simuler to be sanitezed")
-        self.subsampling = Subsampling(presenitizedData.sample(frac=sub_sampling_size))
+        self.subsampling = Subsampling(presenitizedData.sample(frac=sub_sampling_size, random_state=seed))
         subsample_size_max = int(comb(len(self.subsampling.data), 2))
         print('total number of pairs is %s' % subsample_size_max)
         data_pair_all, data_pair_all_index = self.subsampling.uniform_sampling(subsample_size=subsample_size_max, seed=seed)
@@ -172,7 +182,7 @@ class Framwork:
 
     def change_anonymity_level(self,resample_factor):
         amount_of_data_slices = len(self.data.index)
-        max_k = self._find_max_k(amount_of_data_slices)
+        max_k = KAnoymityUtilties().find_max_k(amount_of_data_slices)
         if max_k > self.anonymity_level * self.amount_of_sensors:
             self.anonymity_level = self.anonymity_level * self.amount_of_sensors
         else:
@@ -182,7 +192,7 @@ class Framwork:
     def run(self):
         self.data = Verifyerror().verify(self.data, self._simularatie_list, self.data_descriptors)
         self.amount_of_sensors = len(self.data.index)
-        _can_ensure_k_anonymity = self._can_ensure_k_anonymity(self.anonymity_level, self.amount_of_sensors)
+        _can_ensure_k_anonymity = KAnoymityUtilties().can_ensure_k_anonymity(self.anonymity_level, self.amount_of_sensors)
         if not _can_ensure_k_anonymity:
             self.data, self._simularatie_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._simularatie_list, self.min_resample_factor)
             Verifyerror().verify_efter_can_not_ensure_k_anonymity(self.data, self._simularatie_list)
@@ -194,12 +204,13 @@ class Framwork:
 
         similarity_label, data_pair = self._subsample(presenitized_data,seed=self.seed)
 
-        model = self._find_Metric_Leaning(data_pair,similarity_label, self._get_data_for_model_optimazation())
+        model = self._find_Metric_Leaning(data_pair,similarity_label)
+        print("Using model: ", model.metric_learning_terms)
 
         final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",
                         anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
         loss_metric=  self._simularatie_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)
-        print("information loss with nonlm metric %s" % loss_metric)
+        print("information loss with", model.metric_learning_terms, "metric %s" % loss_metric)
 
         # lm = Linear_Metric()
         # lm.train(data_pair, similarity_label)

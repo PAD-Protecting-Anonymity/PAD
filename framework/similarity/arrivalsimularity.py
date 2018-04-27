@@ -1,6 +1,6 @@
 # from similarity import basesimularity as BaseSimularity, simularityterms as SimularityTerms
-from similarity.simularityterms import SimularityTerms
-from similarity.basesimularity import BaseSimularity
+from framework.similarity.simularityterms import SimularityTerms
+from framework.similarity.basesimularity import BaseSimularity
 import numpy as np
 import pandas as pd
 import math
@@ -59,7 +59,7 @@ class ArrivalSimularity(BaseSimularity):
         '''
         if isinstance(x,pd.Series):
             win_start = window[0]
-            win_end = window[1] 
+            win_end = window[1]
             x = list(x[win_start:win_end])
         return self.compute_arrival_time(x,index,flag)
 
@@ -72,7 +72,7 @@ class ArrivalSimularity(BaseSimularity):
         '''
         if isinstance(x,pd.Series):
             win_start = window[0]
-            win_end = window[1] 
+            win_end = window[1]
             x = list(x[win_start:win_end])
         return self.compute_arrival_time(x,index,flag)
 
@@ -121,7 +121,7 @@ class ArrivalSimularity(BaseSimularity):
         if window is None:
             arrival_time = data.apply(self.compute_arrival_time, axis=1,index=data.columns,flag=flag).to_frame()
         else:
-            arrival_time = data.apply(self.compute_arrival_time_window, axis=1,index=data.columns,flag=flag, window=window).to_frame()            
+            arrival_time = data.apply(self.compute_arrival_time_window, axis=1,index=data.columns,flag=flag, window=window).to_frame()
         return arrival_time
 
     def get_distance(self,data):

@@ -1,5 +1,5 @@
-from metric_learning.basemetriclearning import BasemetricLearning
-from metric_learning.metriclearningterms import MetricLearningTerms
+from framework.metric_learning.basemetriclearning import BasemetricLearning
+from framework.metric_learning.metriclearningterms import MetricLearningTerms
 
 from sklearn.preprocessing import StandardScaler
 import keras
@@ -120,12 +120,12 @@ class Linear_Metric(BasemetricLearning):
         self.functor3 = K.function([*[inp1, inp2]]+ [K.learning_phase()], [dist])
         return score
 
-    def transform(self, data_pairs):
-        x, y = data_pairs
-        x = self.scaler.transform(np.array([x]))
-        y = self.scaler.transform(np.array([y]))
-        distance = self.functor3([*[x, y], 1.])
-        return distance[0].mean()
+    # def transform(self, data_pairs):
+    #     x, y = data_pairs
+    #     x = self.scaler.transform(np.array([x]))
+    #     y = self.scaler.transform(np.array([y]))
+    #     distance = self.functor3([*[x, y], 1.])
+    #     return distance[0].mean()
 
     def contrastive_loss(self, y_true, y_pred):
         margin = 1
@@ -154,16 +154,18 @@ class Linear_Metric(BasemetricLearning):
         values = rng.normal(loc=0.5,scale=1e-2,size=shape)
         return K.variable(values,name=name)
 
-    def deep_metric(self, x, y):
-        dist = self.transform((x,y))
-        return dist
+    # def deep_metric(self, x, y):
+    #     dist = self.transform((x,y))
+    #     return dist
 
-    def get_distance(self,data):
-        dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
-        distance = dist.pairwise(data)
-        # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=self.number_of_cpu)
-        # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=multiprocessing.cpu_count())
-        # distance = dist.pairwise(data)
-        return super().compute_distance(distance,data.index)
+    # def get_distance(self,data):
+    #     import pdb; pdb.set_trace()
+    #     # distance = pairwise_distances(data, metric=self.deep_metric, n_jobs=-1)
+    #     dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.deep_metric)
+    #     distance = dist.pairwise(data)
+    #     # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=self.number_of_cpu)
+    #     # distance = pairwise_distances(data,metric=self.deep_metric,n_jobs=multiprocessing.cpu_count())
+    #     # distance = dist.pairwise(data)
+    #     return super().compute_distance(distance,data.index)
 
 

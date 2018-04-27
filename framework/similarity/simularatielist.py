@@ -3,7 +3,7 @@ import numpy as np
 class SimularatieList:
     def __init__(self):
         self.simularaties = []
-    
+
     def get_distance(self,data):
         distance = None
         for simularatie in self.simularaties:
@@ -20,7 +20,7 @@ class SimularatieList:
 
     def get_amount_of_simularaties(self):
         return len(self.simularaties)
-        
+
     def get_statistics_loss(self,data_org, data_sanitized):
         err_sum_sqrt = None
         for simularatie in self.simularaties:

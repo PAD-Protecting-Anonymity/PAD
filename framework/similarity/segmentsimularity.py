@@ -1,5 +1,5 @@
-from similarity.simularityterms import SimularityTerms
-from similarity.basesimularity import BaseSimularity
+from framework.similarity.simularityterms import SimularityTerms
+from framework.similarity.basesimularity import BaseSimularity
 import numpy as np
 import pandas as pd
 import math
