@@ -1,9 +1,9 @@
 import copy
 import math
 import pandas as pd
-from framework.utilities.datadescriptor import DataDescriptorMetadata, DataDescriptorBase, DataDescriptorTimeSerice
+from framework.utilities.datadescriptor import DataDescriptorMetadata, DataDescriptorBase, DataDescriptorTimeSeries
 from itertools import chain
-from framework.similarity.simularatielist import SimularatieList
+from framework.similarity.similaritylist import SimilarityList
 from framework.utilities.outputgroupper import DataDescriptorTerms
 import itertools
 import pdb
@@ -13,16 +13,16 @@ import pickle
 
 class Resampler:
     def __init__(self):
-        self.meta_datas = []
+        self.meta_data = []
         self.row_meta_data = pd.DataFrame()
 
-    def resample_data_into_blocks(self,data,data_descriptors,simularatie_list, min_resample_factor):
+    def resample_data_into_blocks(self,data,data_descriptors,similarities_list, min_resample_factor):
         output_data = pd.DataFrame()
 
         index = 0
         for data_descriptor in data_descriptors:
             if isinstance(data_descriptor, DataDescriptorMetadata):
-                self.meta_datas.append(data_descriptor)
+                self.meta_data.append(data_descriptor)
                 meta_data_rows = data.iloc[:, data_descriptor.data_start_index:data_descriptor.data_end_index+1]
                 temp_index = (data_descriptor.data_end_index-data_descriptor.data_start_index) + index
                 data_descriptor.data_start_index = index
@@ -32,14 +32,14 @@ class Resampler:
                 self.row_meta_data = pd.concat([self.row_meta_data,meta_data_rows], axis=1)
         #Clear framework settings
         _data_descriptors = []
-        _simularatie_list = SimularatieList()
+        _similarities_list = SimilarityList()
         index = 0
 
-        for simularatie in simularatie_list.simularaties:
-            data_descriptor = simularatie.data_descriptor
-            if isinstance(data_descriptor, DataDescriptorTimeSerice):
+        for similarity in similarities_list.similarities:
+            data_descriptor = similarity.data_descriptor
+            if isinstance(data_descriptor, DataDescriptorTimeSeries):
                 data_length = (data_descriptor.data_end_index - data_descriptor.data_start_index)+1
-                resample_factor = math.floor(simularatie.data_descriptor.output_frequency.value / data_descriptor.sampling_frequency.value)
+                resample_factor = math.floor(similarity.data_descriptor.output_frequency.value / data_descriptor.sampling_frequency.value)
                 if resample_factor < min_resample_factor:
                     resample_factor = min_resample_factor
                 amount_of_resamples = math.floor(data_length / resample_factor)
@@ -47,7 +47,7 @@ class Resampler:
                 data_descriptor.data_start_index = index
                 index = index + resample_factor-1
                 data_descriptor.data_end_index = index
-                _simularatie_list.add_simularatie(simularatie)
+                _similarities_list.add_similarity(similarity)
                 _data_descriptors.append(data_descriptor)
                 for i in range(0,amount_of_resamples):
                     loop_start_index = start_index+(i*resample_factor)
@@ -56,27 +56,27 @@ class Resampler:
                     new_data.columns = list(range(data_descriptor.data_start_index,data_descriptor.data_end_index+1))
                     row_data = pd.concat([new_data], axis=1)
                     output_data = output_data.append(row_data, ignore_index=True)
-        return output_data, _simularatie_list, _data_descriptors, resample_factor
+        return output_data, _similarities_list, _data_descriptors, resample_factor
 
-    def create_timeserices_from_slices_of_data(self, transformed_data,simularatie_list, amount_of_sensors):
+    def create_timeserices_from_slices_of_data(self, transformed_data,similarities_list, amount_of_sensors):
         output_data = pd.DataFrame()
         transformed_data = transformed_data.sort_index()
-        _simularatie_list = SimularatieList()
+        _similarities_list = SimilarityList()
         _data_descriptors = []
         index = 0
-        for meta_dd in self.meta_datas:
+        for meta_dd in self.meta_data:
             _data_descriptors.append(meta_dd)
             index = meta_dd.data_end_index + 1
 
         amount_of_inputs = len(transformed_data.index)
 
-        time_serices_lenged = math.floor(amount_of_inputs / amount_of_sensors)*len(transformed_data.columns)
+        time_series_lenged = math.floor(amount_of_inputs / amount_of_sensors)*len(transformed_data.columns)
 
-        for simularatie in simularatie_list.simularaties:
-            simularatie.data_descriptor.data_start_index = index
-            simularatie.data_descriptor.data_end_index = index + time_serices_lenged -1
-            _simularatie_list.add_simularatie(simularatie)
-            _data_descriptors.append(simularatie.data_descriptor)
+        for similarity in similarities_list.similarities:
+            similarity.data_descriptor.data_start_index = index
+            similarity.data_descriptor.data_end_index = index + time_series_lenged -1
+            _similarities_list.add_similarity(similarity)
+            _data_descriptors.append(similarity.data_descriptor)
 
         for i in range(0,amount_of_sensors):
             # import pdb; pdb.set_trace()
@@ -85,7 +85,7 @@ class Resampler:
             new_data = pd.DataFrame.from_items([(i, new_data)],orient='index', columns=list(range(index,index+len(new_data))))
             row_data = pd.concat([self.row_meta_data,new_data], axis=1)
             output_data = output_data.append(row_data.iloc[i])
-        return output_data, _simularatie_list, _data_descriptors
+        return output_data, _similarities_list, _data_descriptors
 
 class Subsampling:
     def __init__(self,data):

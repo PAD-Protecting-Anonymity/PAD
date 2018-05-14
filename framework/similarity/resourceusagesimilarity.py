@@ -1,16 +1,15 @@
-from framework.similarity.simularityterms import SimularityTerms
-from framework.similarity.basesimularity import BaseSimularity
+from framework.similarity.similarityterms import SimilarityTerms
+from framework.similarity.basesimilarity import BaseSimilarity
 import numpy as np
 import pandas as pd
 import math
 
-
-class ResourceUsageSimularity(BaseSimularity):
+class ResourceUsageSimilarity(BaseSimilarity):
     '''
 
     '''
     def __init__(self, data_descriptor, data_window= None,**kwargs):
-        super().__init__(SimularityTerms.USAGE,data_descriptor, data_window)
+        super().__init__(SimilarityTerms.USAGE,data_descriptor, data_window)
         self.kwargs = kwargs
 
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):

@@ -4,13 +4,13 @@ import numpy as np
 
 sys.path.insert(0,os.path.abspath("./"))
 # sys.path.append(os.path.abspath("/framework/simulraty"))
-from framework.framework import Framwork
-from framework.similarity.arrivalsimularity import ArrivalSimularity
-from framework.similarity.segmentsimularity import SegmentSimularity
-from framework.similarity.globalsimularity import GlobalSimularity
-from framework.similarity.simularityterms import SimularityTerms
-from framework.similarity.resourceusagesimularity import ResourceUsageSimularity
-from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescriptorTimeSerice,DataDescriptorTerms
+from framework.framework import Framework
+from framework.similarity.arrivalsimularity import ArrivalSimilarity
+from framework.similarity.segmentsimularity import SegmentSimilarity
+from framework.similarity.globalsimularity import ResourceUsageSimilarity
+from framework.similarity.simularityterms import SimilarityTerms
+from framework.similarity.resourceusagesimularity import ResourceUsageSimilarity
+from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescriptorTimeSeries,DataDescriptorTerms
 import pandas as pd
 import pickle
 
@@ -31,27 +31,27 @@ print("amount of samples %s" % len(data.index))
 print("amount of columns %s" % len(data.columns))
 anonymity_level = 5
 
-framework = Framwork(data,anonymity_level)
+framework = Framework(data,anonymity_level)
 
-sampling_frequency = DataDescriptorTerms.MINUE_2
+sampling_frequency = DataDescriptorTerms.MINUET_2
 output_genelaraty = DataDescriptorTerms.HOUR
 genelaraty_mode = DataDescriptorTerms.MEAN
-data_type = DataDescriptorTerms.BOOLAEN
+data_type = DataDescriptorTerms.BOOLEAN
 data_window = 720
 segment = [240,480]
 rep_mode = "mean"
 # dd = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,0,30,data_window_size=data_window)
 # dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,31,61,data_window_size=data_window)
-dd = DataDescriptorTimeSerice(sampling_frequency,genelaraty_mode,data_type,1,len(data.columns)-1, output_frequency=output_genelaraty)
+dd = DataDescriptorTimeSeries(sampling_frequency,genelaraty_mode,data_type,1,len(data.columns)-1, output_frequency=output_genelaraty)
 # dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,31,61)
 
 # segmentedData = GlobalSimularity(dd)
-segmentedData = GlobalSimularity(dd)
+segmentedData = ResourceUsageSimilarity(dd)
 
 # dd1 = DataDescriptorTimeSerice(sampling_frequency,output_genelaraty,genelaraty_mode,data_type,61,74,segmentedData1)
 metaData = DataDescriptorMetadata(0, data_decription="Meta Data")
 
-framework.add_simularatie(segmentedData)
+framework.add_similarity(segmentedData)
 # framework.add_simularatie(segmentedData1)
 framework.add_meta_data(metaData)
 out , loss_metric = framework.run()

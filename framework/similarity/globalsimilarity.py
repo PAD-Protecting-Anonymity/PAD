@@ -1,12 +1,12 @@
 # from similarity import basesimularity as BaseSimularity, simularityterms as SimularityTerms
-from framework.similarity.simularityterms import SimularityTerms
-from framework.similarity.basesimularity import BaseSimularity
+from framework.similarity.similarityterms import SimilarityTerms
+from framework.similarity.basesimilarity import BaseSimilarity
 from sklearn.neighbors.dist_metrics import DistanceMetric
 # import basesimularity as BaseSimularity
 import numpy as np
 import pandas as pd
 
-class GlobalSimularity(BaseSimularity):
+class GlobalSimilarity(BaseSimilarity):
     '''
     distance_metric can
     EUCLIDEAN,
@@ -19,11 +19,11 @@ class GlobalSimularity(BaseSimularity):
     CUSTOM: add FUNC to calc the distance
     '''
     def __init__(self, data_descriptor,data_window=None,**kwargs):
-        super().__init__(SimularityTerms.GLOBAL, data_descriptor,data_window=data_window)
+        super().__init__(SimilarityTerms.GLOBAL, data_descriptor,data_window=data_window)
         if "distance_metric" in kwargs and kwargs["distance_metric"] is not None:
             self.distance_metric = kwargs["distance_metric"]
         else:
-            self.distance_metric = SimularityTerms.EUCLIDEAN
+            self.distance_metric = SimilarityTerms.EUCLIDEAN
         self.kwargs = kwargs
 
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):
@@ -53,26 +53,26 @@ class GlobalSimularity(BaseSimularity):
         return global_score
 
     def get_distance(self,data):
-        if self.distance_metric == SimularityTerms.EUCLIDEAN:
+        if self.distance_metric == SimilarityTerms.EUCLIDEAN:
             dist = DistanceMetric.get_metric(self.distance_metric)
-        elif self.distance_metric == SimularityTerms.MAHALAOBIS:
+        elif self.distance_metric == SimilarityTerms.MAHALAOBIS:
             self.vi = self.kwargs['VI']
             dist = DistanceMetric.get_metric(self.distance_metric, VI=self.vi)
-        elif self.distance_metric == SimularityTerms.CHEBYSHEV:
+        elif self.distance_metric == SimilarityTerms.CHEBYSHEV:
             dist = DistanceMetric.get_metric(self.distance_metric)
-        elif self.distance_metric == SimularityTerms.MANHATTAN:
+        elif self.distance_metric == SimilarityTerms.MANHATTAN:
             dist = DistanceMetric.get_metric(self.distance_metric)
-        elif self.distance_metric == SimularityTerms.MINKOWSKI:
+        elif self.distance_metric == SimilarityTerms.MINKOWSKI:
             self.p =  self.kwargs['P']
             dist = DistanceMetric.get_metric(self.distance_metric, P=self.p)
-        elif self.distance_metric == SimularityTerms.WMINKOWSKI:
+        elif self.distance_metric == SimilarityTerms.WMINKOWSKI:
             self.p =  self.kwargs['P']
             self.w =  self.kwargs['W']
             dist = DistanceMetric.get_metric(self.distance_metric, P=self.p, W=self.w)
-        elif self.distance_metric == SimularityTerms.SEUCLIDEAN:
+        elif self.distance_metric == SimilarityTerms.SEUCLIDEAN:
             self.v = self.kwargs['V']
             dist = DistanceMetric.get_metric(self.distance_metric, V=self.v)
-        elif self.distance_metric == SimularityTerms.CUSTOM:
+        elif self.distance_metric == SimilarityTerms.CUSTOM:
             self.func = self.kwargs['FUNC']
             dist = DistanceMetric.get_metric(metric = 'pyfunc', func=self.func)
         distance = dist.pairwise(data)

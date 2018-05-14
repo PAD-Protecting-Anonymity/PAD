@@ -3,38 +3,37 @@ import numpy as np
 
 class DataDescriptorBase:
     def __init__(self, data_descriptor_type,data_start_index,data_end_index,
-            data_decription=""):
+            data_description=""):
         self.data_descriptor_type = data_descriptor_type
         self.data_start_index = data_start_index
         self.data_end_index = data_end_index
-        self.data_decription = data_decription
+        self.data_description = data_description
 
     def get_str_description(self):
         raise NotImplementedError('users must define get_str_description in class to use this base class')
 
-    def verify_configuration_data_descriptor_config(self,amount_of_colums, data):
-        """Test if the data decriptors are refering to data witch is not in the datastrame
-
+    def verify_configuration_data_descriptor_config(self,amount_of_column, data):
+        """Test if the data decriptors are refering to data witch is not in the datastream
         Arguments:
-            amount_of_colums {int} -- the total amount of colums in the datastrame
+            amount_of_column {int} -- the total amount of column in the datastream
             data {pandas dataframe} -- the data to be sanitized
         Raises:
             ValueError -- if config does not complie with the framework
         """
-        if self.data_start_index > amount_of_colums:
-            raise ValueError("refer to index wich is not in datastrame: Index %s goes out of bound for the data stream in data descriptor in data_start_index" % self.data_start_index)
-        elif self.data_end_index > amount_of_colums:
-                raise ValueError("refer to index wich is not in datastrame: Index %s goes out of bound for the data stream in data descriptor in data_end_index" % self.data_end_index)
+        if self.data_start_index > amount_of_column:
+            raise ValueError("refer to index wish is not in datastream: Index %s goes out of bound for the data stream in data descriptor in data_start_index" % self.data_start_index)
+        elif self.data_end_index > amount_of_column:
+                raise ValueError("refer to index wish is not in datastream: Index %s goes out of bound for the data stream in data descriptor in data_end_index" % self.data_end_index)
         if self.data_start_index > self.data_end_index:
             temp_holder = self.data_start_index
             self.data_start_index = self.data_end_index
             self.data_end_index = temp_holder
 
-class DataDescriptorTimeSerice(DataDescriptorBase):
+class DataDescriptorTimeSeries(DataDescriptorBase):
     def __init__(self, sampling_frequency, generality_mode,data_type,
             data_start_index,data_end_index, output_frequency=None,
-            data_window_size= None, data_decription=""):
-        super().__init__(DataDescriptorTerms.TIMESEICE,data_start_index,data_end_index,data_decription)
+            data_window_size= None, data_description=""):
+        super().__init__(DataDescriptorTerms.TIMESEICE,data_start_index,data_end_index,data_description)
         self.sampling_frequency = sampling_frequency
         if output_frequency is None:
             self.output_frequency = sampling_frequency
@@ -45,39 +44,39 @@ class DataDescriptorTimeSerice(DataDescriptorBase):
         self.data_window_size = data_window_size
 
     def get_str_description(self):
-        date_type_decription = None
-        if self.data_type == DataDescriptorTerms.BOOLAEN:
+        date_type_description = None
+        if self.data_type == DataDescriptorTerms.BOOLEAN:
             if self.generality_mode == DataDescriptorTerms.MEAN:
-                date_type_decription = "Percentage"
+                date_type_description = "Percentage"
             else:
-                date_type_decription = self.data_type.value
+                date_type_description = self.data_type.value
         else:
-            date_type_decription = self.data_type.value
+            date_type_description = self.data_type.value
 
-        if self.data_decription is not "":
-            return "Data Decription: {0} Data Type: Time Serice Data Type: {1} Start Index: {2} End Index: {3} Frequency: {4} Genelaraty Mode: {5}".format(self.data_decription,date_type_decription, self.data_start_index, self.data_end_index, self.output_frequency.name, self.generality_mode.value)
-        return "Data Type: Time Serice Data Type: {0} Start Index: {1} End Index: {2} Frequency: {3} Genelaraty Mode: {4}".format(date_type_decription, self.data_start_index, self.data_end_index, self.output_frequency.name, self.generality_mode.value)
+        if self.data_description is not "":
+            return "Data Description: {0} Data Type: Time Series Data Type: {1} Start Index: {2} End Index: {3} Frequency: {4} Generality Mode: {5}".format(self.data_description,date_type_description, self.data_start_index, self.data_end_index, self.output_frequency.name, self.generality_mode.value)
+        return "Data Type: Time Series Data Type: {0} Start Index: {1} End Index: {2} Frequency: {3} Generality Mode: {4}".format(date_type_description, self.data_start_index, self.data_end_index, self.output_frequency.name, self.generality_mode.value)
 
-    def verify_configuration_data_descriptor_config(self,amount_of_colums, data):
-        super().verify_configuration_data_descriptor_config(amount_of_colums,data)
+    def verify_configuration_data_descriptor_config(self,amount_of_column, data):
+        super().verify_configuration_data_descriptor_config(amount_of_column,data)
         if self.sampling_frequency.value > self.output_frequency.value:
-            raise ValueError("For DataDescriptorTimeSerice the sampling rate most be >= to the output frequency")
+            raise ValueError("For DataDescriptorTimeSeries the sampling rate most be >= to the output frequency")
         if (self.data_end_index - self.data_start_index) < (self.output_frequency.value / self.sampling_frequency.value):
-            raise ValueError("For DataDescriptorTimeSerice, there are not enough input samples to produce an output with the selected output frequency")
+            raise ValueError("For DataDescriptorTimeSeries, there are not enough input samples to produce an output with the selected output frequency")
 
         for i in range(self.data_start_index, self.data_end_index):
             if  not np.issubdtype(data.dtypes[i], np.number):
-                raise ValueError("For DataDescriptorTimeSerice, data types have to be of type number, see https://docs.scipy.org/doc/numpy/reference/arrays.scalars.html for help")
+                raise ValueError("For DataDescriptorTimeSeries, data types have to be of type number, see https://docs.scipy.org/doc/numpy/reference/arrays.scalars.html for help")
 
 class DataDescriptorMetadata(DataDescriptorBase):
-    def __init__(self,data_start_index,data_end_index=None,data_decription=""):
-        super().__init__(DataDescriptorTerms.METADATA,data_start_index,data_end_index,data_decription)
+    def __init__(self,data_start_index,data_end_index=None,data_description=""):
+        super().__init__(DataDescriptorTerms.METADATA,data_start_index,data_end_index,data_description)
         if data_end_index is None:
             self.data_end_index = data_start_index
 
     def get_str_description(self):
-        if self.data_decription is not "":
-            return "Data Decription: {0} Data Type: Meta Data, Start Index: {1} End Index: {2}".format(self.data_decription,self.data_start_index, self.data_end_index)
+        if self.data_description is not "":
+            return "Data Description: {0} Data Type: Meta Data, Start Index: {1} End Index: {2}".format(self.data_description,self.data_start_index, self.data_end_index)
         return "Data Type: Meta Data, Start Index: {0}  End Index: {2}".format(self.data_start_index, self.data_end_index)
 
 
@@ -87,7 +86,7 @@ class DataDescriptorTerms(Enum):
     TIMESEICE = "timeserice"
     METADATA = "metadata"
 
-    #Genelaraty Mode
+    #Generality Mode
     MEAN = "mean"
     MODE = "mode"
     MEDIAN = "median"
@@ -98,20 +97,19 @@ class DataDescriptorTerms(Enum):
 
     #Datatypes
     NUMBER = "number"
-    BOOLAEN = "boolean"
+    BOOLEAN = "boolean"
 
-    #Genelaraty
     # EVENT = "event"
     SECOND = 1
     SECOND_2 = 2
     SECOND_5 = 5
     SECOND_20 = 20
-    MINUE = 60
-    MINUE_2 = 120
-    MINUE_5 = 300
-    MINUE_10 = 600
-    QUARETER = 900
-    MINUE_20 = 1200
+    MINUET = 60
+    MINUET_2 = 120
+    MINUET_5 = 300
+    MINUET_10 = 600
+    QUARTER = 900
+    MINUET_20 = 1200
     HALFHOUR = 1800
     HOUR = 3600
     HOUR_2 = 7200

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import math
 from framework.utilities.datadescriptor import DataDescriptorTerms
-from framework.utilities.datadescriptor import DataDescriptorBase, DataDescriptorMetadata, DataDescriptorTimeSerice
+from framework.utilities.datadescriptor import DataDescriptorBase, DataDescriptorMetadata, DataDescriptorTimeSeries
 from itertools import chain
 
 class OutputGroupper:
@@ -24,7 +24,7 @@ class OutputGroupper:
         sorted_dd = self.sort_dataset_descriptions()
         for dataset_description in sorted_dd:
             start_index = len(output_data.columns)
-            if isinstance(dataset_description, DataDescriptorTimeSerice):
+            if isinstance(dataset_description, DataDescriptorTimeSeries):
                 output_data = self.transform_data_time_serices(data,dataset_description,output_data)
             elif isinstance(dataset_description, DataDescriptorMetadata):
                 output_data = self.transform_data_metadata(data,dataset_description,output_data)
@@ -59,7 +59,7 @@ class OutputGroupper:
                 data_slice_index_end = int(input_output_factor*(i+1))
                 data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end+1]
                 tm = None
-                if dataset_description.data_type == DataDescriptorTerms.BOOLAEN:
+                if dataset_description.data_type == DataDescriptorTerms.BOOLEAN:
                     tm = OutoutGroupperBoolean()
                 elif dataset_description.data_type == DataDescriptorTerms.NUMBER:
                     tm = OutoutGroupperNumber()

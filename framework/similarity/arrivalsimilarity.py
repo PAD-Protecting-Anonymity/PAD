@@ -1,17 +1,16 @@
 # from similarity import basesimularity as BaseSimularity, simularityterms as SimularityTerms
-from framework.similarity.simularityterms import SimularityTerms
-from framework.similarity.basesimularity import BaseSimularity
+from framework.similarity.similarityterms import SimilarityTerms
+from framework.similarity.basesimilarity import BaseSimilarity
 import numpy as np
 import pandas as pd
 import math
 
-class ArrivalSimularity(BaseSimularity):
-
+class ArrivalSimilarity(BaseSimilarity):
     '''
 
     '''
-    def __init__(self, data_desciiptor, data_window=None,**kwargs):
-        super().__init__(SimularityTerms.ARRIVAL,data_desciiptor, data_window=data_window)
+    def __init__(self, data_descriptor, data_window=None,**kwargs):
+        super().__init__(SimilarityTerms.ARRIVAL,data_descriptor, data_window=data_window)
         self.kwargs = kwargs
 
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):

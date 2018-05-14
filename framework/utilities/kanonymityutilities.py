@@ -1,6 +1,6 @@
 import math
 
-class KAnoymityUtilties:
+class KAnonymityUtilities:
     def can_ensure_k_anonymity(self,anonymity_level,amount_of_inputs):
             if (2*anonymity_level-1)*5<amount_of_inputs:
                 return True

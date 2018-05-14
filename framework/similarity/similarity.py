@@ -23,10 +23,10 @@ class Similarity:
             self.unique_index[dataSubsample_index[i]] = i
         self.data_interested = None
 
-    def extract_interested_attribute(self,simularaties):
+    def extract_interested_attribute(self,similarities):
         data_interested = None
-        for simularatie in simularaties:
-            temp_data_interested = simularatie.get_statistics(self.dataSubsample)
+        for similarity in similarities:
+            temp_data_interested = similarity.get_statistics(self.dataSubsample)
             if data_interested is not None:
                 data_interested = data_interested + temp_data_interested
             else:

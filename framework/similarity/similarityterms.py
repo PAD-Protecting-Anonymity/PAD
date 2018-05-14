@@ -1,6 +1,6 @@
-"""Constants used to definde types of Simularity"""
+"""Constants used to defined types of Similarity"""
 
-class SimularityTerms:
+class SimilarityTerms:
     #Types of simularity in time series
     ARRIVAL = "arrival" #e.g. used for finding first true in boolian time series
     DEPARTURE = "departure" #e.g. used for finding first false in boolian time series

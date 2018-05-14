@@ -2,19 +2,19 @@
 import pandas as pd
 import numpy as np
 
-class BaseSimularity():
+class BaseSimilarity():
     """"""
-    def __init__(self, simularity_terms, data_descriptor, data_window=None, **kwargs):
-        if self.__class__ == BaseSimularity:
+    def __init__(self, similarity_terms, data_descriptor, data_window=None, **kwargs):
+        if self.__class__ == BaseSimilarity:
             raise Exception('abstract class')
         self.data_descriptor = data_descriptor
-        self.simularity_terms = simularity_terms
+        self.similarity_terms = similarity_terms
         self.data_window = data_window
 
-    def get_simularity_type(self):
-        if (self.simularity_type is None):
-            raise NotImplementedError('users must define simularity_type')
-        return self.simularity_type
+    def get_similarity_type(self):
+        if (self.similarity_terms is None):
+            raise NotImplementedError('users must define similarity_terms')
+        return self.similarity_terms
 
     def get_output_frequency(self):
         if (self.output_frequency is None):
