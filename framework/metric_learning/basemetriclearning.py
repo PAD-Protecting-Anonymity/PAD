@@ -23,8 +23,8 @@ class BasemetricLearning():
     # def transform(self,data_pairs):
     #     raise NotImplementedError('users must define train in class to use this base class')
 
-    def get_distance(self,data):
-        raise NotImplementedError('users must define get_distance in class to use this base class')
+    # def get_distance(self,data):
+    #     raise NotImplementedError('users must define get_distance in class to use this base class')
 
     def deep_metric(self, x, y):
         # x, y = self.dm.transform((x,y))

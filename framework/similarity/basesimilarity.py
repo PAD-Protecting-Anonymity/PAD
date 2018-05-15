@@ -16,16 +16,6 @@ class BaseSimilarity():
             raise NotImplementedError('users must define similarity_terms')
         return self.similarity_terms
 
-    def get_output_frequency(self):
-        if (self.output_frequency is None):
-            raise NotImplementedError('users must define output_frequency')
-        return self.output_frequency
-
-    def get_sampling_frequency(self):
-        if (self.sampling_frequency is None):
-            raise NotImplementedError('users must define sampling_frequency')
-        return self.sampling_frequency
-
     def get_information_loss(self, data_originally, data_sanitized, **kwargs):
         raise NotImplementedError('users must define get_information_loss in class to use this base class')
 

@@ -21,6 +21,7 @@ class K_ward(BaseModel):
         self.cards = []
         self.kwargs = kwargs
 
+
         # if distance_metric == 'mahalanobis':
         #     self.VI = kwargs['VI']
         # if distance_metric == 'deep':
