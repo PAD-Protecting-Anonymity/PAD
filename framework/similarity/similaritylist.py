@@ -22,6 +22,7 @@ class SimilarityList:
         return len(self.similarities)
 
     def get_statistics_loss(self,data_org, data_sanitized):
+        # import pdb; pdb.set_trace()
         err_sum_sqrt = None
         for similarity in self.similarities:
             temp_err_sum_sqrt = similarity.get_information_loss(self._get_data_slice(similarity,data_org),self._get_data_slice(similarity,data_sanitized))

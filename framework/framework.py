@@ -22,7 +22,7 @@ import inspect
 import random
 
 class Framework:
-    def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",min_resample_factor = 5, metric=MetricLearningTerms.LINEAR):
+    def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",resample_factor = 5, learning_metric=MetricLearningTerms.LINEAR, k_fold = None):
         self.data = data
         self._similarity_list = SimilarityList()
         self.data_descriptors = []
@@ -35,9 +35,11 @@ class Framework:
         self.rep_mode  = rep_mode
         self._resampler = Resampler()
         self.max_clusters = 8
-        self.min_resample_factor = min_resample_factor
+        self.resample_factor = resample_factor
         self.seed = seed
-        self.metric = metric
+        self.learning_metric = learning_metric
+        self.k_fold = k_fold
+
 
     def _get_data_for_sanitize(self):
         output_data = pd.DataFrame()
@@ -52,6 +54,19 @@ class Framework:
             output_data = output_data.sample(math.floor(len(output_data.index)*percentage_of_data))
         else:
             output_data = output_data.sample(amount_of_inputs)
+        return output_data
+
+    def _get_data_subsampling_k_fold(self):
+        output_data = self._get_data_for_sanitize()
+        amount_of_inputs = len(output_data.index)
+        listOfIndex = [i for i in range(amount_of_inputs)]
+        random.seed(123456)
+        random.shuffle(listOfIndex)
+        amount_of_samples_in_fold = math.floor(amount_of_inputs/self.k_fold[1])
+        fold_elements = listOfIndex[:amount_of_samples_in_fold*self.k_fold[0]]
+        fold_elements.extend(listOfIndex[amount_of_samples_in_fold*(self.k_fold[0]+1):])
+        output_data = output_data.iloc[fold_elements]
+        print("Amount of samples in traning set: ",len(output_data.index))
         return output_data
 
     def _add_metadata_for_sanitize_data(self,sanitize_data):
@@ -78,7 +93,7 @@ class Framework:
         metrics = []
         for name, obj in inspect.getmembers(sys.modules[__name__]):
             if inspect.isclass(obj):
-                if "framework.metric_learning." + self.metric in str(obj):
+                if "framework.metric_learning." + self.learning_metric in str(obj):
                     if obj is Linear_Metric:
                         metrics.append(obj)
                     elif issubclass(obj, BasemetricLearning) and obj is not BasemetricLearning:
@@ -122,7 +137,10 @@ class Framework:
     def _subsample(self,presensitizedData, sub_sampling_size=0.1, subsampleTrial = 0, seed=None):
         if subsampleTrial > 5:
             raise ValueError("The data is to similar to be sanitized")
-        self.subsampling = Subsampling(presensitizedData.sample(frac=sub_sampling_size, random_state=seed))
+        if self.k_fold is None:
+            self.subsampling = Subsampling(presensitizedData.sample(frac=sub_sampling_size, random_state=seed))
+        else:
+            self.subsampling = Subsampling(self._get_data_subsampling_k_fold())
         subsample_size_max = int(comb(len(self.subsampling.data), 2))
         print('total number of pairs is %s' % subsample_size_max)
         data_pair_all, data_pair_all_index = self.subsampling.uniform_sampling(subsample_size=subsample_size_max, seed=seed)
@@ -178,7 +196,7 @@ class Framework:
             dd_string_out.append(data_descriptor.get_str_description())
         return '\n'.join(dd_string_out)
 
-    def change_anonymity_level(self,resample_factor):
+    def _change_anonymity_level(self,resample_factor):
         amount_of_data_slices = len(self.data.index)
         max_k = KAnonymityUtilities().find_max_k(amount_of_data_slices)
         if max_k > self.anonymity_level * self.amount_of_sensors:
@@ -187,16 +205,18 @@ class Framework:
             self.anonymity_level = max_k
         print('anonymity_level set to: ' + str(self.anonymity_level))
 
-    def run(self):
+    def anonymize(self):
         self.data = Verifyerror().verify(self.data, self._similarity_list, self.data_descriptors)
         self.amount_of_sensors = len(self.data.index)
         _can_ensure_k_anonymity = KAnonymityUtilities().can_ensure_k_anonymity(self.anonymity_level, self.amount_of_sensors)
         if not _can_ensure_k_anonymity:
-            self.data, self._similarity_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._similarity_list, self.min_resample_factor)
+            self.data, self._similarity_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._similarity_list, self.resample_factor)
             Verifyerror().verify_after_can_not_ensure_k_anonymity(self.data, self._similarity_list)
-            self.change_anonymity_level(resample_factor)
+            self._change_anonymity_level(resample_factor)
             print("amount of samples after spilt %s" % len(self.data.index))
             print("amount of columns after spilt %s" % len(self.data.columns))
+
+        # self.data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self.data)
 
         presensitized_data = self._presanitized()
 
@@ -204,9 +224,7 @@ class Framework:
 
         model = self._find_Metric_Leaning(data_pair,similarity_label)
         print("Using model: ", model.metric_learning_terms)
-
-        final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",
-                        anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
+        final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
         loss_metric=  self._similarity_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)
         print("information loss with", model.metric_learning_terms, "metric %s" % loss_metric)
 
@@ -219,7 +237,9 @@ class Framework:
 
         if not _can_ensure_k_anonymity:
             transformed_data, self._similarity_list, self.data_descriptors = self._resampler.create_timeserices_from_slices_of_data(final_sanitized_data, self._similarity_list, self.amount_of_sensors)
-            transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
+            transformed_data, test = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
+            print("information loss", loss_metric)
         else:
             transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
+
         return transformed_data.sort_index(), loss_metric, self.anonymity_level

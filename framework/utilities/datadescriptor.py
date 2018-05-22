@@ -79,8 +79,6 @@ class DataDescriptorMetadata(DataDescriptorBase):
             return "Data Description: {0} Data Type: Meta Data, Start Index: {1} End Index: {2}".format(self.data_description,self.data_start_index, self.data_end_index)
         return "Data Type: Meta Data, Start Index: {0}  End Index: {1}".format(self.data_start_index, self.data_end_index)
 
-
-
 class DataDescriptorTerms(Enum):
     #data_descriptor_type
     TIMESEICE = "timeserice"
