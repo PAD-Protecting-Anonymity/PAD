@@ -72,3 +72,16 @@ dataset/*
 
 #configes
 framework/run_configes/*
+!framework/run_configes/line_counter_run_day_outputhour_after.py
+!framework/run_configes/line_counter_run_day_outputhour_before.py
+!framework/run_configes/line_counter_run_day.py
+
+!framework/run_configes/noices_avg_run_day_outputhour_after.py
+!framework/run_configes/noices_avg_run_day_outputhour_before.py
+!framework/run_configes/noices_avg_run_day.py
+
+!framework/run_configes/presence_run_day_outputhour_after.py
+!framework/run_configes/presence_run_day_outputhour_before.py
+!framework/run_configes/presence_run_day.py
+
+

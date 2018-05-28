@@ -35,7 +35,11 @@ class SegmentSimilarity(BaseSimilarity):
         return self.get_segment(data)
 
     def get_segment(self,data):
-        segment_data = data.apply(self.compute_segment, axis=1,index=data.columns,window=self.data_window)
+        if self.data_descriptor.data_window_size is None:
+            segment_data = data.apply(self.compute_segment, axis=1,index=data.columns,window=self.data_window)
+        else:
+            segment_data = self.segment_of_more_days(data,data.columns,self.data_window,self.data_descriptor.data_window_size) #TODO, fix this workaround
+            # segment_data = data.apply(self.compute_segment_data_window_size, axis=1,index=data.columns,window=self.data_window,data_window_size=self.data_descriptor.data_window_size)
         return segment_data
 
     def get_distance(self,data):
@@ -77,5 +81,14 @@ class SegmentSimilarity(BaseSimilarity):
             if df is not None:
                 df = np.append(df,restult)
             else:
-                df = np.array(restult)
+                df = restult
+        df = df[:]
         return df
+
+    def segment_of_more_days(self,data,index, window,data_window_size):
+        pds = pd.DataFrame()
+        for row in data.index:
+            row_segment = self.compute_segment_data_window_size(data.loc[row],index,window,data_window_size)
+            pds =pds.append(pd.Series(row_segment), ignore_index=True)
+        return pds
+

@@ -88,7 +88,7 @@ class ResourceUsageSimilarity(BaseSimilarity):
         amount_of_colums = x.size
         amount_of_slices = math.floor(amount_of_colums/data_window_size)
         df = None
-        for i in range(0,amount_of_slices):
+        for i in range(0,amount_of_slices+1):
             data_slice = x[data_window_size*i:data_window_size*(i+1)]
             if window is None:
                 restult =self.compute_total_usage(data_slice,index)

@@ -72,6 +72,7 @@ class Resampler:
 
         time_series_lenged = math.floor(amount_of_inputs / amount_of_sensors)*len(transformed_data.columns)
 
+
         for similarity in similarities_list.similarities:
             similarity.data_descriptor.data_start_index = index
             similarity.data_descriptor.data_end_index = index + time_series_lenged -1
@@ -79,7 +80,6 @@ class Resampler:
             _data_descriptors.append(similarity.data_descriptor)
 
         for i in range(0,amount_of_sensors):
-            # import pdb; pdb.set_trace()
             new_data = transformed_data.iloc[i::amount_of_sensors,:]._values
             new_data = list(chain.from_iterable(new_data))
             new_data = pd.DataFrame.from_items([(i, new_data)],orient='index', columns=list(range(index,index+len(new_data))))

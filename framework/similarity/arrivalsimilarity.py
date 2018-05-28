@@ -36,7 +36,7 @@ class ArrivalSimilarity(BaseSimilarity):
             sample2 = list(sample1)
             amount_of_slices = math.floor(len(sample1) /slice_size)
             dist = 0
-            for i in range(0,amount_of_slices):
+            for i in range(0,amount_of_slices+1):
                 index_from = slice_size*i
                 index_to = slice_size*(i+1)
                 if self.data_window is not None:

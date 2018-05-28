@@ -112,6 +112,7 @@ class DataDescriptorTerms(Enum):
     HOUR = 3600
     HOUR_2 = 7200
     HOUR_4 = 14400
+    HOUR_8 = 28800
     HALFDAY = 43200
     DAY = 86400
     WEEK = 604800

@@ -54,7 +54,7 @@ metaData = DataDescriptorMetadata(0, data_decription="Meta Data")
 framework.add_similarity(segmentedData)
 # framework.add_simularatie(segmentedData1)
 framework.add_meta_data(metaData)
-out , loss_metric = framework.run()
+out , loss_metric = framework.anonymize()
 print(out)
 print(framework.generated_data_description())
 

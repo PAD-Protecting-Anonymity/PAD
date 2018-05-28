@@ -66,7 +66,7 @@ class OutputGroupper:
                     tm = OutoutGroupperNumber()
                 transfomred_data = tm.transform(data_slices,dataset_description.generality_mode)
                 output_data = pd.concat([output_data, pd.Series(transfomred_data)], axis=1)
-        else: # amount_of_slices =< 1:
+        else: # amount_of_slices < 1:
             data_index_start = dataset_description.data_start_index
             data_index_end = dataset_description.data_end_index
             data_slices = data.iloc[:,data_index_start:data_index_end+1]

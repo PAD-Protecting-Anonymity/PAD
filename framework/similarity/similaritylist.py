@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 class SimilarityList:
     def __init__(self):
@@ -22,7 +23,6 @@ class SimilarityList:
         return len(self.similarities)
 
     def get_statistics_loss(self,data_org, data_sanitized):
-        # import pdb; pdb.set_trace()
         err_sum_sqrt = None
         for similarity in self.similarities:
             temp_err_sum_sqrt = similarity.get_information_loss(self._get_data_slice(similarity,data_org),self._get_data_slice(similarity,data_sanitized))
@@ -34,5 +34,5 @@ class SimilarityList:
 
 
     def _get_data_slice(self,similarity,data):
-        data_slices = data.iloc[:,similarity.data_descriptor.data_start_index:similarity.data_descriptor.data_end_index]
+        data_slices = data
         return data_slices
