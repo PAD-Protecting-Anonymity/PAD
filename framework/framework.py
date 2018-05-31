@@ -160,8 +160,6 @@ class Framework:
 
         sanitized_df = pd.DataFrame()
         for group in groups:
-            # group.rep_mode = "max"
-            # group.get_rep()
             sanitized_value = group.rep.to_frame().transpose()
             keys = group.get_member_ids()
             for key in keys:

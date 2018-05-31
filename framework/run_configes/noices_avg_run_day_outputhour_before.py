@@ -14,10 +14,11 @@ from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescri
 import pandas as pd
 import pickle
 
-all_data = []
-all_samplingRates = []
+
 
 for i in range(0,7):
+    all_data = []
+    all_samplingRates = []
     data = pd.read_csv("./dataset/Preprocessed_noices_avg_4s.csv")
     data = data.iloc[:,0:2017]
 
@@ -47,16 +48,16 @@ for i in range(0,7):
     min_resample_factor = math.floor(DataDescriptorTerms.DAY.value / DataDescriptorTerms.MINUET_5.value)
     k_fold = [i,7]
 
-    framework = Framework(data,anonymity_level,rep_mode=rep_mode, resample_factor = min_resample_factor, learning_metric=MetricLearningTerms.NONLINEAR, k_fold= k_fold,output_groupper_after=False, all_data=all_data, all_sampling_rates= all_samplingRates)
+    framework = Framework(data,anonymity_level,rep_mode=rep_mode, resample_factor = min_resample_factor, learning_metric=MetricLearningTerms.LINEAR, k_fold= k_fold,output_groupper_after=False, all_data=all_data, all_sampling_rates= all_samplingRates)
 
     sampling_frequency = DataDescriptorTerms.MINUET_5
-    output_genelaraty = DataDescriptorTerms.HOUR
+    output_generality = DataDescriptorTerms.HOUR
     generality_mode = DataDescriptorTerms.MEAN
     data_type = DataDescriptorTerms.NUMBER
 
     segment = [8,16]
 
-    dd = DataDescriptorTimeSeries(sampling_frequency,generality_mode,data_type,1,len(data.columns)-1, output_frequency=output_genelaraty)
+    dd = DataDescriptorTimeSeries(sampling_frequency,generality_mode,data_type,1,len(data.columns)-1, output_frequency=output_generality)
 
     segmentedData = SegmentSimilarity(dd, data_window=segment)
 

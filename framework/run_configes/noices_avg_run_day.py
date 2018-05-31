@@ -14,10 +14,10 @@ from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescri
 import pandas as pd
 import pickle
 
-all_data = []
-all_samplingRates = []
-for i in range(0,7):
 
+for i in range(0,7):
+    all_data = []
+    all_samplingRates = []
     data = pd.read_csv("./dataset/Preprocessed_noices_avg_4s.csv")
     data = data.iloc[:,0:2017]
 
@@ -47,7 +47,7 @@ for i in range(0,7):
 
     min_resample_factor = math.floor(DataDescriptorTerms.DAY.value / DataDescriptorTerms.MINUET_5.value)
 
-    framework = Framework(data,anonymity_level,rep_mode=rep_mode,k_fold=k_fold,resample_factor=min_resample_factor,learning_metric=MetricLearningTerms.NONLINEAR, all_data=all_data, all_sampling_rates= all_samplingRates )
+    framework = Framework(data,anonymity_level,rep_mode=rep_mode,k_fold=k_fold,resample_factor=min_resample_factor,learning_metric=MetricLearningTerms.LINEAR, all_data=all_data, all_sampling_rates= all_samplingRates )
 
     sampling_frequency = DataDescriptorTerms.MINUET_5
     output_generality = DataDescriptorTerms.MINUET_5

@@ -16,7 +16,11 @@ from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescri
 import pandas as pd
 import pickle
 
+
+
 for i in range(0,7):
+    all_data = []
+    all_samplingRates = []
     data = pd.read_csv("./dataset/preprocessed_line_counter.csv")
     data_Noices = pd.read_csv("./dataset/Preprocessed_noices_avg_4s.csv")
 
@@ -41,7 +45,7 @@ for i in range(0,7):
     # seed = 123456
     k_fold = [i,7]
 
-    framework = Framework(data,anonymity_level,rep_mode=rep_mode, resample_factor = min_resample_factor, learning_metric=MetricLearningTerms.NONLINEAR,k_fold = k_fold)
+    framework = Framework(data,anonymity_level,rep_mode=rep_mode, resample_factor = min_resample_factor, learning_metric=MetricLearningTerms.LINEAR,k_fold = k_fold)
     sampling_frequency = DataDescriptorTerms.MINUET
     output_generality = DataDescriptorTerms.MINUET
     generality_mode = DataDescriptorTerms.SUM
@@ -64,5 +68,5 @@ for i in range(0,7):
 
     out , loss_metric, anonymity_level = framework.anonymize()
     timeTaken = time.clock() - start
-    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level, timeTaken], open('./results/line count/day/PAD_results_line_counter_Day_NOLINEAR_fold_'+str(i)+'.pickle', "wb"))
+    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level, timeTaken], open('./results/line count/day/PAD_results_line_counter_Day_LINEAR_fold_'+str(i)+'.pickle', "wb"))
     print("Time: " + str(timeTaken))
