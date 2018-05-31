@@ -24,7 +24,7 @@ data = data.infer_objects()
 all_data = []
 all_samplingRates = []
 
-for i in range(1,7):
+for i in range(0,7):
     print("amount of samples %s" % len(data.index))
     print("amount of columns %s" % len(data.columns))
     anonymity_level = 5
