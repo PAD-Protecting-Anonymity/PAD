@@ -192,7 +192,7 @@ class Framework:
                 if isinstance(dd, DataDescriptorTimeSeries):
                     self.all_sampling_rates.append(dd.sampling_frequency.value)
             self.anonymity_level = KAnonymityUtilities().find_balance_for_k(self.anonymity_level, self.all_data,self.all_sampling_rates)
-        _can_ensure_k_anonymity = False
+
         if not _can_ensure_k_anonymity:
             self.data, self._similarity_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._similarity_list, self.resample_factor)
             Verifyerror().verify_after_can_not_ensure_k_anonymity(self.data, self._similarity_list)
