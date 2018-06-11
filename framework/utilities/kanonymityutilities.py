@@ -4,9 +4,9 @@ import pandas as pd
 
 class KAnonymityUtilities:
     def can_ensure_k_anonymity(self,anonymity_level,amount_of_inputs):
-            if (2*anonymity_level-1)<amount_of_inputs:
-                return True
-            return False
+        if (2*anonymity_level-1)<amount_of_inputs:
+            return True
+        return False
 
     def find_balance_for_k(self,anonymity_level,data, sampling_rate):
         anonymity_levels = []

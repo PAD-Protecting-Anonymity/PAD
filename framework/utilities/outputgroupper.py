@@ -4,6 +4,7 @@ import pandas as pd
 import math
 from framework.utilities.datadescriptor import DataDescriptorTerms
 from framework.utilities.datadescriptor import DataDescriptorBase, DataDescriptorMetadata, DataDescriptorTimeSeries
+from framework.similarity.similaritylist import SimilarityList
 from itertools import chain
 import copy
 
@@ -17,16 +18,18 @@ class OutputGroupper:
         return sorted_dd
 
     def _crate_data_description(self, dataset_description, start_index, end_index):
-            self.dd_string_out.append(dataset_description.get_str_description(start_index,end_index))
+        self.dd_string_out.append(dataset_description.get_str_description(start_index,end_index))
 
     def transform_data(self,data):
         output_data = pd.DataFrame()
+        _similarity_list = SimilarityList()
         index_data_insert = 0
         sorted_dd = self.sort_dataset_descriptions()
         for dataset_description in sorted_dd:
             start_index = len(output_data.columns)
             if isinstance(dataset_description, DataDescriptorTimeSeries):
-                output_data = self.transform_data_time_series(data,dataset_description,output_data)
+                output_data, dd = self.transform_data_time_series(data,dataset_description,output_data)
+                _similarity_list.add_similarity(dd.similarity)
             elif isinstance(dataset_description, DataDescriptorMetadata):
                 output_data = self.transform_data_metadata(data,dataset_description,output_data)
             dataset_description.data_start_index = start_index
@@ -34,7 +37,7 @@ class OutputGroupper:
             # self._crate_data_description(dataset_description,  start_index, len(output_data.columns)-1)
         # print('\n'.join(self.dd_string_out))
         output_data.columns = list(range(0,len(output_data.columns)))
-        return output_data, sorted_dd #, '\n'.join(self.dd_string_out)
+        return output_data, sorted_dd,_similarity_list #, '\n'.join(self.dd_string_out)
 
     def transform_data_metadata(self,data,dataset_description,output_data):
         data_slice_index_start = dataset_description.data_start_index
@@ -56,7 +59,7 @@ class OutputGroupper:
         amount_of_slices = math.floor(amount_of_samples_in_dataset_description / input_output_factor) #Floor to ensure that we do not groups for small data amounts
         if amount_of_slices >= 1 and input_output_factor != 1:
             for i in range(amount_of_slices):
-                data_slice_index_start = int(input_output_factor*i)
+                data_slice_index_start = int(dataset_description.data_start_index+input_output_factor*i)
                 data_slice_index_end = int(input_output_factor*(i+1))
                 data_slices = data.iloc[:,data_slice_index_start:data_slice_index_end+1]
                 tm = None
@@ -73,12 +76,12 @@ class OutputGroupper:
             output_data = pd.concat([output_data,data_slices], axis=1)
         if dataset_description.data_window_size is not None:
             dataset_description.data_window_size =  dataset_description.data_window_size / input_output_factor
-        # else: # amount_of_slices = 1 or input_output_factor = 1
-        #     data_index_start = dataset_description.data_end_index
-        #     data_index_end = dataset_description.data_start_index
-        #     data_slices = data.iloc[:,data_index_start:data_index_end]
-        #     output_data = pd.concat([output_data,data_slices], axis=1)
-        return output_data
+        if hasattr(dataset_description.similarity,'data_window'):
+            dataset_description.similarity.data_window = np.true_divide(dataset_description.similarity.data_window,int(input_output_factor))
+            dataset_description.similarity.data_window = [int(i) for i in dataset_description.similarity.data_window]
+        if hasattr(dataset_description.similarity,'sampling_frequency'):
+            dataset_description.similarity.sampling_frequency = int(dataset_description.similarity.sampling_frequency*int(input_output_factor))
+        return output_data, dataset_description
 
 class OutoutGroupperTypeBase:
     def __init__(self):

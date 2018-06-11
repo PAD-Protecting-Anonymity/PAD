@@ -6,7 +6,7 @@ import time
 sys.path.insert(0,os.path.abspath("./"))
 from framework.framework import Framework
 from framework.similarity.arrivalsimilarity import ArrivalSimilarity
-from framework.similarity.segmentsimilarity import SegmentSimilarity
+from framework.similarity.segmentsimilarity import SegmentSimilarity, SegmentSimilarityModes
 from framework.similarity.globalsimilarity import GlobalSimilarity
 from framework.similarity.similarityterms import SimilarityTerms
 from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescriptorTimeSeries,DataDescriptorTerms
@@ -20,16 +20,16 @@ data = pd.read_csv("./dataset/Preprocssed_"+inputFile+".csv")
 data = data.iloc[0:11,0:30241] # the database to be published
 
 data = data.infer_objects()
-all_data = []
-all_samplingRates = []
 
 for i in range(0,7):
+    all_data = []
+    all_samplingRates = []
     data_line_counter = pd.read_csv("./dataset/preprocessed_line_counter.csv")
     data_Noices = pd.read_csv("./dataset/Preprocessed_noices_avg_4s.csv")
 
     data_presence = pd.read_csv("./dataset/Preprocssed_HamiltonData_presence.csv")
 
-    data_line_counter = data_line_counter.iloc[:,0:10081]
+    data_line_counter = data_line_counter.iloc[0::2,0:10081]
     data_presence = data_presence.iloc[0:11,0:30241]
     data_Noices = data_Noices.iloc[:,0:2017]
 
@@ -48,7 +48,7 @@ for i in range(0,7):
     min_resample_factor = math.floor(DataDescriptorTerms.DAY.value / DataDescriptorTerms.SECOND_20.value)
 
     k_fold = [i,7]
-    framework = Framework(data,anonymity_level,rep_mode=rep_mode, resample_factor = min_resample_factor, learning_metric=MetricLearningTerms.LINEAR, k_fold= k_fold,output_groupper_after=True, all_data=all_data, all_sampling_rates= all_samplingRates)
+    framework = Framework(data,anonymity_level,rep_mode=rep_mode, resample_factor = min_resample_factor, learning_metric=None, k_fold= k_fold,output_groupper_after=True, all_data=all_data, all_sampling_rates= all_samplingRates)
 
     sampling_frequency = DataDescriptorTerms.SECOND_20
     output_generality = DataDescriptorTerms.SECOND_20
@@ -58,7 +58,7 @@ for i in range(0,7):
 
     dd = DataDescriptorTimeSeries(sampling_frequency,generality_mode,data_type,1,len(data.columns)-1, output_frequency=output_generality)
 
-    segmentedData = SegmentSimilarity(dd,segment)
+    segmentedData = SegmentSimilarity(dd,segment,mode=SegmentSimilarityModes.SUMOFSEGMENT)
 
     metaData = DataDescriptorMetadata(0, data_description="Meta Data")
 
@@ -68,5 +68,5 @@ for i in range(0,7):
     out , loss_metric, anonymity_level = framework.anonymize()
     timeOut = time.clock() - start
 
-    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeOut], open('./results/presence/day/PAD_results_day_'+inputFile+'_fold_'+str(i)+'.pickle', "wb"))
+    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeOut], open('./results/presence/day/PAD_results_ML_NONE_day_sum_'+inputFile+'_fold_'+str(i)+'.pickle', "wb"))
     print("Time: " + str(timeOut))

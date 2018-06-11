@@ -19,7 +19,7 @@ import inspect
 import random
 
 class Framework:
-    def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",resample_factor = 5, learning_metric=MetricLearningTerms.LINEAR, k_fold = None,output_groupper_after = True, all_data=None, all_sampling_rates = None):
+    def __init__(self, data, anonymity_level=5,dataset_description=None, seed=None,rep_mode = "mean",resample_factor = 5, learning_metric=MetricLearningTerms.LINEAR, k_fold = None,output_groupper_after = True, all_data=None, all_sampling_rates = None, data_pair = None,similarity_label= None):
         self.data = data
         self._similarity_list = SimilarityList()
         self.data_descriptors = []
@@ -39,6 +39,8 @@ class Framework:
         self.output_groupper_after = output_groupper_after
         self.all_data = all_data
         self.all_sampling_rates = all_sampling_rates
+        self.similarity_label = similarity_label
+        self.data_pair = data_pair
 
     def _get_data_for_sanitize(self):
         output_data = pd.DataFrame()
@@ -83,6 +85,7 @@ class Framework:
 
     def add_similarity(self,similarity):
         self._similarity_list.add_similarity(similarity)
+        similarity.data_descriptor.add_similarity(similarity)
         self.data_descriptors.append(similarity.data_descriptor)
 
     def _find_all_Metric_Leanings(self):
@@ -140,10 +143,10 @@ class Framework:
             print('similarity balance is %s'% [sum(similarity_label),len(similarity_label)])
         return similarity_label, data_pair_all
 
-    def _presanitized(self):
+    def presanitized(self):
         sanitized_df = self._sanitize_data(data=self._get_data_for_sanitize(), distance_metric_type="init", rep_mode = self.rep_mode,
                         anonymity_level=self.anonymity_level)
-        loss_presensitized=  self._similarity_list.get_statistics_loss(self._get_data_for_sanitize(),sanitized_df)
+        loss_presensitized=  self._similarity_list.get_statistics_loss(self._get_data_for_sanitize(),sanitized_df.sort_index())
         print("information loss with presensitized %s" % loss_presensitized)
         print("amount of samples presensitized_data  %s" % len(sanitized_df))
         return sanitized_df , loss_presensitized
@@ -168,7 +171,6 @@ class Framework:
         sanitized_df.columns = data.columns
         return sanitized_df
 
-
     def generated_data_description(self):
         dd_string_out = []
         if self.dataset_description is not None:
@@ -181,17 +183,10 @@ class Framework:
         self.data = Verifyerror().verify(self.data, self._similarity_list, self.data_descriptors)
         self.amount_of_sensors = len(self.data.index)
 
-        _can_ensure_k_anonymity = KAnonymityUtilities().can_ensure_k_anonymity(self.anonymity_level, self.amount_of_sensors)
         if self.all_data is not None and self.all_sampling_rates is not None:
             self.anonymity_level = KAnonymityUtilities().find_balance_for_k(self.anonymity_level, self.all_data,self.all_sampling_rates)
-        elif not _can_ensure_k_anonymity:
-            self.all_data = []
-            self.all_data.append(self.data)
-            self.all_sampling_rates = []
-            for dd in self.data_descriptors:
-                if isinstance(dd, DataDescriptorTimeSeries):
-                    self.all_sampling_rates.append(dd.sampling_frequency.value)
-            self.anonymity_level = KAnonymityUtilities().find_balance_for_k(self.anonymity_level, self.all_data,self.all_sampling_rates)
+
+        _can_ensure_k_anonymity = KAnonymityUtilities().can_ensure_k_anonymity(self.anonymity_level, self.amount_of_sensors)
         _can_ensure_k_anonymity = False
         if not _can_ensure_k_anonymity:
             self.data, self._similarity_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._similarity_list, self.resample_factor)
@@ -201,26 +196,34 @@ class Framework:
             print("amount of columns after spilt %s" % len(self.data.columns))
 
         if not self.output_groupper_after:
-            self.data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self.data)
+            self.data, self.data_descriptors, self._similarity_list = OutputGroupper(self.data_descriptors).transform_data(self.data)
             print("amount of samples after output_groupper %s" % len(self.data.index))
             print("amount of columns after output_groupper %s" % len(self.data.columns))
 
-        presensitized_data ,loss_presensitized = self._presanitized()
+        if self.similarity_label is None:
+            presensitized_data ,loss_presensitized = self.presanitized()
 
-        similarity_label, data_pair = self._subsample(presensitized_data,seed=self.seed)
-
-        model = self._find_Metric_Leaning(data_pair,similarity_label)
-        print("Using model: ", model.metric_learning_terms)
-        final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
-        loss_metric=  self._similarity_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)
-        print("information loss with", model.metric_learning_terms, "metric %s" % loss_metric)
+        if self.learning_metric is not None:
+            if self.similarity_label is None:
+                similarity_label, data_pair = self._subsample(presensitized_data,seed=self.seed)
+            else:
+                similarity_label = self.similarity_label
+                data_pair = self.data_pair
+            model = self._find_Metric_Leaning(data_pair,similarity_label)
+            print("Using model: ", model.metric_learning_terms)
+            final_sanitized_data = self._sanitize_data(data = self._get_data_for_sanitize(), distance_metric_type="metric",anonymity_level=self.anonymity_level,metric=model, rep_mode = self.rep_mode)
+            final_sanitized_data = final_sanitized_data.sort_index()
+            loss_metric=  self._similarity_list.get_statistics_loss(self._get_data_for_sanitize(),final_sanitized_data)
+            print("information loss with", model.metric_learning_terms, "metric %s" % loss_metric)
+        else:
+            final_sanitized_data = presensitized_data.sort_index()
+            loss_metric = loss_presensitized
 
         if not _can_ensure_k_anonymity:
             transformed_data, self._similarity_list, self.data_descriptors = self._resampler.create_timeserices_from_slices_of_data(final_sanitized_data, self._similarity_list, self.amount_of_sensors)
             if self.output_groupper_after:
-                transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
-            print("information loss", loss_metric)
+                transformed_data, self.data_descriptors, self._similarity_list = OutputGroupper(self.data_descriptors).transform_data(transformed_data)
         else:
-            transformed_data, self.data_descriptors = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
+            transformed_data, self.data_descriptors, self._similarity_list = OutputGroupper(self.data_descriptors).transform_data(self._add_metadata_for_sanitize_data(final_sanitized_data))
 
         return transformed_data.sort_index(), loss_metric, self.anonymity_level

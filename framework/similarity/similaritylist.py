@@ -25,13 +25,12 @@ class SimilarityList:
     def get_statistics_loss(self,data_org, data_sanitized):
         err_sum_sqrt = None
         for similarity in self.similarities:
-            temp_err_sum_sqrt = similarity.get_information_loss(self._get_data_slice(similarity,data_org),self._get_data_slice(similarity,data_sanitized))
+            temp_err_sum_sqrt = similarity.get_information_loss(self._get_data_slice(similarity,data_org),self._get_data_slice(similarity,data_sanitized.sort_index()))
             if err_sum_sqrt is not None:
                 err_sum_sqrt = err_sum_sqrt + temp_err_sum_sqrt
             else:
                 err_sum_sqrt = temp_err_sum_sqrt
         return err_sum_sqrt
-
 
     def _get_data_slice(self,similarity,data):
         data_slices = data

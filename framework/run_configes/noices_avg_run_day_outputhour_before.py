@@ -10,6 +10,7 @@ from framework.framework import Framework
 from framework.similarity.segmentsimilarity import SegmentSimilarity
 from framework.similarity.similarityterms import SimilarityTerms
 from framework.metric_learning.metriclearningterms import MetricLearningTerms
+from framework.similarity.hourlysimilarity import HourlySimilarity, HourlySimilarityModes
 from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescriptorTimeSeries,DataDescriptorTerms
 import pandas as pd
 import pickle
@@ -28,7 +29,7 @@ for i in range(0,7):
     data_Noices = pd.read_csv("./dataset/Preprocessed_noices_avg_4s.csv")
     data_presence = pd.read_csv("./dataset/Preprocssed_HamiltonData_presence.csv")
 
-    data_line_counter = data_line_counter.iloc[:,0:10081] # the database to be published
+    data_line_counter = data_line_counter.iloc[0::2,0:10081] # the database to be published
     data_presence = data_presence.iloc[0:11,0:30241] # the database to be published
     data_Noices = data_Noices.iloc[:,0:2017]
 
@@ -55,20 +56,20 @@ for i in range(0,7):
     generality_mode = DataDescriptorTerms.MEAN
     data_type = DataDescriptorTerms.NUMBER
 
-    segment = [8,16]
+    segment = [96,192]
 
     dd = DataDescriptorTimeSeries(sampling_frequency,generality_mode,data_type,1,len(data.columns)-1, output_frequency=output_generality)
 
-    segmentedData = SegmentSimilarity(dd, data_window=segment)
+    hourlySimilarity = HourlySimilarity(dd,segment, sampling_frequency=sampling_frequency.value, mode=HourlySimilarityModes.MEANOFHOUR)
 
     metaData = DataDescriptorMetadata(0, data_description="Location of the sensor")
 
-    framework.add_similarity(segmentedData)
+    framework.add_similarity(hourlySimilarity)
     framework.add_meta_data(metaData)
 
     start = time.clock()
     out , loss_metric, anonymity_level = framework.anonymize()
     timeTaken = time.clock() - start
 
-    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeTaken], open('./results/noices/before/PAD_results_noices_avg_dayli_OutputHour_fold_'+str(i)+'.pickle', "wb"))
+    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeTaken], open('./results/noices/before/PAD_results_noices_avg_dayli_LINEAR_mean_OutputHour_fold_'+str(i)+'.pickle', "wb"))
     print("Time: " + str(timeTaken))

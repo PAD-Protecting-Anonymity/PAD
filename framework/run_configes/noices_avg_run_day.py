@@ -10,6 +10,7 @@ from framework.framework import Framework
 from framework.similarity.segmentsimilarity import SegmentSimilarity
 from framework.similarity.similarityterms import SimilarityTerms
 from framework.metric_learning.metriclearningterms import MetricLearningTerms
+from framework.similarity.hourlysimilarity import HourlySimilarity, HourlySimilarityModes
 from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescriptorTimeSeries,DataDescriptorTerms
 import pandas as pd
 import pickle
@@ -27,7 +28,7 @@ for i in range(0,7):
     data_Noices = pd.read_csv("./dataset/Preprocessed_noices_avg_4s.csv")
     data_presence = pd.read_csv("./dataset/Preprocssed_HamiltonData_presence.csv")
 
-    data_line_counter = data_line_counter.iloc[:,0:10081] # the database to be published
+    data_line_counter = data_line_counter.iloc[0::2,0:10081] # the database to be published
     data_presence = data_presence.iloc[0:11,0:30241] # the database to be published
     data_Noices = data_Noices.iloc[:,0:2017]
 
@@ -47,7 +48,7 @@ for i in range(0,7):
 
     min_resample_factor = math.floor(DataDescriptorTerms.DAY.value / DataDescriptorTerms.MINUET_5.value)
 
-    framework = Framework(data,anonymity_level,rep_mode=rep_mode,k_fold=k_fold,resample_factor=min_resample_factor,learning_metric=MetricLearningTerms.LINEAR, all_data=all_data, all_sampling_rates= all_samplingRates )
+    framework = Framework(data,anonymity_level,rep_mode=rep_mode,k_fold=k_fold,resample_factor=min_resample_factor,learning_metric=MetricLearningTerms.NONLINEAR, all_data=all_data, all_sampling_rates= all_samplingRates )
 
     sampling_frequency = DataDescriptorTerms.MINUET_5
     output_generality = DataDescriptorTerms.MINUET_5
@@ -57,16 +58,16 @@ for i in range(0,7):
     segment = [96,192]
     dd = DataDescriptorTimeSeries(sampling_frequency,generality_mode,data_type,1,len(data.columns)-1, output_frequency=output_generality)
 
-    segmentedData = SegmentSimilarity(dd, data_window=segment)
+    hourlySimilarity = HourlySimilarity(dd,segment, sampling_frequency=sampling_frequency.value, mode=HourlySimilarityModes.MEANOFHOUR)
 
     metaData = DataDescriptorMetadata(0, data_description="Location of the sensor")
 
-    framework.add_similarity(segmentedData)
+    framework.add_similarity(hourlySimilarity)
     framework.add_meta_data(metaData)
 
     start = time.clock()
     out , loss_metric, anonymity_level = framework.anonymize()
     timeTaken = time.clock() - start
 
-    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeTaken], open('./results/noices/day/PAD_results_noices_avg_dayli_OutputHour_fold_'+str(i)+'.pickle', "wb"))
+    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeTaken], open('./results/noices/day/PAD_results_noices_avg_dayli_NONLINEAR_mean_OutputHour_fold_'+str(i)+'.pickle', "wb"))
     print("Time: " + str(timeTaken))

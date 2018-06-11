@@ -62,7 +62,6 @@ class Similarity:
                 "The average silhouette_score is :", silhouette_avg_current)
             silhouette_avg.append(silhouette_avg_current)
         if silhouette_avg == []:
-            import pdb; pdb.set_trace()
             return [], self.dataSubsample
         else:
             best_n_clusters_index = np.where(silhouette_avg == max(silhouette_avg))[0]

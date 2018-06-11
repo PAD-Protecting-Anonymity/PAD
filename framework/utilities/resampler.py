@@ -18,7 +18,6 @@ class Resampler:
 
     def resample_data_into_blocks(self,data,data_descriptors,similarities_list, min_resample_factor):
         output_data = pd.DataFrame()
-
         index = 0
         for data_descriptor in data_descriptors:
             if isinstance(data_descriptor, DataDescriptorMetadata):
@@ -47,6 +46,7 @@ class Resampler:
                 data_descriptor.data_start_index = index
                 index = index + resample_factor-1
                 data_descriptor.data_end_index = index
+                data_descriptor.data_window_size = None
                 _similarities_list.add_similarity(similarity)
                 _data_descriptors.append(data_descriptor)
                 for i in range(0,amount_of_resamples):

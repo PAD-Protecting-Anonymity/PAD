@@ -42,6 +42,11 @@ class DataDescriptorTimeSeries(DataDescriptorBase):
         self.generality_mode = generality_mode
         self.data_type = data_type
         self.data_window_size = data_window_size
+        self.data_window_size = data_window_size
+        self.similarity = None
+
+    def add_similarity(self,similarity):
+        self.similarity = similarity
 
     def get_str_description(self):
         date_type_description = None

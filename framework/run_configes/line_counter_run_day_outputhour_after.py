@@ -10,6 +10,7 @@ from framework.similarity.arrivalsimilarity import ArrivalSimilarity
 from framework.similarity.segmentsimilarity import SegmentSimilarity
 from framework.similarity.globalsimilarity import GlobalSimilarity
 from framework.similarity.similarityterms import SimilarityTerms
+from framework.similarity.hourlysimilarity import HourlySimilarity, HourlySimilarityModes
 from framework.similarity.resourceusagesimilarity import ResourceUsageSimilarity
 from framework.metric_learning.metriclearningterms import MetricLearningTerms
 from framework.utilities.datadescriptor import DataDescriptorMetadata,DataDescriptorTimeSeries,DataDescriptorTerms
@@ -56,19 +57,18 @@ for i in range(0,7):
     amountOfSamplesInHour = 60
     segment = [480,960]
 
-
     dd = DataDescriptorTimeSeries(sampling_frequency,generality_mode,data_type,1,len(data.columns)-1, output_frequency=output_generality)
 
-    segmentSimilarity = SegmentSimilarity(dd,segment)
+    hourlySimilarity = HourlySimilarity(dd,segment, sampling_frequency=sampling_frequency.value, mode=HourlySimilarityModes.SUMOFHOUR)
 
     metaData = DataDescriptorMetadata(0, data_description="Location of the sensor")
 
-    framework.add_similarity(segmentSimilarity)
+    framework.add_similarity(hourlySimilarity)
     framework.add_meta_data(metaData)
 
     start = time.clock()
 
     out , loss_metric, anonymity_level = framework.anonymize()
     timeTaken = time.clock() - start
-    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level, timeTaken], open('./results/line count/after/PAD_results_line_counter_Day_OutputHour_fold_'+str(i)+'.pickle', "wb"))
+    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level, timeTaken], open('./results/line count/after/PAD_results_line_counter_Day_LINEAR_sum_OutputHour_fold_'+str(i)+'.pickle', "wb"))
     print("Time: " + str(timeTaken))

@@ -10,6 +10,7 @@ class SimilarityTerms:
     GLOBAL = "global" #use all of the time series
     TOTAL = "total" #used to sum a time series counter
     WINDOW_TOTAL = "window-total"  #used to sum a time series counter in window
+    HOURLY = "hourly"  #used to find the hourly dif
 
     #Global distance_metric
     EUCLIDEAN = "euclidean"
