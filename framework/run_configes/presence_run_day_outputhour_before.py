@@ -67,5 +67,5 @@ for i in range(0,7):
     start = time.clock()
     out , loss_metric, anonymity_level = framework.anonymize()
     timeOut = time.clock() - start
-    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeOut], open('./results/presence/before/PAD_results_day_OutputHour_ML_NONE_sum_generality_mode_sum'+inputFile+'_fold_'+str(i) +'.pickle', "wb"))
+    pickle.dump([out, framework.generated_data_description(), loss_metric,anonymity_level,timeOut], open('./results/presence/before/PAD_results_day_OutputHour'+inputFile+'_fold_'+str(i) +'.pickle', "wb"))
     print("Time: " + str(timeOut))

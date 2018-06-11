@@ -22,7 +22,6 @@ data = data.iloc[0:11,0:30241] # the database to be published
 
 data = data.infer_objects()
 
-
 for i in range(0,7):
     all_data = []
     all_samplingRates = []
