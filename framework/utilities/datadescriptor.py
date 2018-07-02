@@ -20,10 +20,10 @@ class DataDescriptorBase:
         Raises:
             ValueError -- if config does not complie with the framework
         """
-        if self.data_start_index > amount_of_column:
-            raise ValueError("refer to index wish is not in datastream: Index %s goes out of bound for the data stream in data descriptor in data_start_index" % self.data_start_index)
-        elif self.data_end_index > amount_of_column:
-                raise ValueError("refer to index wish is not in datastream: Index %s goes out of bound for the data stream in data descriptor in data_end_index" % self.data_end_index)
+
+        for i in range(self.data_start_index,self.data_end_index):
+            if not i in data.columns:
+                raise ValueError("refer to index wish is not in datastream: Index %s goes out of bound for the data stream in data descriptor")
         if self.data_start_index > self.data_end_index:
             temp_holder = self.data_start_index
             self.data_start_index = self.data_end_index

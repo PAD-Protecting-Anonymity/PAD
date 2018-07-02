@@ -4,3 +4,4 @@ class MetricLearningTerms:
     #Metric for datatype
     LINEAR = "linearmetric"
     NONLINEAR = "nonlineardeepmetric"
+    NOMETRIC = None

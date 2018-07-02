@@ -9,7 +9,7 @@ class Verifyerror:
     def _verify_data_input(self, data,similarities):
         #remove samples with only nan
         for similarity in similarities:
-            all_nan = data.iloc[:,similarity.data_descriptor.data_start_index:similarity.data_descriptor.data_end_index+1].isnull().all(axis=1)
+            all_nan = data.loc[:,similarity.data_descriptor.data_start_index:similarity.data_descriptor.data_end_index].isnull().all(axis=1)
             data = data.loc[np.invert(all_nan)]
             if all_nan.any():
                 removed = [i for i, x in enumerate(all_nan) if x]

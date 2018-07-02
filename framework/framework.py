@@ -46,7 +46,7 @@ class Framework:
         output_data = pd.DataFrame()
         for dd in self.data_descriptors:
             if not isinstance(dd, DataDescriptorMetadata):
-                output_data = pd.concat([output_data,self.data.iloc[:,dd.data_start_index:dd.data_end_index+1]], axis=1)
+                output_data = pd.concat([output_data,self.data.loc[:,dd.data_start_index:dd.data_end_index+1]], axis=1)
         return output_data
 
     def _get_data_for_model_selecting(self, percentage_of_data=0.1, amount_of_inputs=None):
@@ -123,20 +123,24 @@ class Framework:
         return metrics[best_model_index]
 
     def _subsample(self,presensitizedData, sub_sampling_size=0.1, subsampleTrial = 0, seed=None):
-        if subsampleTrial > 5:
+        if subsampleTrial > 7:
             raise ValueError("The data is to similar to be sanitized")
         if self.k_fold is None:
             self.subsampling = Subsampling(presensitizedData.sample(frac=sub_sampling_size, random_state=seed))
         else:
             self.subsampling = Subsampling(self._get_data_subsampling_k_fold())
+        if len(self.subsampling.data) <= 1:
+            return self._subsample(presensitizedData, sub_sampling_size=sub_sampling_size+0.1, subsampleTrial = subsampleTrial+1, seed=seed)
         subsample_size_max = int(comb(len(self.subsampling.data), 2))
         print('total number of pairs is %s' % subsample_size_max)
         data_pair_all, data_pair_all_index = self.subsampling.uniform_sampling(subsample_size=subsample_size_max, seed=seed)
         self.similarity = Similarity(data=data_pair_all)
         self.similarity.extract_interested_attribute(self._similarity_list.similarities)
         if len(self.similarity.data_interested) < self.max_clusters:
-            self.max_clusters = len(self.similarity.data_interested)
-        similarity_label, data_subsample = self.similarity.label_via_silhouette_analysis(range_n_clusters=range(2,self.max_clusters), seed=self.seed)
+            max_clusters = len(self.similarity.data_interested)
+        else:
+            max_clusters = self.max_clusters
+        similarity_label, data_subsample = self.similarity.label_via_silhouette_analysis(range_n_clusters=range(2,max_clusters), seed=self.seed)
         if similarity_label == []:
             return self._subsample(presensitizedData, sub_sampling_size=sub_sampling_size+0.1, subsampleTrial = subsampleTrial+1, seed=seed)
         else:
@@ -180,6 +184,7 @@ class Framework:
         return '\n'.join(dd_string_out)
 
     def anonymize(self):
+        self.data = self.data.sort_index()
         self.data = Verifyerror().verify(self.data, self._similarity_list, self.data_descriptors)
         self.amount_of_sensors = len(self.data.index)
 
@@ -187,14 +192,15 @@ class Framework:
             self.anonymity_level = KAnonymityUtilities().find_balance_for_k(self.anonymity_level, self.all_data,self.all_sampling_rates)
 
         _can_ensure_k_anonymity = KAnonymityUtilities().can_ensure_k_anonymity(self.anonymity_level, self.amount_of_sensors)
-        elif not _can_ensure_k_anonymity:
-            self.all_data = []
-            self.all_data.append(self.data)
-            self.all_sampling_rates = []
-            for dd in self.data_descriptors:
-                if isinstance(dd, DataDescriptorTimeSeries):
-                    self.all_sampling_rates.append(dd.sampling_frequency.value)
-            self.anonymity_level = KAnonymityUtilities().find_balance_for_k(self.anonymity_level, self.all_data,self.all_sampling_rates)
+
+        # if not _can_ensure_k_anonymity:
+        #     self.all_data = []
+        #     self.all_data.append(self.data)
+        #     self.all_sampling_rates = []
+        #     for dd in self.data_descriptors:
+        #         if isinstance(dd, DataDescriptorTimeSeries):
+        #             self.all_sampling_rates.append(dd.sampling_frequency.value)
+        #     self.anonymity_level = KAnonymityUtilities().find_balance_for_k(self.anonymity_level, self.all_data,self.all_sampling_rates)
 
         if not _can_ensure_k_anonymity:
             self.data, self._similarity_list, self.data_descriptors, resample_factor = self._resampler.resample_data_into_blocks(self.data, self.data_descriptors, self._similarity_list, self.resample_factor)

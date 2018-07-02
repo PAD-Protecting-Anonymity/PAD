@@ -10,7 +10,6 @@ import pdb
 import numpy as np
 import pickle
 
-
 class Resampler:
     def __init__(self):
         self.meta_data = []
@@ -22,7 +21,7 @@ class Resampler:
         for data_descriptor in data_descriptors:
             if isinstance(data_descriptor, DataDescriptorMetadata):
                 self.meta_data.append(data_descriptor)
-                meta_data_rows = data.iloc[:, data_descriptor.data_start_index:data_descriptor.data_end_index+1]
+                meta_data_rows = data.loc[:, data_descriptor.data_start_index:data_descriptor.data_end_index]
                 temp_index = (data_descriptor.data_end_index-data_descriptor.data_start_index) + index
                 data_descriptor.data_start_index = index
                 data_descriptor.data_end_index = temp_index
@@ -52,7 +51,7 @@ class Resampler:
                 for i in range(0,amount_of_resamples):
                     loop_start_index = start_index+(i*resample_factor)
                     loop_end_index = start_index+((i+1)*resample_factor)
-                    new_data = data.iloc[:, loop_start_index:loop_end_index]
+                    new_data = data.loc[:, loop_start_index:loop_end_index-1]
                     new_data.columns = list(range(data_descriptor.data_start_index,data_descriptor.data_end_index+1))
                     row_data = pd.concat([new_data], axis=1)
                     output_data = output_data.append(row_data, ignore_index=True)
@@ -80,11 +79,11 @@ class Resampler:
             _data_descriptors.append(similarity.data_descriptor)
 
         for i in range(0,amount_of_sensors):
-            new_data = transformed_data.iloc[i::amount_of_sensors,:]._values
+            new_data = transformed_data.loc[i::amount_of_sensors,:]._values
             new_data = list(chain.from_iterable(new_data))
             new_data = pd.DataFrame.from_items([(i, new_data)],orient='index', columns=list(range(index,index+len(new_data))))
             row_data = pd.concat([self.row_meta_data,new_data], axis=1)
-            output_data = output_data.append(row_data.iloc[i])
+            output_data = output_data.append(row_data)
         return output_data, _similarities_list, _data_descriptors
 
 class Subsampling:

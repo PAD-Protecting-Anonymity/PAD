@@ -55,7 +55,7 @@ class OutputGroupper:
 
     def transform_data_time_series(self,data,dataset_description,output_data):
         input_output_factor =  dataset_description.output_frequency.value/dataset_description.sampling_frequency.value
-        amount_of_samples_in_dataset_description = (dataset_description.data_end_index - dataset_description.data_start_index)+1
+        amount_of_samples_in_dataset_description = (dataset_description.data_end_index - dataset_description.data_start_index)
         amount_of_slices = math.floor(amount_of_samples_in_dataset_description / input_output_factor) #Floor to ensure that we do not groups for small data amounts
         if amount_of_slices >= 1 and input_output_factor != 1:
             for i in range(amount_of_slices):
@@ -72,7 +72,7 @@ class OutputGroupper:
         else: # amount_of_slices < 1:
             data_index_start = dataset_description.data_start_index
             data_index_end = dataset_description.data_end_index
-            data_slices = data.iloc[:,data_index_start:data_index_end+1]
+            data_slices = data.loc[:,data_index_start:data_index_end+1]
             output_data = pd.concat([output_data,data_slices], axis=1)
         if dataset_description.data_window_size is not None:
             dataset_description.data_window_size =  dataset_description.data_window_size / input_output_factor

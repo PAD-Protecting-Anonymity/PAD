@@ -57,7 +57,7 @@ class K_ward(BaseModel):
             df_sub = pairwise_dist[pairwise_dist["x"]== extreme_p]
 
             # if the neighbor has been assigned to a group, then delete
-            non_assigned_ind = [i for i in range(len(df_sub)) if group_assign_status[int(df_sub["y"].iloc[i])] == 0]
+            non_assigned_ind = [i for i in range(len(df_sub)) if group_assign_status[df_sub["y"].iloc[i]] == 0]
             df_sub = df_sub.iloc[non_assigned_ind]
 
             if df_sub.shape[0] == 0:
@@ -66,7 +66,7 @@ class K_ward(BaseModel):
             # select the k-1 nearest neighbors
             df_near_neighbors = df_sub.sort_values("distance",ascending=True).iloc[0:self.k-1]
 
-            keys = np.concatenate([df_near_neighbors["y"].values, np.array([int(extreme_p)])])
+            keys = np.concatenate([df_near_neighbors["y"].values, np.array([extreme_p])])
             values = self.data.loc[keys].as_matrix()
 
             new_group = Group(keys,values,self.rep_mode)
@@ -74,6 +74,7 @@ class K_ward(BaseModel):
             for i in range(len(keys)):
                 group_assign_status[keys[i]] = 1
             self._add_group(new_group)
+
 
         for key in group_assign_status.keys():
             if group_assign_status[key] == 0:
